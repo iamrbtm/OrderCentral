@@ -1,0 +1,80 @@
+<!--
+=========================================================
+* Template for MasterList
+=========================================================
+Date:1-7-23
+Author:Jeremy Guill
+Purpose:To display the contents of the database master list table in a stylish and user friendly manner
+
+Available Blocks
+* title
+* page_title
+* stylesheets
+* notifications
+* main_content
+* javascripts
+=========================================================
+-->
+{% extends "base/base.html" %}
+
+{% block title %}
+    Master List
+{% endblock title %}
+
+{% block page_title %}
+    Master List
+{% endblock page_title %}
+
+{% block stylesheets %}
+    <!-- create datatables -->
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#bazaar_master').DataTable({
+                "fixedHeader": true,
+                "bPaginate": true,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bInfo": true,
+                "bAutoWidth": false,
+                "colReorder": true,
+                "responsive": true,
+                "searchable": true,
+            });
+        });
+    </script>
+{% endblock stylesheets %}
+
+{% block notifications %}
+{% endblock notifications %}
+
+{% block main_content %}
+    <table class="table table-hover table-striped table-bordered" id="bazaar_master" name="bazaar_master">
+        <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>City</th>
+            <th>Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in allrec %}
+            <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'">
+                <td>{{ rec.event_name }}</td>
+                <td>{{ rec.venue.city }}</td>
+                <td>{{ rec.updated }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock main_content %}
+
+{% block javascripts %}
+{% endblock javascripts %}

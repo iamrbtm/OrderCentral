@@ -1,0 +1,129 @@
+<!--
+=========================================================
+* Template for MasterList
+=========================================================
+Date:1-8-2023
+Author:Jeremy Guill
+Purpose:Display a single record from the Master List table in detail.
+
+Available Blocks
+* title
+* page_title
+* stylesheets
+* notifications
+* main_content
+* javascripts
+=========================================================
+-->
+{% extends "base/base.html" %}
+
+{% block title %}
+    Details for {{ record.event_name }}
+{% endblock title %}
+
+{% block page_title %}
+    <b><span class="text-uppercase">{{ record.event_name }}</span></b>
+    <a href="{{ url_for('masterlist.edit_single', id=record.id) }}"> <i class="bi bi-pencil-square"></i></a>
+
+{% endblock page_title %}
+
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block notifications %}
+{% endblock notifications %}
+
+{% block main_content %}
+    <section class="section">
+        <div class="row">
+
+            <div class="col-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Venue</h5>
+                        <span class="text-uppercase text-primary"><b>{{ record.venue.name }}</b></span>
+                        <p>
+                            {% if record.venue.address != None %}
+                                {{ record.venue.address }}<br>
+                            {% endif %}
+                            {{ record.venue.city }}, {{ record.venue.state }} {{ record.venue.zipcode }}<br>
+                            {% if record.venue.phone != None %}
+                                <a href="tel:{{ record.venue.phone }}">{{ record.venue.phone }}</a><br>
+                            {% endif %}
+                            {% if record.venue.phone != None %}
+                                <a href="{{ record.venue.website }}" target="_blank">Website</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div><!-- End Venue -->
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Promoter</h5>
+                        <span class="text-uppercase text-primary"><b>{{ record.promoter.name }}</b></span>
+                        <p>
+                            {% if record.promoter.address != None %}
+                                {{ record.promoter.address }}<br>
+                            {% endif %}
+                            {{ record.promoter.city }}, {{ record.promoter.state }} {{ record.promoter.zipcode }}<br>
+                            {% if record.promoter.phone != None %}
+                                <a href="tel:{{ record.promoter.phone }}">{{ record.promoter.phone }}</a><br>
+                            {% endif %}
+                            {% if record.promoter.phone != None %}
+                                <a href="{{ record.promoter.website }}" target="_blank">Website</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div><!-- End Promoter -->
+
+            </div>
+
+            <div class="col-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Dates</h5>
+                        {{ full_text }}<br>
+                        <hr>
+                        {% for date in date_list %}
+                            {{ date.strftime("%m/%d/%Y") }}
+                        {% endfor %}
+                    </div>
+                </div><!-- End Dates -->
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Notes</h5>
+                        <div class="col">
+                            <div class="row">
+                                Add New Row
+                            </div>
+                            <div class="row">
+                                <table id="notes" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Note</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-striped">
+                                    {% for note in notes %}
+                                        <tr>
+                                            <th>{{ note.note }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Notes -->
+
+            </div>
+
+        </div>
+    </section>
+{% endblock main_content %}
+
+{% block javascripts %}
+{% endblock javascripts %}

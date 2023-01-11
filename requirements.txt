@@ -1,0 +1,11 @@
+flask
+python-dotenv
+sqlalchemy
+flask-sqlalchemy
+pandas
+pymysql
+Werkzeug
+usaddress
+alembic
+WTForms
+flask_wtf
