@@ -13,7 +13,8 @@ base = Blueprint("base", __name__)
 @base.route("/home")
 @login_required
 def home():
-    return render_template("base/base.html", user=User)
+    count = db.session.query(func.count(MasterList.id)).scalar()
+    return render_template("base/dashboard.html", user=User, countrec=count)
 
 
 @base.route('/importfile')

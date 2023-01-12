@@ -109,6 +109,26 @@ class Promoter(db.Model):
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
+    # Relationships
+    people = db.relationship("People", backref=backref("promoter_people", uselist=False))
+
+
+class People(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    title = db.Column(db.String(50))
+    phone = db.Column(db.String(20))
+    fax = db.Column(db.String(20))
+    email = db.Column(db.String(255))
+
+    # Foreign Key
+    promoterfk = db.Column(db.Integer, db.ForeignKey('promoter.id'))
+    venuefk = db.Column(db.Integer, db.ForeignKey('venue.id'))
+
+    # Relationships
+    venue = db.relationship("Venue", backref=backref("people_venue", uselist=False))
+    promoter = db.relationship("Promoter", backref=backref("people_promoter", uselist=False))
+
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
