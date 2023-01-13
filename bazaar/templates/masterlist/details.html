@@ -94,18 +94,17 @@ Available Blocks
                                         <hr>
                                     {% endif %}
                                 {% endfor %}
+                                <div class="pt-4">
+                                    {# TODO: Make button work when people is created, possiably a modal#}
+                                    <button class="btn btn-success">Add New Person</button>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            {# TODO: Make button work when people is created#}
-                            <button class="btn btn-success">Add New Person</button>
                         </div>
                     </div>
                 </div><!-- End Promoter -->
-            </div>
+            </div><!-- End left Column -->
 
             <div class="col-4">
-
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Dates</h5>
@@ -116,34 +115,36 @@ Available Blocks
                         {% endfor %}
                     </div>
                 </div><!-- End Dates -->
+            </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Notes</h5>
-                        <div class="col">
-                            <div class="row">
-                                Add New Row
-                            </div>
-                            <div class="row">
-                                <table id="notes" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Note</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="table-striped">
-                                    {% for note in notes %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Notes</h5>
+                            <div class="col">
+                                {# Make Button work #}
+                                <button class="btn btn-success">Add New Note</button>
+                                <div class="row">
+                                    <table id="notes" class="table table-bordered table-hover">
+                                        <thead>
                                         <tr>
-                                            <th>{{ note.note }}</th>
+                                            <th>Note</th>
                                         </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody class="table-striped">
+                                        {% for note in notes %}
+                                            <tr>
+                                                <th>{{ note.note }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div><!-- End Notes -->
-
+                    </div><!-- End Notes -->
+                </div>
             </div>
 
         </div>
