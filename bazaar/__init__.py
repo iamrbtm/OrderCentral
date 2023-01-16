@@ -44,16 +44,16 @@ def create_app():
     # Mail Setup
     config_mail(app)
 
-
     # Blueprints
     from bazaar.auth import auth
     from bazaar.templates.base.base import base
     from bazaar.templates.masterlist.masterlist import ml
+    from bazaar.templates.booking.booking import booking
 
     app.register_blueprint(base)
     app.register_blueprint(auth)
     app.register_blueprint(ml)
-
+    app.register_blueprint(booking)
 
     from bazaar.models import User
 

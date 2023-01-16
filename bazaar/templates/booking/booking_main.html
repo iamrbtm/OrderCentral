@@ -1,0 +1,128 @@
+<!--
+=========================================================
+* Template for MasterList
+=========================================================
+Date: 1-12-23
+Author:Jeremy Guill
+Purpose:To provide one place for bookings of bazaars, flea markets, etc
+
+Available Blocks
+* title
+* page_title
+* stylesheets
+* notifications
+* main_content
+* javascripts
+=========================================================
+-->
+{% extends "base/base.html" %}
+
+{% block title %}
+    Booking
+{% endblock title %}
+
+{% block page_title %}
+    Booking Main Page
+{% endblock page_title %}
+
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block notifications %}
+{% endblock notifications %}
+
+{% block main_content %}
+    <section class="section">
+        <div class="row">
+            <div class="col-6">
+                <div class="card" id="eventvenuepromotorinfo">
+                    <div class="card-body">
+                        <div class="vpe-event-head">{{ record.event_name }} <a
+                                href="{{ url_for('masterlist.edit_single', id=record.id) }}"> <i
+                                class="bi bi-pencil-square"></i></a>
+                        </div>
+
+                        <div class="vpe-venue-head">{{ record.venue.name }} </div>
+                        <div class="vpe-body">
+                            {% if record.venue.address != None %}
+                                {{ record.venue.address }} {{ record.venue.city }}, {{ record.venue.state }}
+                                {{ record.venue.zipcode }}<br>
+                            {% endif %}
+                            {% if record.venue.phone != None %}
+                                {{ record.venue.phone }}
+                            {% endif %}
+                            {% if record.venue.website != None %}
+                                | {{ record.venue.website }}
+                            {% endif %}
+                        </div>
+
+                        <div class="vpe-venue-head">{{ record.promoter.name }}</div>
+                        <div class="vpe-body">
+                            {% if record.promoter.address != None %}
+                                {{ record.promoter.address }} {{ record.promoter.city }}, {{ record.promoter.state }}
+                                {{ record.promoter.zipcode }}<br>
+                            {% endif %}
+                            {% if record.promoter.phone != None %}
+                                {{ record.promoter.phone }}
+                            {% endif %}
+                            {% if record.promoter.website != None %}
+                                | {{ record.promoter.website }}
+                            {% endif %}
+                        </div>
+                        <div class="vpe-body">
+                            {% for person in record.promoter.people %}
+                                {{ person.name }}
+                                {% if person.email != None %}
+                                    - {{ person.email }}
+                                {% endif %}
+                                {% if person.phone != None %}
+                                    - {{ person.phone }}
+                                {% endif %}
+
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="posteventbreakdown">
+                    <div class="card-body">
+                        <h5 class="card-title">Post Event Breakdown</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6" id="right column">
+                <div class="card" id="checklist">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h5 class="card-title">Check Lists</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="documents">
+                <div class="col" id="documents">
+                    <div class="card" id="documents">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <h5 class="card-title">Documents</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="notes">
+                <div class="col" id="notes">
+                    <div class="card" id="notes">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <h5 class="card-title">Notes</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock main_content %}
+
+{% block javascripts %}
+{% endblock javascripts %}
