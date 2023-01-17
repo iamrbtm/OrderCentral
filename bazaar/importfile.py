@@ -1,11 +1,13 @@
-import calendar
 import re
 from datetime import datetime
 import usaddress
 import pandas as pd
+import requests
+import urllib.parse
 
-from bazaar.models import *
 from bazaar.utilities import *
+from bazaar import db
+from bazaar.models import *
 
 
 def load_file(file):
@@ -63,8 +65,69 @@ def drop_unused_columns(df):
 
 
 def import_file(df):
+    def write_venue(import_row):
+
+        addy = parse_addy(import_row['fulladdress'])
+
+        address = addy['address']
+        city = addy['city']
+        state = addy['state']
+        zip = addy['zip']
+
+        # check for duplicates in database
+        addresses_from_db = db.session.query(Venue).filter(Venue.address == address).filter(Venue.city == city).filter(
+            Venue.state == state).filter(Venue.zipcode == zip).all()
+
+        if len(addresses_from_db) == 0:
+            # if not in db, add it
+            newvenue = Venue(
+                name=import_row['address'],
+                address=address,
+                city=city,
+                state=state,
+                zipcode=zip,
+            )
+            db.session.add(newvenue)
+            db.session.commit()
+            db.session.refresh(newvenue)
+            return newvenue.id
+        else:
+            # if in db, check to see if there are any changes
+            if addresses_from_db.updated >= import_row['updated']:
+                return addresses_from_db.id
+            else:
+                if addresses_from_db.name != import_row['address']:
+                    addresses_from_db.name = import_row['address']
+                if addresses_from_db.address != address:
+                    addresses_from_db.address = address
+                if addresses_from_db.city != city:
+                    addresses_from_db.city = city
+                if addresses_from_db.state != state:
+                    addresses_from_db.state = state
+                if addresses_from_db.zipcode != zip:
+                    addresses_from_db.zipcode = zip
+
+    def write_promoter(import_row):
+
+        # check for duplicates in database
+        promoter_in_db = db.session.query(Promoter).filter(Promoter.name == import_row['promotor']).all()
+
+        if len(promoter_in_db) == 0:
+            # if not in db, add it
+            new_promoter = Promoter(
+                name=import_row['promotor']
+            )
+            db.session.add(new_promoter)
+            db.session.commit()
+            db.session.refresh(new_promoter)
+            return new_promoter.id
+        else:
+            # if in db, check to see if there are any changes
+            if promoter_in_db.name != import_row['promotor']:
+                promoter_in_db.name = import_row['promotor']
+
     for index, row in df.iterrows():
-        venueid = write_venue(row)
+        venueid = write_venue()
         promoterid = write_promoter(row)
 
         # write the data to the database
@@ -87,9 +150,32 @@ def import_file(df):
 
 
 def write_promoter(row):
-    promoter_from_db = db.session.query(Promoter).filter(Promoter.name == row['promotor']).all()
+    # noinspection SpellCheckingInspection
+    apikey = 'AIzaSyD1qqEWZryfyghgr1IvjnsTEcyKw3-NqXg'
+    promoter_name = row['promotor']
+
+    def get_venue_lat_long(row):
+        address = parse_addy(row)
+        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address['full']) + '?format=json'
+
+        response = requests.get(url).json()
+
+        with open('resp.json', 'w') as file:
+            file.write(response.text)
+            print(response.text)
+
+        return response[0]["lat"], response[0]["lon"]
+
+    def get_address(name):
+        address = get_venue_lat_long(row)
+
+        # TODO: Place request for near by places using the lat and long of the venue
+
+    get_address(promoter_name)
+    promoter_from_db = db.session.query(Promoter).filter(Promoter.name == promoter_name).first()
+
     if len(promoter_from_db) != 0:
-        return promoter_from_db[0].id
+        return promoter_from_db.id
     else:
         newpromotor = Promoter(
             name=row['promotor']
@@ -100,27 +186,12 @@ def write_promoter(row):
         return newpromotor.id
 
 
-def check_for_dup_venue(address, city, state, zip):
-    addresses_from_db = db.session.query(Venue).filter(Venue.address == address).filter(Venue.city == city).filter(
-        Venue.state == state).filter(Venue.zipcode == zip).all()
-    if len(addresses_from_db) == 0:
-        return False
-    else:
-        return True
-
-
-def get_venue_id(address, city, state, zip):
-    addresses_from_db = db.session.query(Venue).filter(Venue.address == address).filter(Venue.city == city).filter(
-        Venue.state == state).filter(Venue.zipcode == zip).first()
-    return addresses_from_db.id
-
-
-def write_venue(row):
-    addy = usaddress.tag(row['fulladdress'])
+def parse_addy(full_address):
+    addy = usaddress.tag(full_address)
 
     if 'Ambiguous' not in addy:
         addressfields = []
-        address = []
+        parsed_address = []
         for item in addy[0]:
             if item == "PlaceName":
                 pass
@@ -132,39 +203,15 @@ def write_venue(row):
                 addressfields.append(item)
 
         for field in addressfields:
-            address.append(addy[0][field])
+            parsed_address.append(addy[0][field])
 
-        newaddress = ' '.join(address)
-        city = addy[0]['PlaceName']
-        state = addy[0]['StateName']
-        zip = addy[0]['ZipCode']
+        address_dic = {'address': ' '.join(parsed_address),
+                       'city': addy[0]['PlaceName'],
+                       'state': addy[0]['StateName'],
+                       'zip': addy[0]['ZipCode'],
+                       'full': f"{' '.join(parsed_address)} {addy[0]['PlaceName']}, {addy[0]['StateName']} {addy[0]['ZipCode']}"}
 
-        if check_for_dup_venue(newaddress, city, state, zip):
-            venueid = get_venue_id(newaddress, city, state, zip)
-            return venueid
-        else:
-            newvenue = Venue(
-                name=row['address'],
-                address=newaddress,
-                city=city,
-                state=state,
-                zipcode=zip,
-            )
-            db.session.add(newvenue)
-            db.session.commit()
-            db.session.refresh(newvenue)
-            return newvenue.id
-    else:
-        newvenue = Venue(
-            name=row['address'],
-            city=row['city'],
-            state=row['state'],
-            zipcode=row['zip'],
-        )
-        db.session.add(newvenue)
-        db.session.commit()
-        db.session.refresh(newvenue)
-        return newvenue.id
+        return address_dic
 
 
 def main():

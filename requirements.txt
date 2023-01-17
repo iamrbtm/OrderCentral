@@ -9,3 +9,4 @@ usaddress
 alembic
 WTForms
 flask_wtf
+requests
