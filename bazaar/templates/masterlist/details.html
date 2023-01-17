@@ -113,6 +113,22 @@ Available Blocks
                         {% for date in date_list %}
                             {{ date.strftime("%m/%d/%Y") }}
                         {% endfor %}
+                        <hr>
+                        {{ record.dates_text }}
+                    </div>
+                </div><!-- End Dates -->
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Categories</h5>
+                        <div class="row-cols-2">
+                            <div class="col-6">
+                                {% for type in types %}
+                                    {{ type }}
+                                {% endfor %}
+                            </div>
+                        </div>
+
                     </div>
                 </div><!-- End Dates -->
             </div>
@@ -135,7 +151,10 @@ Available Blocks
                                         <tbody class="table-striped">
                                         {% for note in notes %}
                                             <tr>
-                                                <th>{{ note.note }}</th>
+                                                {#TODO: Fix time zone error in the time of when the note was created.#}
+                                                <td>{{ note.note | upper() }}<br>
+                                                    <span class="text-muted small">{{ note.date_created.strftime("%x %X") }}</span>
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

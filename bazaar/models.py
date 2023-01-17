@@ -71,6 +71,13 @@ class MasterList(db.Model):
     exibitors = db.Column(db.Integer)
     website = db.Column(db.Text)
     dates_text = db.Column(db.Text)
+    type_bazaar = db.Column(db.Boolean, default=False)
+    type_holiday = db.Column(db.Boolean, default=False)
+    type_art = db.Column(db.Boolean, default=False)
+    type_festival = db.Column(db.Boolean, default=False)
+    type_flea = db.Column(db.Boolean, default=False)
+    type_health = db.Column(db.Boolean, default=False)
+    type_market = db.Column(db.Boolean, default=False)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -95,6 +102,9 @@ class Venue(db.Model):
     website = db.Column(db.String(255))
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Relationships
+    venue_event = db.relationship("MasterList", backref=backref("masterlist", uselist=False))
 
 
 class Promoter(db.Model):

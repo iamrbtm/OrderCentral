@@ -3,6 +3,7 @@ import datetime
 from calendar import day_name, month_name
 from bazaar import db
 from bazaar.models import *
+import usaddress
 
 
 def last_specified_day_of_month(month, year, day_of_week):
@@ -67,3 +68,40 @@ def convertDateTextToBooleanFields():
             elif month in event_name:
                 setattr(record, month.lower(), True)
                 db.session.commit()
+
+
+def parse_addy(full_address):
+    addy = usaddress.tag(full_address)
+    print(addy)
+    if 'Ambiguous' not in addy:
+        addressfields = []
+        parsed_address = []
+        for item in addy[0]:
+            if item == "PlaceName":
+                pass
+            elif item == 'StateName':
+                pass
+            elif item == 'ZipCode':
+                pass
+            else:
+                addressfields.append(item)
+
+        for field in addressfields:
+            parsed_address.append(addy[0][field])
+
+        address_dic = {'address': ' '.join(parsed_address),
+                       'city': addy[0]['PlaceName'],
+                       'state': addy[0]['StateName'],
+                       'zip': addy[0]['ZipCode'],
+                       'full': f"{' '.join(parsed_address)} {addy[0]['PlaceName']}, {addy[0]['StateName']} {addy[0]['ZipCode']}"}
+
+        return address_dic
+    else:
+        address_dic = {'address': None,
+                       'city': None,
+                       'state': None,
+                       'zip': None,
+                       'full': None
+                       }
+
+        return address_dic

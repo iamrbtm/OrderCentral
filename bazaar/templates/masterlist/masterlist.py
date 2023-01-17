@@ -1,5 +1,8 @@
 from calendar import day_name
 from datetime import datetime
+
+from sqlalchemy import or_
+
 from bazaar.utilities import *
 from flask import (
     Blueprint,
@@ -10,6 +13,17 @@ from bazaar.models import *
 from bazaar import db
 
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
+
+
+def get_types_masterlist():
+    from sqlalchemy import inspect
+    inst = inspect(MasterList)
+    attr_names = [c_attr.key for c_attr in inst.mapper.column_attrs]
+    typelist = []
+    for name in attr_names:
+        if "type" in name:
+            typelist.append(name.replace("type_", ""))
+    return typelist
 
 
 @ml.route("/")
@@ -100,9 +114,15 @@ def details(id):
                         else:
                             date = nth_day_of_month(month, day, week)
                             date_list.append(date)
+    notes = db.session.query(Notes).filter(Notes.masterlistid == id).all()
+
+    types = []
+    for type in get_types_masterlist():
+        if getattr(record, "type_" + type):
+            types.append(type.title())
 
     contents = {"user": User, "record": record, "full_text": full_text,
-                "date_list": date_list}
+                "date_list": date_list, "notes": notes, "types": types}
     return render_template("masterlist/details.html", **contents)
 
 
@@ -127,10 +147,16 @@ def edit_single(id):
                    "Thursday": record.thursday, "Friday": record.friday, "Saturday": record.saturday,
                    "Sunday": record.sunday}
 
+    types = get_types_masterlist()
+    types_values = {}
+    for type in types:
+        types_values[type] = getattr(record, "type_" + type)
+
     # DONE: make a dict with the day of the week and true or false
 
     if request.method == "POST":
         form_data = request.form.to_dict()
+        # TODO: see if the venue or promotor is in the database.  if so, edit it, if not, add it
 
         # Event Information
         record.event_name = form_data['event_name']
@@ -170,6 +196,13 @@ def edit_single(id):
             else:
                 setattr(record, day, False)
 
+        # Types
+        for type in types:
+            if type in request.form.getlist('type'):
+                setattr(record, "type_" + type, True)
+            else:
+                setattr(record, "type_" + type, False)
+
         db.session.commit()
 
         return redirect(url_for('masterlist.details', id=id))
@@ -178,5 +211,32 @@ def edit_single(id):
     contents = {"user": User, "record": record, "notes": notes,
                 "months": months, "days": days, "weeks": weeks,
                 "v_days": days_values, "v_months": months_values,
-                "v_weeks": weeks_values}
+                "v_weeks": weeks_values, "types": types,
+                "v_types": types_values}
     return render_template("masterlist/edit_single.html", **contents)
+
+
+@ml.route("/ticktypes")
+@login_required
+def tick_types():
+    typelist = get_types_masterlist()
+
+    extralist = {'bazaar': ['show'],
+                 'holiday': ['christmas', 'santa'],
+                 "festival": ['fest'],
+                 'market': ['show'],
+                 'art': [],
+                 'health': [],
+                 'flea': []
+                 }
+    for record in db.session.query(MasterList).all():
+        for type in typelist:
+            if type in record.event_name.lower():
+                setattr(record, "type_" + type, True)
+                db.session.commit()
+            for extra in extralist[type]:
+                if extra in record.event_name.lower():
+                    setattr(record, "type_" + type, True)
+                    db.session.commit()
+
+    return redirect(url_for('masterlist.masterlist'))
