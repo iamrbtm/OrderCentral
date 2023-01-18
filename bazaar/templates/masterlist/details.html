@@ -188,8 +188,26 @@ Available Blocks
         </div>
         <div class="modal-body">
           <form action="{{url_for('masterlist.addperson', id=record.id)}}" method="post">
-            <label class="form_label" for="name">Name</label>
-            <input class="form_control" type="text" name="name" id="name">
+            <div>
+                <label class="form_label" for="name">Name</label>
+                <input class="form_control" type="text" name="name" id="name">
+            </div>
+            <div>
+                <label class="form_label" for="title">Title</label>
+                <input class="form_control" type="text" name="title" id="title">
+            </div>
+            <div>
+                <label class="form_label" for="phone">Phone</label>
+                <input class="form_control" type="text" name="phone" id="phone">
+            </div>
+            <div>
+                <label class="form_label" for="fax">Fax</label>
+                <input class="form_control" type="text" name="fax" id="fax">
+            </div>
+            <div>
+                <label class="form_label" for="email">Email</label>
+                <input class="form_control" type="text" name="email" id="email">
+            </div>
           </form>
         </div>
         <div class="modal-footer">
