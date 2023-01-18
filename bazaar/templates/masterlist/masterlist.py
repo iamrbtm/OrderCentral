@@ -247,11 +247,11 @@ def addperson(id):
     if request.method == "POST":
         data = request.form.to_dict()
         addperson = Person(
-            name = data['name']
-            title = data['title']
-            phone = data['phone']
-            fax = data['fax']
-            email = data['email']
+            name = data['name'],
+            title = data['title'],
+            phone = data['phone'],
+            fax = data['fax'],
+            email = data['email'],
             promoterfk = id
         )
         db.session.add(addperson)
