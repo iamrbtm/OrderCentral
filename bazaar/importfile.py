@@ -166,7 +166,7 @@ def import_file(df):
 
 
 def main():
-    file = '/Users/rbtm2006/Dudefish Printing/Bazaars/Program/festivalnet_dot_com.csv'
+    file = 'festivalnet_dot_com.csv'
     df = pd.read_csv(file)
 
     fix_import(df)
