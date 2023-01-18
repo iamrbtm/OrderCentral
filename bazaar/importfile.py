@@ -167,7 +167,7 @@ def import_file(df):
 
 def main():
     file = 'festivalnet_dot_com.csv'
-    df = pd.read_csv(file)
+    df = pd.read_csv(file, encoding='utf8')
 
     fix_import(df)
     import_file(df)
