@@ -77,31 +77,56 @@ Available Blocks
                         <div class="card">
                             <h5 class="card-title ps-3">People Information</h5>
                             <div class="card-body">
-                                {% for person in record.promoter.people %}
-                                    {#TODO: Place person details url in href when created#}
-                                    {#TODO: Fix the person.name so it displays as black and not as a link#}
-                                    <a href="#"><h5><b>{{ person.name.title() }}</b></h5></a>
-                                    {% if person.title %}
-                                        <small>{{ person.title.title() }}</small><br>
-                                    {% endif %}
-                                    {% if person.email %}
-                                        <small><a href="mailto:{{ person.email }}">{{ person.email }}</a></small><br>
-                                    {% endif %}
-                                    {% if person.phone %}
-                                        <small><a href="tel:{{ person.phone }}">{{ person.phone }}</a></small>
-                                    {% endif %}
+                                {% for person in persons %}
+                                    <div>
+                                        <div class="d-flex mb-3">
+                                            <div class="me-auto">
+                                                <h5><b>{{ person.name.title() }}<br></b></h5>
+                                                {#TODO: Place person details url in href when created#}
+                                                {#TODO: Fix the person.name so it displays as black and not as a link#}
+                                                {% if person.title %}
+                                                    <small>{{ person.title.title() }}</small><br>
+                                                {% endif %}
+                                                {% if person.email %}
+                                                    <small><a
+                                                            href="mailto:{{ person.email }}">{{ person.email }}</a></small>
+                                                    <br>
+                                                {% endif %}
+                                                {% if person.phone %}
+                                                    <small><a
+                                                            href="tel:{{ person.phone }}">{{ person.phone }}</a></small>
+                                                {% endif %}
+                                            </div>
+                                            <div class="">
+                                                <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                        class="bi bi-three-dots"></i></a>
+                                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                    <li class="dropdown-header text-start">
+                                                        <h6>{{ person.name }}</h6>
+                                                    </li>
+                                                    <li><a class="dropdown-item"
+                                                           href="{{ url_for('masterlist.person_edit',personid=person.id, recordid=record.id) }}">Edit</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item"
+                                                           href="{{ url_for('masterlist.person_delete', personid=person.id, recordid=record.id) }}">Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% if not loop.last %}
                                         <hr>
                                     {% endif %}
                                 {% endfor %}
                                 <div class="pt-4">
-                                    {# TODO: Make button work when people is created, possiably a modal#}
+                                    {# DONE: Make button work when people is created, possiably a modal#}
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#addperson">
                                         Add Person
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div><!-- End Promoter -->
@@ -180,7 +205,7 @@ Available Blocks
                     <h5 class="modal-title" id="addpersonLabel">Add a person to {{ record.promoter.name }}</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('masterlist.addperson', id=record.id) }}" method="post">
+                    <form action="{{ url_for('masterlist.person_add', id=record.id) }}" method="post">
                         <div>
                             <label class="form_label" for="name">Name</label>
                             <input class="form_control" type="text" name="name" id="name">

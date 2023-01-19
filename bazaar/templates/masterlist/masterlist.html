@@ -65,7 +65,7 @@ Available Blocks
         </tr>
         </thead>
         <tbody>
-        {% for rec in allrec %}
+        {% for rec in records %}
             <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'">
                 <td>{{ rec.event_name }}</td>
                 <td>{{ rec.venue.city }}</td>

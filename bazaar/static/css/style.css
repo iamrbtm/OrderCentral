@@ -803,17 +803,14 @@ h6 {
     background-color: #4154f1;
 }
 
-/*--------------------------------------------------------------
-# Dashboard
---------------------------------------------------------------*/
 /* Filter dropdown */
-.dashboard .filter {
+.filter {
     position: absolute;
     right: 0px;
     top: 15px;
 }
 
-.dashboard .filter .icon {
+.filter .icon {
     color: #aab7cf;
     padding-right: 20px;
     padding-bottom: 5px;
@@ -821,16 +818,16 @@ h6 {
     font-size: 16px;
 }
 
-.dashboard .filter .icon:hover,
-.dashboard .filter .icon:focus {
+.filter .icon:hover,
+.filter .icon:focus {
     color: #4154f1;
 }
 
-.dashboard .filter .dropdown-header {
+.filter .dropdown-header {
     padding: 8px 15px;
 }
 
-.dashboard .filter .dropdown-header h6 {
+.filter .dropdown-header h6 {
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 600;
@@ -840,9 +837,13 @@ h6 {
     padding: 0;
 }
 
-.dashboard .filter .dropdown-item {
+.filter .dropdown-item {
     padding: 8px 15px;
 }
+
+/*--------------------------------------------------------------
+# Dashboard
+--------------------------------------------------------------*/
 
 /* Info Cards */
 .dashboard .info-card {

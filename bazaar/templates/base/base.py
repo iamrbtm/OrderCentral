@@ -5,8 +5,14 @@ from flask import (
 from flask_login import login_required, current_user
 from bazaar.models import *
 from bazaar import db
+from bazaar.utilities import get_types
 
 base = Blueprint("base", __name__)
+
+
+@base.context_processor
+def utility_processor():
+    return dict(types=get_types())
 
 
 @base.route("/")

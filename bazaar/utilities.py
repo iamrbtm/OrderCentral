@@ -105,3 +105,14 @@ def parse_addy(full_address):
                        }
 
         return address_dic
+
+
+def get_types():
+    from sqlalchemy import inspect
+    inst = inspect(MasterList)
+    attr_names = [c_attr.key for c_attr in inst.mapper.column_attrs]
+    typelist = []
+    for name in attr_names:
+        if "type" in name:
+            typelist.append(name.replace("type_", ""))
+    return typelist

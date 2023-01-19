@@ -9,12 +9,27 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url_for('masterlist.masterlist') }}">
-                <i class="bi bi-list-task"></i>
-                <span>Master List</span>
+            <a class="nav-link collapsed" data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-list-columns-reverse"></i><span>Lists</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li><!-- End Blank Page Nav -->
+            <ul id="reports-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ url_for('masterlist.masterlist', type='all') }}">
+                        <i class="bi bi-circle"></i><span>All</span>
+                    </a>
+                </li>
+                {% for type in types %}
+                    <li>
+                        <a href="{{ url_for('masterlist.masterlist', type=type) }}">
+                            <i class="bi bi-circle"></i><span>{{ type.title() }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li><!-- End reports Nav -->
+
 
         <!--Reports-->
         <li class="nav-item">

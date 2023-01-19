@@ -23,11 +23,29 @@ def get_types_masterlist():
     return typelist
 
 
-@ml.route("/")
+@ml.route("/<type>")
 @login_required
-def masterlist():
-    master = db.session.query(MasterList).all()
-    contents = {"user": User, "allrec": master}
+def masterlist(type):
+    types = get_types_masterlist()
+
+    match type:
+        case "bazaar":
+            records = db.session.query(MasterList).filter(MasterList.type_bazaar == True).all()
+        case "art":
+            records = db.session.query(MasterList).filter(MasterList.type_art == True).all()
+        case "holiday":
+            records = db.session.query(MasterList).filter(MasterList.type_holiday == True).all()
+        case "festival":
+            records = db.session.query(MasterList).filter(MasterList.type_festival == True).all()
+        case "flea":
+            records = db.session.query(MasterList).filter(MasterList.type_flea == True).all()
+        case "health":
+            records = db.session.query(MasterList).filter(MasterList.type_health == True).all()
+        case "market":
+            records = db.session.query(MasterList).filter(MasterList.type_market == True).all()
+        case _:
+            records = db.session.query(MasterList).all()
+    contents = {"user": User, "records": records, "types": types}
     return render_template("masterlist/masterlist.html", **contents)
 
 
@@ -118,8 +136,11 @@ def details(id):
         if getattr(record, "type_" + type):
             types.append(type.title())
 
+    persons = db.session.query(People).filter(People.promoterfk == id).all()
+
     contents = {"user": User, "record": record, "full_text": full_text,
-                "date_list": date_list, "notes": notes, "types": types}
+                "date_list": date_list, "notes": notes, "types": types,
+                "persons": persons}
     return render_template("masterlist/details.html", **contents)
 
 
@@ -241,7 +262,7 @@ def tick_types():
 
 @ml.route("/addperson/<id>", methods=['GET', 'POST'])
 @login_required
-def addperson(id):
+def person_add(id):
     if request.method == "POST":
         data = request.form.to_dict()
         addperson = People(
@@ -255,3 +276,17 @@ def addperson(id):
         db.session.add(addperson)
         db.session.commit()
     return redirect(url_for('masterlist.details', id=id))
+
+
+@ml.route("/editperson/<personid>/<recordid>", methods=['GET', 'POST'])
+@login_required
+def person_edit(personid, recordid):
+    return redirect(url_for('masterlist.details', id=recordid))
+
+
+@ml.route("/deleteperson/<personid>/<recordid>", methods=['GET', 'POST'])
+@login_required
+def person_delete(personid, recordid):
+    People.query.filter(People.id == personid).delete()
+    db.session.commit()
+    return redirect(url_for('masterlist.details', id=recordid))
