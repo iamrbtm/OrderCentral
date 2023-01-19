@@ -2,7 +2,7 @@ import os
 import humanize
 from flask import (
     Blueprint,
-    render_template, request, redirect, url_for
+    render_template, request, redirect, url_for, send_file
 )
 from flask_login import login_required
 
@@ -35,8 +35,8 @@ def home(id):
         filedic[i]['size'] = humanize.naturalsize(os.path.getsize(os.path.join(path, file)))
         filedic[i]['created'] = datetime.datetime.fromtimestamp(os.path.getctime(os.path.join(path, file))).strftime(
             '%m/%d/%Y %H:%M %p')
-        filedic[i]['editlink'] = None
-        filedic[i]['deletelink'] = None
+        filedic[i]['editlink'] = url_for('booking.file_view', id=id, filename=file)
+        filedic[i]['deletelink'] = url_for('booking.file_delete', id=id, filename=file)
         i += 1
 
     content = {"user": User, "record": record, "files": filedic}
@@ -55,3 +55,18 @@ def adddoc(id):
             uploaded_file.save(fullpath)
 
     return redirect(url_for('booking.home', id=id))
+
+
+@booking.route("/<id>/<filename>/deletefile")
+@login_required
+def file_delete(id, filename):
+    path = check_make_dir(id)
+    os.remove(os.path.join(path, filename))
+    return redirect(url_for('booking.home', id=id))
+
+
+@booking.route("/<id>/<filename>/viewfile")
+@login_required
+def file_view(id, filename):
+    path = check_make_dir(id)
+    return send_file(os.path.join("templates", "booking", "uploads", id, filename))
