@@ -1,15 +1,12 @@
 from calendar import day_name
 from datetime import datetime
-from bazaar.modles import *
-from sqlalchemy import or_
-
+from bazaar.models import *
 from bazaar.utilities import *
 from flask import (
     Blueprint,
     render_template, request, redirect, url_for
 )
 from flask_login import login_required
-from bazaar.models import *
 from bazaar import db
 
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
@@ -241,18 +238,20 @@ def tick_types():
 
     return redirect(url_for('masterlist.masterlist'))
 
-@ml.route("/addperson/<id>")
+
+@ml.route("/addperson/<id>", methods=['GET', 'POST'])
 @login_required
 def addperson(id):
     if request.method == "POST":
         data = request.form.to_dict()
-        addperson = Person(
-            name = data['name'],
-            title = data['title'],
-            phone = data['phone'],
-            fax = data['fax'],
-            email = data['email'],
-            promoterfk = id
+        addperson = People(
+            name=data['name'],
+            title=data['title'],
+            phone=data['phone'],
+            fax=data['fax'],
+            email=data['email'],
+            promoterfk=id
         )
         db.session.add(addperson)
         db.session.commit()
+    return redirect(url_for('masterlist.details', id=id))

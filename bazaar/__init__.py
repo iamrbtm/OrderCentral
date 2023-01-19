@@ -32,11 +32,11 @@ def create_app():
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
     # Database Setup
-    app.config[
-        "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://onlymyli_rbtm2006:Braces4me##@192.96.200.111/onlymyli_bazaar?charset=utf8mb4"
-    # db_path = os.path.join(os.path.dirname(__file__), 'database', 'testing.db')
-    # db_uri = 'sqlite:///{}'.format(db_path)
-    # app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    # app.config[
+    #     "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://onlymyli_rbtm2006:Braces4me##@192.96.200.111/onlymyli_bazaar?charset=utf8mb4"
+    db_path = os.path.join(os.path.dirname(__file__), 'database', 'testing.db')
+    db_uri = 'sqlite:///{}'.format(db_path)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     db.init_app(app)
 
     # Migration for Database

@@ -137,10 +137,11 @@ def import_file(df):
         return rec.id
 
     for index, row in df.iterrows():
+        venueid = write_venue(row)
+        promoterid = write_promoter(row)
+
         event_in_db = db.session.query(MasterList).filter(MasterList.event_name == row['name']).all()
         if len(event_in_db) == 0:
-            venueid = write_venue(row)
-            promoterid = write_promoter(row)
             eventid = write_event(row, venueid, promoterid)
             print(eventid)
         else:
@@ -161,6 +162,10 @@ def import_file(df):
                     event_in_db[0].exibitors = row['exibitors']
                 if event_in_db[0].website != row['website']:
                     event_in_db[0].website = row['website']
+
+                event_in_db[0].venuefk = venueid
+                event_in_db[0].promoterfk = promoterid
+
                 db.session.commit()
     convertDateTextToBooleanFields()
 

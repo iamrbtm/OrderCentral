@@ -96,9 +96,10 @@ Available Blocks
                                 {% endfor %}
                                 <div class="pt-4">
                                     {# TODO: Make button work when people is created, possiably a modal#}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addperson">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#addperson">
                                         Add Person
-                                      </button>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -171,52 +172,45 @@ Available Blocks
         </div>
     </section>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addperson">
-    Add Person
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="addperson" tabindex="-1" role="dialog" aria-labelledby="addpersonLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addpersonLabel">Add a person to {{record.promoter.name}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addperson" tabindex="-1" aria-labelledby="addpersonLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addpersonLabel">Add a person to {{ record.promoter.name }}</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('masterlist.addperson', id=record.id) }}" method="post">
+                        <div>
+                            <label class="form_label" for="name">Name</label>
+                            <input class="form_control" type="text" name="name" id="name">
+                        </div>
+                        <div>
+                            <label class="form_label" for="title">Title</label>
+                            <input class="form_control" type="text" name="title" id="title">
+                        </div>
+                        <div>
+                            <label class="form_label" for="phone">Phone</label>
+                            <input class="form_control" type="text" name="phone" id="phone">
+                        </div>
+                        <div>
+                            <label class="form_label" for="fax">Fax</label>
+                            <input class="form_control" type="text" name="fax" id="fax">
+                        </div>
+                        <div>
+                            <label class="form_label" for="email">Email</label>
+                            <input class="form_control" type="text" name="email" id="email">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Person</button>
+                </div>
+                </form>`
+            </div>
         </div>
-        <div class="modal-body">
-          <form action="{{url_for('masterlist.addperson', id=record.id)}}" method="post">
-            <div>
-                <label class="form_label" for="name">Name</label>
-                <input class="form_control" type="text" name="name" id="name">
-            </div>
-            <div>
-                <label class="form_label" for="title">Title</label>
-                <input class="form_control" type="text" name="title" id="title">
-            </div>
-            <div>
-                <label class="form_label" for="phone">Phone</label>
-                <input class="form_control" type="text" name="phone" id="phone">
-            </div>
-            <div>
-                <label class="form_label" for="fax">Fax</label>
-                <input class="form_control" type="text" name="fax" id="fax">
-            </div>
-            <div>
-                <label class="form_label" for="email">Email</label>
-                <input class="form_control" type="text" name="email" id="email">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add Person</button>
-        </div>
-      </div>
     </div>
-  </div>
 {% endblock main_content %}
 
 {% block javascripts %}
