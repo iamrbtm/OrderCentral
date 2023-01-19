@@ -10,21 +10,22 @@ from flask_mail import Mail
 load_dotenv()
 
 db = SQLAlchemy()
-photos = UploadSet("photos", IMAGES)
+booking = UploadSet("booking", ALL)
 uploads = UploadSet("uploads", ALL)
 mail = Mail()
 
 
 def create_app():
+    global booking
     app = Flask(__name__)
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Flask-Uploads & Static
-    app.config["UPLOADED_PHOTOS_DEST"] = "bazaar/static/images"
     app.config["UPLOADED_UPLOADS_DEST"] = "bazaar/static/uploads"
-    configure_uploads(app, photos)
+    app.config["UPLOADED_BOOKING_DEST"] = "bazaar/templates/booking/uploads"
     configure_uploads(app, uploads)
+    configure_uploads(app, booking)
 
     app._static_folder = "static"
 

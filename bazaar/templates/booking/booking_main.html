@@ -26,6 +26,28 @@ Available Blocks
 {% endblock page_title %}
 
 {% block stylesheets %}
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#documentlist').DataTable({
+                "fixedHeader": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "orderMulti": true,
+                "bAutoWidth": false,
+                "colReorder": true,
+                "responsive": true,
+                "searchable": true,
+            });
+        });
+    </script>
 {% endblock stylesheets %}
 
 {% block notifications %}
@@ -102,10 +124,61 @@ Available Blocks
             <div class="row" id="documents">
                 <div class="col" id="documents">
                     <div class="card" id="documents">
-                        <div class="card-body">
-                            <div class="card-body">
-                                <h5 class="card-title">Documents</h5>
+                        <div class="card-header">
+                            <div class="d-flex mb-3">
+                                <div class="me-auto">
+                                    <h5 class="card-title">Documents</h5>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#add_doc">
+                                        Add Document
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="documentlist" class="table table-striped table-responsive table-borderless">
+                                <thead>
+                                <th>Filename</th>
+                                <th>File Type</th>
+                                <th>Size</th>
+                                <th>Upload Date/Time</th>
+                                <th></th>
+                                <th></th>
+                                </thead>
+                                <tbody>
+                                {% for key, value in files.items() %}
+                                    <tr>
+                                        <td>
+                                            {% if value['filetype'] == ".pdf" %}
+                                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                                            {% elif value['filetype'] == ".txt" %}
+                                                <i class="bi bi-file-text-fill"></i>
+                                            {% elif value['filetype'] == ".csv" %}
+                                                <i class="bi bi-filetype-csv"></i>
+                                            {% elif value['filetype'] == ".docx" %}
+                                                <i class="bi bi-file-earmark-word-fill"></i>
+                                            {% elif value['filetype'] == ".doc" %}
+                                                <i class="bi bi-file-earmark-word-fill"></i>
+                                            {% elif value['filetype'] == ".xlsx" %}
+                                                <i class="bi bi-file-earmark-excel-fill"></i>
+                                            {% else %}
+                                                <i class="bi bi-file-image"></i>
+                                            {% endif %}
+                                            {{ value['file'] }}</td>
+                                        <td>{{ value['filetype'] }}</td>
+                                        <td>{{ value['size'] }}</td>
+                                        <td>{{ value['created'] }}</td>
+                                        <td><a href="{{ value['editlink'] }}"><i
+                                                class="bi bi-eye-fill"></i></a>
+                                        </td>
+                                        <td><a href="{{ value['deletelink'] }}"><i class="bi bi-x-circle-fill"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -114,14 +187,39 @@ Available Blocks
                 <div class="col" id="notes">
                     <div class="card" id="notes">
                         <div class="card-body">
-                            <div class="card-body">
-                                <h5 class="card-title">Notes</h5>
-                            </div>
+                            <h5 class="card-title">Notes</h5>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add_doc" tabindex="-1" aria-labelledby="add_docLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_docLabel">Add Document to {{ record.event_name.title() }}
+                        Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="form" method="post" action="{{ url_for('booking.adddoc', id=record.id) }}"
+                      enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div>
+                            <label for="file" class="form-label">Select File</label>
+                            <input class="form-control form-control-lg" name="file" id="file" type="file">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock main_content %}
 
 {% block javascripts %}

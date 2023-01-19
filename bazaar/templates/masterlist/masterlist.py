@@ -257,7 +257,7 @@ def tick_types():
                     setattr(record, "type_" + type, True)
                     db.session.commit()
 
-    return redirect(url_for('masterlist.masterlist'))
+    return redirect(url_for('masterlist.masterlist', type="all"))
 
 
 @ml.route("/addperson/<id>", methods=['GET', 'POST'])

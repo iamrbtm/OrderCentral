@@ -14,3 +14,4 @@ flask_login
 flask_migrate
 flask_uploads
 flask_mail
+humanize

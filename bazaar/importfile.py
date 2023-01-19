@@ -83,21 +83,18 @@ def import_file(df):
             return newvenue.id
         else:
             # if in db, check to see if there are any changes
-            if datetime.datetime.combine(addresses_from_db[0].venue_event[0].updated,
-                                         datetime.datetime.min.time()) >= datetime.datetime.strptime(row['updated'],
-                                                                                                     "%m/%d/%Y"):
-                return addresses_from_db[0].id
-            else:
-                if addresses_from_db[0].name != import_row['address']:
-                    addresses_from_db[0].name = import_row['address']
-                if addresses_from_db[0].address != address:
-                    addresses_from_db[0].address = address
-                if addresses_from_db[0].city != city:
-                    addresses_from_db[0].city = city
-                if addresses_from_db[0].state != state:
-                    addresses_from_db[0].state = state
-                if addresses_from_db[0].zipcode != zip:
-                    addresses_from_db[0].zipcode = zip
+            if addresses_from_db[0].name != import_row['address']:
+                addresses_from_db[0].name = import_row['address']
+            if addresses_from_db[0].address != address:
+                addresses_from_db[0].address = address
+            if addresses_from_db[0].city != city:
+                addresses_from_db[0].city = city
+            if addresses_from_db[0].state != state:
+                addresses_from_db[0].state = state
+            if addresses_from_db[0].zipcode != zip:
+                addresses_from_db[0].zipcode = zip
+            db.session.commit()
+            return addresses_from_db[0].id
 
     def write_promoter(import_row):
 
@@ -113,10 +110,12 @@ def import_file(df):
             db.session.commit()
             db.session.refresh(new_promoter)
             return new_promoter.id
-        # else:
-        #     # if in db, check to see if there are any changes
-        #     if promoter_in_db.name != import_row['promotor']:
-        #         promoter_in_db.name = import_row['promotor']
+        else:
+            # if in db, check to see if there are any changes
+            if promoter_in_db[0].name != import_row['promotor']:
+                promoter_in_db[0].name = import_row['promotor']
+            db.session.commit()
+            return promoter_in_db[0].id
 
     def write_event(row, venueid, promoterid):
         # write the data to the database
@@ -145,28 +144,25 @@ def import_file(df):
             eventid = write_event(row, venueid, promoterid)
             print(eventid)
         else:
-            if datetime.datetime.combine(event_in_db[0].updated,
-                                         datetime.datetime.min.time()) != datetime.datetime.strptime(row['updated'],
-                                                                                                     "%m/%d/%Y"):
-                # check each element to see what has changed
-                # TODO: check each element to see what has changed... if something changes write the changes to the database
-                if event_in_db[0].event_name != row['name']:
-                    event_in_db[0].event_name = row['name']
-                if event_in_db[0].updated != row['updated']:
-                    event_in_db[0].updated = datetime.datetime.strptime(row['updated'], "%m/%d/%Y")
-                if event_in_db[0].imagesrc != row['image-src']:
-                    event_in_db[0].imagesrc = row['image-src']
-                if event_in_db[0].attendance != row['attendance']:
-                    event_in_db[0].attendance = row['attendance']
-                if event_in_db[0].exibitors != row['exibitors']:
-                    event_in_db[0].exibitors = row['exibitors']
-                if event_in_db[0].website != row['website']:
-                    event_in_db[0].website = row['website']
+            # check each element to see what has changed
+            # TODO: check each element to see what has changed... if something changes write the changes to the database
+            if event_in_db[0].event_name != row['name']:
+                event_in_db[0].event_name = row['name']
+            if event_in_db[0].updated != row['updated']:
+                event_in_db[0].updated = datetime.datetime.strptime(row['updated'], "%m/%d/%Y")
+            if event_in_db[0].imagesrc != row['image-src']:
+                event_in_db[0].imagesrc = row['image-src']
+            if event_in_db[0].attendance != row['attendance']:
+                event_in_db[0].attendance = row['attendance']
+            if event_in_db[0].exibitors != row['exibitors']:
+                event_in_db[0].exibitors = row['exibitors']
+            if event_in_db[0].website != row['website']:
+                event_in_db[0].website = row['website']
 
-                event_in_db[0].venuefk = venueid
-                event_in_db[0].promoterfk = promoterid
+            event_in_db[0].venuefk = venueid
+            event_in_db[0].promoterfk = promoterid
 
-                db.session.commit()
+            db.session.commit()
     convertDateTextToBooleanFields()
 
 
