@@ -225,7 +225,7 @@ Available Blocks
                             </div>
                             <div class="card-body">
                                 <div class="vpe-body row">
-                                    <div class="col-6" name="returningvendors">
+                                    <div class="col-6" id="returningvendors">
                                         <h5>Returning Vendors</h5>
                                         <div>Application Opens <input type="date" class="form-control"
                                                                       name="kd_appopen_return"
@@ -238,7 +238,7 @@ Available Blocks
                                                                          value="{{ booking.kd_appdeadline_return }}">
                                         </div>
                                     </div>
-                                    <div class="col-6" name="newvendors">
+                                    <div class="col-6" id="newvendors">
                                         <h5>New Vendors</h5>
                                         <div>Application Opens <input type="date" class="form-control"
                                                                       name="kd_appopen_new"
@@ -273,7 +273,7 @@ Available Blocks
                             </div>
                             <div class="card-body">
                                 <div class="card-body row">
-                                    <div class="col-6" name="overall">
+                                    <div class="col-6" id="overall">
                                         <h5>General</h5>
                                         <div class="form-check form-switch">
                                             <input type="checkbox"
@@ -305,7 +305,7 @@ Available Blocks
                                                    {% if booking.cl_electrequest %}checked{% endif %}
                                             >
                                             <label class="form-check-label" for="cl_electrequest">Electricity
-                                                Requeasted</label>
+                                                Requested</label>
                                         </div>
                                         <div class="form-check form-switch">
                                             <input type="checkbox"
@@ -330,7 +330,7 @@ Available Blocks
                                                 Director</label>
                                         </div>
                                     </div>
-                                    <div class="col-6" name="dayof">
+                                    <div class="col-6" id="dayof">
                                         <h5>Day Of</h5>
                                         <div>
                                             <label class="form-label" for="cl_wifipassword">Wifi
@@ -366,12 +366,14 @@ Available Blocks
                             <table id="documentlist"
                                    class="table table-striped table-responsive table-borderless">
                                 <thead>
-                                <th>Filename</th>
-                                <th>File Type</th>
-                                <th>Size</th>
-                                <th>Upload Date/Time</th>
-                                <th></th>
-                                <th></th>
+                                <tr>
+                                    <td>Filename</td>
+                                    <th>File Type</th>
+                                    <th>Size</th>
+                                    <th>Upload Date/Time</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {% for key, value in files.items() %}
