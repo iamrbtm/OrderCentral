@@ -39,7 +39,8 @@ def home(id):
         filedic[i]['deletelink'] = url_for('booking.file_delete', id=id, filename=file)
         i += 1
 
-    content = {"user": User, "record": record, "files": filedic}
+    persons = db.session.query(People).filter(People.promoterfk == id).all()
+    content = {"user": User, "record": record, "files": filedic, "persons": persons}
     return render_template("booking/booking_main.html", **content)
 
 

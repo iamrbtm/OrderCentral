@@ -148,3 +148,39 @@ class Notes(db.Model):
 
     # Foreign Keys
     masterlistid = db.Column(db.Integer, db.ForeignKey('master_list.id'))
+    bookingid = db.Column(db.Integer, db.ForeignKey('booking.id'))
+
+
+class Booking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    kd_appopen_new = db.Column(db.Date)
+    kd_appopen_return = db.Column(db.Date)
+    kd_appdeadline_new = db.Column(db.Date)
+    kd_appdeadline_return = db.Column(db.Date)
+    cl_appsubmission = db.Column(db.Boolean)
+    cl_feepaid = db.Column(db.Boolean)
+    cl_electrequest = db.Column(db.Boolean)
+    cl_sendproductpic = db.Column(db.Boolean)
+    cl_sendlogo = db.Column(db.Boolean)
+    cl_sendbio = db.Column(db.Boolean)
+    cl_wifipassword = db.Column(db.String(100))
+    info_datestart = db.Column(db.Date)
+    info_dateend = db.Column(db.Date)
+    info_timestart = db.Column(db.Time)
+    info_timeend = db.Column(db.Time)
+    info_loadindatetime = db.Column(db.DateTime)
+    info_loadoutdatetime = db.Column(db.DateTime)
+    info_boothfee = db.Column(db.Float)
+    info_whatfeeincludes = db.Column(db.Text)
+    info_boothlocation = db.Column(db.String(100))
+    info_wifiavailable = db.Column(db.String(100))
+    info_foodavailable = db.Column(db.String(100))
+    info_foodpurchase = db.Column(db.Boolean)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    eventid = db.Column(db.Integer, db.ForeignKey('master_list.id'))
+
+    # Relationships
+    notes = db.relationship("Notes", backref=backref("booking_notes", uselist=False))

@@ -4,6 +4,7 @@ from calendar import day_name, month_name
 from bazaar import db
 from bazaar.models import *
 import usaddress
+import phonenumbers
 
 
 def last_specified_day_of_month(month, year, day_of_week):
@@ -116,3 +117,8 @@ def get_types():
         if "type" in name:
             typelist.append(name.replace("type_", ""))
     return typelist
+
+
+def format_phone(number):
+    return phonenumbers.format_number(phonenumbers.parse(number, "US"),
+                                      phonenumbers.PhoneNumberFormat.NATIONAL)

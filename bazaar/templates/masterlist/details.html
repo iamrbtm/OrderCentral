@@ -104,8 +104,12 @@ Available Blocks
                                                     <li class="dropdown-header text-start">
                                                         <h6>{{ person.name }}</h6>
                                                     </li>
-                                                    <li><a class="dropdown-item"
-                                                           href="{{ url_for('masterlist.person_edit',personid=person.id, recordid=record.id) }}">Edit</a>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editperson{{ person.id }}">
+                                                            Edit
+                                                        </button>
                                                     </li>
                                                     <li><a class="dropdown-item"
                                                            href="{{ url_for('masterlist.person_delete', personid=person.id, recordid=record.id) }}">Delete</a>
@@ -117,6 +121,56 @@ Available Blocks
                                     {% if not loop.last %}
                                         <hr>
                                     {% endif %}
+                                    <!-- Edit Person Modal -->
+                                    <div class="modal fade" id="editperson{{ person.id }}" tabindex="-1"
+                                         aria-labelledby="editperson{{ person.id }}Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="{{ url_for('masterlist.person_edit', personid=person.id, recordid=record.id) }}"
+                                                      method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title text-danger"
+                                                            id="editperson{{ person.id }}Label">
+                                                            Editing {{ person.name }}</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <label class="form_label" for="name">Name</label>
+                                                            <input class="form_control" type="text" name="name"
+                                                                   id="name" value="{{ person.name }}">
+                                                        </div>
+                                                        <div>
+                                                            <label class="form_label" for="title">Title</label>
+                                                            <input class="form_control" type="text" name="title"
+                                                                   id="title" value="{{ person.title }}">
+                                                        </div>
+                                                        <div>
+                                                            <label class="form_label" for="phone">Phone</label>
+                                                            <input class="form_control" type="text" name="phone"
+                                                                   id="phone" value="{{ person.phone }}">
+                                                        </div>
+                                                        <div>
+                                                            <label class="form_label" for="fax">Fax</label>
+                                                            <input class="form_control" type="text" name="fax" id="fax"
+                                                                   value="{{ person.fax }}">
+                                                        </div>
+                                                        <div>
+                                                            <label class="form_label" for="email">Email</label>
+                                                            <input class="form_control" type="text" name="email"
+                                                                   id="email" value="{{ person.email }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">Edit Person
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> <!-- END Edit Person Modal -->
                                 {% endfor %}
                                 <div class="pt-4">
                                     {# DONE: Make button work when people is created, possiably a modal#}
@@ -197,7 +251,7 @@ Available Blocks
         </div>
     </section>
 
-    <!-- Modal -->
+    <!-- Add Person Modal -->
     <div class="modal fade" id="addperson" tabindex="-1" aria-labelledby="addpersonLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

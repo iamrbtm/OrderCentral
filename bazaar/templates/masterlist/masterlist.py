@@ -190,7 +190,7 @@ def edit_single(id):
         record.promoter.city = form_data['p_city']
         record.promoter.state = form_data['p_state']
         record.promoter.zipcode = form_data['p_zipcode']
-        record.promoter.phone = form_data['p_phone']
+        record.promoter.phone = format_phone(form_data['p_phone'])
         record.promoter.website = form_data['p_website']
 
         # Months
@@ -268,8 +268,8 @@ def person_add(id):
         addperson = People(
             name=data['name'],
             title=data['title'],
-            phone=data['phone'],
-            fax=data['fax'],
+            phone=format_phone(data['phone']),
+            fax=format_phone(data['fax']),
             email=data['email'],
             promoterfk=id
         )
@@ -281,6 +281,16 @@ def person_add(id):
 @ml.route("/editperson/<personid>/<recordid>", methods=['GET', 'POST'])
 @login_required
 def person_edit(personid, recordid):
+    person = db.session.query(People).filter(People.id == personid).first()
+    if request.method == "POST":
+        data = request.form.to_dict()
+        person.name = data['name']
+        person.phone = format_phone(data['phone'])
+        person.fax = format_phone(data['fax'])
+        person.title = data['title']
+        person.email = data['email']
+        db.session.commit()
+        return redirect(request.referrer)
     return redirect(url_for('masterlist.details', id=recordid))
 
 
