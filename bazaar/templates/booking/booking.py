@@ -1,4 +1,7 @@
 import os
+import re
+
+from sqlalchemy import inspect
 import humanize
 from flask import (
     Blueprint,
@@ -40,13 +43,16 @@ def home(id):
         i += 1
 
     persons = db.session.query(People).filter(People.promoterfk == id).all()
-    content = {"user": User, "record": record, "files": filedic, "persons": persons}
+    booking = db.session.query(Booking).filter(Booking.eventid == id).first()
+
+    content = {"user": User, "record": record, "files": filedic,
+               "persons": persons, "booking": booking, }
     return render_template("booking/booking_main.html", **content)
 
 
 @booking.route("/<id>/adddocument", methods=["GET", "POST"])
 @login_required
-def adddoc(id):
+def file_add(id):
     path = check_make_dir(id)
 
     if request.method == "POST":
@@ -71,3 +77,35 @@ def file_delete(id, filename):
 def file_view(id, filename):
     path = check_make_dir(id)
     return send_file(os.path.join("templates", "booking", "uploads", id, filename))
+
+
+@booking.route("/<bookingid>/<eventid>/bookingedit", methods=['POST'])
+@login_required
+def booking_edit(bookingid, eventid):
+    booking = db.session.query(Booking).filter(Booking.id == bookingid).first()
+    if request.method == "POST":
+        attr_names = [c_attr.key for c_attr in inspect(Booking).mapper.column_attrs]
+        data = request.form.to_dict()
+
+        date_pattern = "^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$"
+        time_pattern = "^[0-2][0-3]:[0-5][0-9]:[0-5][0-9]$"
+        for name in attr_names:
+            if name[:3] == "cl_":
+                if "wifipassword" in name:
+                    setattr(booking, name, data[name])
+                else:
+                    if name in data:
+                        setattr(booking, name, True)
+                    else:
+                        setattr(booking, name, False)
+            else:
+                if name in data:
+                    if name != "id" and name != "eventid":
+                        if re.match(date_pattern, data[name]) != None:
+                            setattr(booking, name, datetime.datetime.strptime(data[name], "%Y-%m-%d"))
+                        elif re.match(time_pattern, data[name]) != None:
+                            setattr(booking, name, datetime.datetime.strptime(data[name], "%H:%M:%S"))
+                        elif data[name] == 'on':
+                            setattr(booking, name, True)
+            db.session.commit()
+    return redirect(url_for('booking.home', id=eventid))

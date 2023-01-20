@@ -12,9 +12,9 @@ from bazaar import db
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
 
 
-def get_types_masterlist():
+def get_types_masterlist(tbl=MasterList):
     from sqlalchemy import inspect
-    inst = inspect(MasterList)
+    inst = inspect(tbl)
     attr_names = [c_attr.key for c_attr in inst.mapper.column_attrs]
     typelist = []
     for name in attr_names:
