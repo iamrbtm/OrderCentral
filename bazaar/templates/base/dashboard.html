@@ -37,10 +37,10 @@ Available Blocks
     <section class="section dashboard">
         <div class="row">
             <!-- Left side columns -->
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="row">
                     <!-- Customers Card -->
-                    <div class="col-xxl-4 col-xl-12">
+                    <div class="col-xxl-4 col-lg-6 col-sm-12">
                         <div class="card info-card customers-card">
                             <div class="card-body">
                                 <h5 class="card-title">Events</h5>
@@ -59,34 +59,14 @@ Available Blocks
                     </div><!-- End Customers Card -->
                 </div>
                 <div class="row">
-                    <!-- Bookings Card -->
-                    <div class="col-xxl-4 col-xl-12">
-                        <div class="card info-card bookings-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Bookings</h5>
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-motherboard"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        {#DONE: Configure this once the booking system is in place.#}
-                                        <h6>{{ countbookings }}</h6>
-                                        {#<span class="text-danger small pt-1 fw-bold">12%</span> <span#}
-                                        {#class="text-muted small pt-2 ps-1">decrease</span>#}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- End Bookings Card -->
-
-                    <!-- Bookings Card -->
-                    <div class="col-xxl-4 col-xl-12">
+                    <!-- Applications Card -->
+                    <div class="col-xxl-4 col-lg-6 col-sm-12">
                         <div class="card info-card applications-card">
                             <div class="card-body">
                                 <h5 class="card-title">Applications</h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-motherboard"></i>
+                                        <i class="bi bi-journal-text"></i>
                                     </div>
                                     <div class="ps-3">
                                         {#DONE: Configure this once the booking system is in place.#}
@@ -99,14 +79,34 @@ Available Blocks
                         </div>
                     </div><!-- End Applications Card -->
 
+                    <!-- Bookings Card -->
+                    <div class="col-xxl-4 col-lg-6 col-sm-12">
+                        <div class="card info-card bookings-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Bookings</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-bookmark-fill"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        {#DONE: Configure this once the booking system is in place.#}
+                                        <h6>{{ countbookings }}</h6>
+                                        {#<span class="text-danger small pt-1 fw-bold">12%</span> <span#}
+                                        {#class="text-muted small pt-2 ps-1">decrease</span>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Bookings Card -->
+
                     <!-- To Pay Card -->
-                    <div class="col-xxl-4 col-xl-12">
+                    <div class="col-xxl-4 col-lg-6 col-sm-12">
                         <div class="card info-card topay-card">
                             <div class="card-body">
                                 <h5 class="card-title">To Pay</h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-motherboard"></i>
+                                        <i class="bi bi-currency-dollar"></i>
                                     </div>
                                     <div class="ps-3">
                                         {#DONE: Configure this once the booking system is in place.#}
@@ -117,33 +117,38 @@ Available Blocks
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Applications Card -->
+                    </div><!-- End Pay Card -->
                 </div>
             </div><!-- End Left side columns -->
 
             <!-- Right side columns -->
-            <div class="col-lg-4">
+            <div class="col-lg-5">
 
-                <!-- Website Traffic -->
+                <!-- Bookings -->
                 <div class="card">
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
-
-                            <li><a class="dropdown-item" href="#">Today</a></li>
-                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                        </ul>
-                    </div>
-
                     <div class="card-body pb-0">
-                        <h5 class="card-title">Website Traffic <span>| Today</span></h5>
-
-                        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
+                        <h5 class="card-title">Bookings</h5>
+                        <table class="table table-borderless table-sm">
+                            <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Icons</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for booking in bookings %}
+                                <tr style=>
+                                    <td>{{ booking.event.event_name }}</td>
+                                    <td>
+                                        {% if booking.cl_appsubmission %}<i class="bi bi-journal-text"></i>{% endif %}
+                                        {% if booking.cl_appapproved %}
+                                            <i class="bi bi-check-square-fill"></i>{% endif %}
+                                        {% if booking.cl_feepaid %}<i class="bi bi-currency-dollar"></i>{% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div><!-- End Website Traffic -->
 

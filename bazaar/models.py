@@ -185,3 +185,4 @@ class Booking(db.Model):
 
     # Relationships
     notes = db.relationship("Notes", backref=backref("booking_notes", uselist=False))
+    event = db.relationship("MasterList", backref=backref("booking_event", uselist=False))
