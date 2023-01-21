@@ -61,7 +61,7 @@ Available Blocks
                 <div class="row">
                     <!-- Bookings Card -->
                     <div class="col-xxl-4 col-xl-12">
-                        <div class="card info-card customers-card">
+                        <div class="card info-card bookings-card">
                             <div class="card-body">
                                 <h5 class="card-title">Bookings</h5>
                                 <div class="d-flex align-items-center">
@@ -69,15 +69,55 @@ Available Blocks
                                         <i class="bi bi-motherboard"></i>
                                     </div>
                                     <div class="ps-3">
-                                        {#TODO: Configure this once the booking system is in place.#}
-                                        <h6>None</h6>
+                                        {#DONE: Configure this once the booking system is in place.#}
+                                        <h6>{{ countbookings }}</h6>
                                         {#<span class="text-danger small pt-1 fw-bold">12%</span> <span#}
                                         {#class="text-muted small pt-2 ps-1">decrease</span>#}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Customers Card -->
+                    </div><!-- End Bookings Card -->
+
+                    <!-- Bookings Card -->
+                    <div class="col-xxl-4 col-xl-12">
+                        <div class="card info-card applications-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Applications</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-motherboard"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        {#DONE: Configure this once the booking system is in place.#}
+                                        <h6>{{ countapps }}</h6>
+                                        {#<span class="text-danger small pt-1 fw-bold">12%</span> <span#}
+                                        {#class="text-muted small pt-2 ps-1">decrease</span>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Applications Card -->
+
+                    <!-- To Pay Card -->
+                    <div class="col-xxl-4 col-xl-12">
+                        <div class="card info-card topay-card">
+                            <div class="card-body">
+                                <h5 class="card-title">To Pay</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-motherboard"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        {#DONE: Configure this once the booking system is in place.#}
+                                        <h6>{{ countpay }}</h6>
+                                        <span class="text-danger small pt-1 fw-bold">{{ amountpay }}</span>
+                                        {#<span class="text-muted small pt-2 ps-1">decrease</span>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Applications Card -->
                 </div>
             </div><!-- End Left side columns -->
 

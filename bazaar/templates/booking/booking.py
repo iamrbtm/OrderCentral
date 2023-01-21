@@ -91,13 +91,10 @@ def booking_edit(bookingid, eventid):
         time_pattern = "^[0-2][0-3]:[0-5][0-9]:[0-5][0-9]$"
         for name in attr_names:
             if name[:3] == "cl_":
-                if "wifipassword" in name:
-                    setattr(booking, name, data[name])
+                if name in data:
+                    setattr(booking, name, True)
                 else:
-                    if name in data:
-                        setattr(booking, name, True)
-                    else:
-                        setattr(booking, name, False)
+                    setattr(booking, name, False)
             else:
                 if name in data:
                     if name != "id" and name != "eventid":
@@ -107,5 +104,24 @@ def booking_edit(bookingid, eventid):
                             setattr(booking, name, datetime.datetime.strptime(data[name], "%H:%M:%S"))
                         elif data[name] == 'on':
                             setattr(booking, name, True)
+                        else:
+                            if data[name] == '':
+                                setattr(booking, name, None)
+                            else:
+                                setattr(booking, name, data[name])
             db.session.commit()
     return redirect(url_for('booking.home', id=eventid))
+
+
+@booking.route("/bookingadd/<id>")
+@login_required
+def booking_add(id):
+    booking = db.session.query(Booking).filter(Booking.eventid == id).all()
+    if len(booking) == 0:
+        newbooking = Booking(
+            eventid=id
+        )
+        db.session.add(newbooking)
+        db.session.commit()
+
+    return redirect(url_for('booking.home', id=id))

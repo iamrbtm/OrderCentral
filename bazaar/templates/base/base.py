@@ -19,8 +19,17 @@ def utility_processor():
 @base.route("/home")
 @login_required
 def home():
-    count = db.session.query(func.count(MasterList.id)).scalar()
-    return render_template("base/dashboard.html", user=User, countrec=count)
+    countrec = db.session.query(func.count(MasterList.id)).scalar()
+    countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).scalar()
+    countbookings = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).scalar()
+    countpay = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).filter(
+        Booking.cl_feepaid == False).scalar()
+    amountpay = db.session.query(func.sum(Booking.info_boothfee)).filter(Booking.cl_appapproved == True).filter(
+        Booking.cl_feepaid == False).scalar()
+
+    content = {"user": User, "countrec": countrec, "countapps": countapps,
+               "countbookings": countbookings, "amountpay": amountpay, "countpay": countpay}
+    return render_template("base/dashboard.html", **content)
 
 
 @base.route('/importfile')

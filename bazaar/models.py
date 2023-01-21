@@ -1,9 +1,8 @@
-from bazaar import db
 from flask_login import UserMixin
+from sqlalchemy.orm import backref
 from sqlalchemy.sql import func
-import datetime, os
-from sqlalchemy.orm import backref, relationship
-from sqlalchemy import ForeignKey
+
+from bazaar import db
 
 
 # Users
@@ -38,6 +37,7 @@ class User(db.Model, UserMixin):
         return self.address + " " + self.city + ", " + self.state + " " + self.postalcode
 
 
+# noinspection SpellCheckingInspection
 class MasterList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_name = db.Column(db.String(150))
@@ -157,13 +157,14 @@ class Booking(db.Model):
     kd_appopen_return = db.Column(db.Date)
     kd_appdeadline_new = db.Column(db.Date)
     kd_appdeadline_return = db.Column(db.Date)
-    cl_appsubmission = db.Column(db.Boolean)
-    cl_feepaid = db.Column(db.Boolean)
-    cl_electrequest = db.Column(db.Boolean)
-    cl_sendproductpic = db.Column(db.Boolean)
-    cl_sendlogo = db.Column(db.Boolean)
-    cl_sendbio = db.Column(db.Boolean)
-    cl_wifipassword = db.Column(db.String(100))
+    cl_appsubmission = db.Column(db.Boolean, default=False)
+    cl_appapproved = db.Column(db.Boolean, default=False)
+    cl_feepaid = db.Column(db.Boolean, default=False)
+    cl_electrequest = db.Column(db.Boolean, default=False)
+    cl_sendproductpic = db.Column(db.Boolean, default=False)
+    cl_sendlogo = db.Column(db.Boolean, default=False)
+    cl_sendbio = db.Column(db.Boolean, default=False)
+    info_wifipassword = db.Column(db.String(100))
     info_datestart = db.Column(db.Date)
     info_dateend = db.Column(db.Date)
     info_timestart = db.Column(db.Time)
@@ -173,9 +174,9 @@ class Booking(db.Model):
     info_boothfee = db.Column(db.Float)
     info_whatfeeincludes = db.Column(db.Text)
     info_boothlocation = db.Column(db.String(100))
-    info_wifiavailable = db.Column(db.String(100))
-    info_foodavailable = db.Column(db.String(100))
-    info_foodpurchase = db.Column(db.Boolean)
+    cl_wifiavailable = db.Column(db.Boolean, default=False)
+    cl_foodavailable = db.Column(db.Boolean, default=False)
+    info_foodpurchase = db.Column(db.String(100))
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 

@@ -869,19 +869,24 @@ h6 {
     flex-grow: 0;
 }
 
-.dashboard .sales-card .card-icon {
+.dashboard .applications-card .card-icon {
     color: #4154f1;
-    background: #f6f6fe;
+    background: #d1d7ff;
 }
 
-.dashboard .revenue-card .card-icon {
+.dashboard .bookings-card .card-icon {
     color: #2eca6a;
     background: #e0f8e9;
 }
 
 .dashboard .customers-card .card-icon {
-    color: #ff771d;
-    background: #ffecdf;
+    color: #6f42c1;
+    background: rgb(231, 217, 255);
+}
+
+.dashboard .topay-card .card-icon {
+    color: #e03e2d;
+    background: #ffdad6;
 }
 
 /* Activity */

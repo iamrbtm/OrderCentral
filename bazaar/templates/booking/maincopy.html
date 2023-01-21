@@ -82,63 +82,60 @@ Available Blocks
 
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="event-info">
-                    <form class="form" method="post"
-                          action="{{ url_for('booking.booking_edit', eventid=record.id, bookingid=booking.id ) }}">
-                        <div class="card" style="width: 100%; height: 100vh;">
-                            <div class="card-body">
-                                <div class="vpe-event-head">{{ record.event_name }} <a
-                                        href="{{ url_for('masterlist.edit_single', id=record.id) }}"> <i
-                                        class="bi bi-pencil-square"></i></a>
-                                </div>
-                                <h5 class="text-warning text-decoration-underline">Venue &
-                                    Promoter</h5>
-                                <div class="vpe-venue-head">{{ record.venue.name }} </div>
-                                <div class="vpe-body">
-                                    {% if record.venue.address != None %}
-                                        {{ record.venue.address }} {{ record.venue.city }}, {{ record.venue.state }}
-                                        {{ record.venue.zipcode }}<br>
-                                    {% endif %}
-                                    {% if record.venue.phone != None %}
-                                        {{ record.venue.phone }}
-                                    {% endif %}
-                                    {% if record.venue.website != None %}
-                                        | {{ record.venue.website }}
-                                    {% endif %}
-                                </div>
+                    <div class="card" style="width: 100%; height: 100vh;">
+                        <div class="card-body">
+                            <div class="vpe-event-head">{{ record.event_name }} <a
+                                    href="{{ url_for('masterlist.edit_single', id=record.id) }}"> <i
+                                    class="bi bi-pencil-square"></i></a>
+                            </div>
+                            <h5 class="text-warning text-decoration-underline">Venue &
+                                Promoter</h5>
+                            <div class="vpe-venue-head">{{ record.venue.name }} </div>
+                            <div class="vpe-body">
+                                {% if record.venue.address != None %}
+                                    {{ record.venue.address }} {{ record.venue.city }}, {{ record.venue.state }}
+                                    {{ record.venue.zipcode }}<br>
+                                {% endif %}
+                                {% if record.venue.phone != None %}
+                                    {{ record.venue.phone }}
+                                {% endif %}
+                                {% if record.venue.website != None %}
+                                    | {{ record.venue.website }}
+                                {% endif %}
+                            </div>
 
-                                <div class="vpe-venue-head">{{ record.promoter.name }}</div>
-                                <div class="vpe-body">
-                                    {% if record.promoter.address != None %}
-                                        {{ record.promoter.address }} {{ record.promoter.city }},
-                                        {{ record.promoter.state }}
-                                        {{ record.promoter.zipcode }}<br>
-                                    {% endif %}
-                                    {% if record.promoter.phone != None %}
-                                        {{ record.promoter.phone }}
-                                    {% endif %}
-                                    {% if record.promoter.website != None %}
-                                        | {{ record.promoter.website }}
-                                    {% endif %}
-                                </div>
+                            <div class="vpe-venue-head">{{ record.promoter.name }}</div>
+                            <div class="vpe-body">
+                                {% if record.promoter.address != None %}
+                                    {{ record.promoter.address }} {{ record.promoter.city }},
+                                    {{ record.promoter.state }}
+                                    {{ record.promoter.zipcode }}<br>
+                                {% endif %}
+                                {% if record.promoter.phone != None %}
+                                    {{ record.promoter.phone }}
+                                {% endif %}
+                                {% if record.promoter.website != None %}
+                                    | {{ record.promoter.website }}
+                                {% endif %}
+                            </div>
 
-                                <div class="vpe-venue-head">People</div>
-                                <div class="vpe-body">
-                                    {% for person in persons %}
-                                        {{ person.name }}
-                                        {% if person.email != None %}
-                                            -<a class="vpe-body"
-                                                href="mailto:{{ person.email }}">{{ person.email }}</a>
-                                        {% endif %}
-                                        {% if person.phone != None %}
-                                            -<a class="vpe-body"
-                                                href="tel:{{ person.phone }}">{{ person.phone }}</a>
-                                        {% endif %}
-                                        <br>
-                                    {% endfor %}
-                                </div>
+                            <div class="vpe-venue-head">People</div>
+                            <div class="vpe-body">
+                                {% for person in persons %}
+                                    {{ person.name }}
+                                    {% if person.email != None %}
+                                        -<a class="vpe-body"
+                                            href="mailto:{{ person.email }}">{{ person.email }}</a>
+                                    {% endif %}
+                                    {% if person.phone != None %}
+                                        -<a class="vpe-body"
+                                            href="tel:{{ person.phone }}">{{ person.phone }}</a>
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div><!-- END Event Info -->
 
                 <div class="tab-pane fade" id="info">
@@ -263,23 +260,37 @@ Available Blocks
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="input-group flex-nowrap">
-                                            <label class="form-check-label" for="info_foodpurchase">Food Details</label>
-                                            <input type="text"
-                                                   class="form-control"
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   role="switch"
+                                                   id="info_wifiavailable"
+                                                   name="info_wifiavailable"
+                                                   {% if booking.info_wifiavailable %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label" for="info_wifiavailable">Is Wifi
+                                                Available</label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   role="switch"
+                                                   id="info_foodavailable"
+                                                   name="info_foodavailable"
+                                                   {% if booking.info_foodavailable %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label" for="info_foodavailable">Is Food Available
+                                                onsite</label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   role="switch"
                                                    id="info_foodpurchase"
                                                    name="info_foodpurchase"
-                                                   value="{{ booking.info_foodpurchase }}"
+                                                   {% if booking.info_foodpurchase %}checked{% endif %}
                                             >
-                                        </div>
-                                        <div class="input-group flex-nowrap">
-                                            <label class="form-label" for="info_wifipassword">Wifi
-                                                Password</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id="info_wifipassword"
-                                                   name="info_wifipassword"
-                                                   value="{{ booking.info_wifipassword }}">
+                                            <label class="form-check-label" for="info_foodpurchase">Food Details</label>
                                         </div>
                                     </div>
                                 </div>
@@ -369,17 +380,6 @@ Available Blocks
                                             <input type="checkbox"
                                                    class="form-check-input"
                                                    role="switch"
-                                                   id="cl_appapproved"
-                                                   name="cl_appapproved"
-                                                   {% if booking.cl_appapproved %}checked{% endif %}
-                                            >
-                                            <label class="form-check-label" for="cl_appapproved">Application
-                                                Approved</label>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox"
-                                                   class="form-check-input"
-                                                   role="switch"
                                                    id="cl_feepaid"
                                                    name="cl_feepaid"
                                                    {% if booking.cl_feepaid %}checked{% endif %}
@@ -419,31 +419,19 @@ Available Blocks
                                             <label class="form-check-label" for="cl_sendlogo">Send Logo to
                                                 Director</label>
                                         </div>
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox"
-                                                   class="form-check-input"
-                                                   role="switch"
-                                                   id="cl_wifiavailable"
-                                                   name="cl_wifiavailable"
-                                                   {% if booking.cl_wifiavailable %}checked{% endif %}
-                                            >
-                                            <label class="form-check-label" for="cl_wifiavailable">Is Wifi
-                                                Available</label>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox"
-                                                   class="form-check-input"
-                                                   role="switch"
-                                                   id="cl_foodavailable"
-                                                   name="cl_foodavailable"
-                                                   {% if booking.cl_foodavailable %}checked{% endif %}
-                                            >
-                                            <label class="form-check-label" for="cl_foodavailable">Is Food Available
-                                                onsite</label>
-                                        </div>
                                     </div>
                                     <div class="col-6" id="dayof">
                                         <h5>Day Of</h5>
+                                        <div>
+                                            <label class="form-label" for="cl_wifipassword">Wifi
+                                                Password</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="cl_wifipassword"
+                                                   name="cl_wifipassword"
+                                                   value="{{ booking.cl_wifipassword }}"
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -529,6 +517,7 @@ Available Blocks
                         </div>
                     </div>
                 </div><!-- END Post Event Breakdown -->
+
             </div>
         </div>
     </section>

@@ -24,6 +24,7 @@ Available Blocks
 {% block page_title %}
     <b><span class="text-uppercase">{{ record.event_name }}</span></b>
     <a href="{{ url_for('masterlist.edit_single', id=record.id) }}"> <i class="bi bi-pencil-square"></i></a>
+    <a href="{{ url_for('booking.booking_add', id=record.id) }}"> <i class="bi bi-bookmark-fill"></i></a>
 
 {% endblock page_title %}
 
