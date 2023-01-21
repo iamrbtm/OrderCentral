@@ -164,7 +164,7 @@ def import_file(df):
 
             db.session.commit()
     convertDateTextToBooleanFields()
-
+    tick_all_types()
 
 def main():
     file = 'festivalnet_dot_com.csv'

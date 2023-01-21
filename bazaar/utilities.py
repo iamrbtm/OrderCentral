@@ -1,10 +1,12 @@
 import calendar
 import datetime
 from calendar import day_name, month_name
-from bazaar import db
-from bazaar.models import *
-import usaddress
+
 import phonenumbers
+import usaddress
+
+from bazaar.models import *
+from bazaar.templates.masterlist.masterlist import get_types_masterlist
 
 
 def last_specified_day_of_month(month, year, day_of_week):
@@ -122,3 +124,24 @@ def get_types():
 def format_phone(number):
     return phonenumbers.format_number(phonenumbers.parse(number, "US"),
                                       phonenumbers.PhoneNumberFormat.NATIONAL)
+
+
+def tick_all_types():
+    typelist = get_types_masterlist()
+    extralist = {'bazaar': ['show'],
+                 'holiday': ['christmas', 'santa'],
+                 "festival": ['fest'],
+                 'market': ['show'],
+                 'art': [],
+                 'health': [],
+                 'flea': []
+                 }
+    for record in db.session.query(MasterList).all():
+        for type in typelist:
+            if type in record.event_name.lower():
+                setattr(record, "type_" + type, True)
+                db.session.commit()
+            for extra in extralist[type]:
+                if extra in record.event_name.lower():
+                    setattr(record, "type_" + type, True)
+                    db.session.commit()

@@ -518,6 +518,30 @@ Available Blocks
                     <div class="card" style="width: 100%; height: 100vh;">
                         <div class="card-body">
                             <h5 class="card-title">Notes</h5>
+                            <div class="filter px-3">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#addnote">
+                                    Add A Note
+                                </button>
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Note</th>
+                                        <th class="text-end">Date Stamp</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for note in notes %}
+                                        <tr>
+                                            <td class="text-start text-uppercase">{{ note.note }}</td>
+                                            <td class="text-end">{{ note.date_created |datetimeformat('%x %X') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div><!-- END Notes -->
@@ -558,6 +582,30 @@ Available Blocks
             </div>
         </div>
     </div>
+
+    <!-- Add Note Modal -->
+    <div class="modal fade" id="addnote" tabindex="-1" aria-labelledby="addnoteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addnoteLabel">Add a note to {{ record.promoter.name }}</h5>
+                </div>
+                <form action="{{ url_for('masterlist.note_add', recordid=record.id) }}" method="post">
+                    <div class="modal-body">
+                        <div class="input-group flex-nowrap">
+                            <label class="form-label" , for="note">Note</label>
+                            <textarea class="form-control" cols="10" id="note" name="note"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Person</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- END Add Note modal-->
 {% endblock main_content %}
 
 {% block javascripts %}

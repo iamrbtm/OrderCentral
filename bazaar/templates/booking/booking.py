@@ -1,7 +1,7 @@
 import os
 import re
 
-from sqlalchemy import inspect
+from sqlalchemy import inspect, or_
 import humanize
 from flask import (
     Blueprint,
@@ -44,9 +44,10 @@ def home(id):
 
     persons = db.session.query(People).filter(People.promoterfk == id).all()
     booking = db.session.query(Booking).filter(Booking.eventid == id).first()
+    notes = db.session.query(Notes).filter(or_(Notes.masterlistid == id, Notes.bookingid == booking.id)).all()
 
     content = {"user": User, "record": record, "files": filedic,
-               "persons": persons, "booking": booking, }
+               "persons": persons, "booking": booking, "notes": notes}
     return render_template("booking/booking_main.html", **content)
 
 

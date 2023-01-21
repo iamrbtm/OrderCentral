@@ -234,26 +234,7 @@ def edit_single(id):
 @ml.route("/ticktypes")
 @login_required
 def tick_types():
-    typelist = get_types_masterlist()
-
-    extralist = {'bazaar': ['show'],
-                 'holiday': ['christmas', 'santa'],
-                 "festival": ['fest'],
-                 'market': ['show'],
-                 'art': [],
-                 'health': [],
-                 'flea': []
-                 }
-    for record in db.session.query(MasterList).all():
-        for type in typelist:
-            if type in record.event_name.lower():
-                setattr(record, "type_" + type, True)
-                db.session.commit()
-            for extra in extralist[type]:
-                if extra in record.event_name.lower():
-                    setattr(record, "type_" + type, True)
-                    db.session.commit()
-
+    tick_all_types()
     return redirect(url_for('masterlist.masterlist', type="all"))
 
 

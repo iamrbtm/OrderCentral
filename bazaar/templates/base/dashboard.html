@@ -137,7 +137,8 @@ Available Blocks
                             </thead>
                             <tbody>
                             {% for booking in bookings %}
-                                <tr {% if booking.cl_interested == True and booking.cl_appsubmission == False %}style="background-color: skyblue"{% endif %}>
+                                <tr onclick="location.href='{{ url_for('booking.home', id=booking.eventid) }}'"
+                                    {% if booking.cl_interested == True and booking.cl_appsubmission == False %}style="background-color: skyblue"{% endif %}>
                                     <td>
                                         {{ booking.event.event_name }}</td>
                                     <td>
