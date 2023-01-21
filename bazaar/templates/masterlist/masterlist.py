@@ -1,13 +1,10 @@
-from calendar import day_name
-from datetime import datetime
-from bazaar.models import *
-from bazaar.utilities import *
 from flask import (
     Blueprint,
     render_template, request, redirect, url_for
 )
 from flask_login import login_required
-from bazaar import db
+
+from bazaar.utilities import *
 
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
 
@@ -300,3 +297,16 @@ def person_delete(personid, recordid):
     People.query.filter(People.id == personid).delete()
     db.session.commit()
     return redirect(url_for('masterlist.details', id=recordid))
+
+
+@ml.route("/noteadd/<recordid>", methods=['GET', 'POST'])
+@login_required
+def note_add(recordid):
+    if request.method == "POST":
+        newnote = Notes(
+            masterlistid=recordid,
+            note=request.form['note']
+        )
+        db.session.add(newnote)
+        db.session.commit()
+    return redirect(url_for('masterlist.details', id=id))

@@ -194,7 +194,7 @@ Available Blocks
                         {{ full_text }}<br>
                         <hr>
                         {% for date in date_list %}
-                            {{ date.strftime("%m/%d/%Y") }}
+                            {{ date | datetimeformat(   ) }}
                         {% endfor %}
                         <hr>
                         {{ record.dates_text }}
@@ -222,8 +222,11 @@ Available Blocks
                         <div class="card-body">
                             <h5 class="card-title">Notes</h5>
                             <div class="col">
-                                {# Make Button work #}
-                                <button class="btn btn-success">Add New Note</button>
+                                {#FIXME:Make Button work#}
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#addnote">
+                                    Add Note
+                                </button>
                                 <div class="row">
                                     <table id="notes" class="table table-bordered table-hover">
                                         <thead>
@@ -234,9 +237,9 @@ Available Blocks
                                         <tbody class="table-striped">
                                         {% for note in notes %}
                                             <tr>
-                                                {#TODO: Fix time zone error in the time of when the note was created.#}
+                                                {#FIXME: Fix time zone error in the time of when the note was created.#}
                                                 <td>{{ note.note | upper() }}<br>
-                                                    <span class="text-muted small">{{ note.date_created.strftime("%x %X") }}</span>
+                                                    <span class="text-muted small">{{ note.date_created |datetimeformat("%x %X") }}</span>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -259,38 +262,62 @@ Available Blocks
                 <div class="modal-header">
                     <h5 class="modal-title" id="addpersonLabel">Add a person to {{ record.promoter.name }}</h5>
                 </div>
-                <div class="modal-body">
-                    <form action="{{ url_for('masterlist.person_add', id=record.id) }}" method="post">
-                        <div>
+                <form action="{{ url_for('masterlist.person_add', id=record.id) }}" method="post">
+                    <div class="modal-body">
+                        <div class="input-group flex-nowrap">
                             <label class="form_label" for="name">Name</label>
                             <input class="form_control" type="text" name="name" id="name">
                         </div>
-                        <div>
+                        <div class="input-group flex-nowrap">
                             <label class="form_label" for="title">Title</label>
                             <input class="form_control" type="text" name="title" id="title">
                         </div>
-                        <div>
+                        <div class="input-group flex-nowrap">
                             <label class="form_label" for="phone">Phone</label>
                             <input class="form_control" type="text" name="phone" id="phone">
                         </div>
-                        <div>
+                        <div class="input-group flex-nowrap">
                             <label class="form_label" for="fax">Fax</label>
                             <input class="form_control" type="text" name="fax" id="fax">
                         </div>
-                        <div>
+                        <div class="input-group flex-nowrap">
                             <label class="form_label" for="email">Email</label>
                             <input class="form_control" type="text" name="email" id="email">
                         </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Person</button>
-                </div>
-                </form>`
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Person</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </div><!-- END Add person modal-->
+
+    <!-- Add Note Modal -->
+    <div class="modal fade" id="addnote" tabindex="-1" aria-labelledby="addnoteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addnoteLabel">Add a note to {{ record.promoter.name }}</h5>
+                </div>
+                <form action="{{ url_for('masterlist.note_add', recordid=record.id) }}" method="post">
+                    <div class="modal-body">
+                        <div class="input-group flex-nowrap">
+                            <label class="form-label" , for="note">Note</label>
+                            <textarea class="form-control" cols="10" id="note" name="note"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Person</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- END Add Note modal-->
 {% endblock main_content %}
 
 {% block javascripts %}

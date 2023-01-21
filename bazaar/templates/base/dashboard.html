@@ -137,8 +137,9 @@ Available Blocks
                             </thead>
                             <tbody>
                             {% for booking in bookings %}
-                                <tr style=>
-                                    <td>{{ booking.event.event_name }}</td>
+                                <tr {% if booking.cl_interested == True and booking.cl_appsubmission == False %}style="background-color: skyblue"{% endif %}>
+                                    <td>
+                                        {{ booking.event.event_name }}</td>
                                     <td>
                                         {% if booking.cl_appsubmission %}<i class="bi bi-journal-text"></i>{% endif %}
                                         {% if booking.cl_appapproved %}

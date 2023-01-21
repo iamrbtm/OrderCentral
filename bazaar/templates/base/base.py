@@ -27,7 +27,7 @@ def home():
     amountpay = db.session.query(func.sum(Booking.info_boothfee)).filter(Booking.cl_appapproved == True).filter(
         Booking.cl_feepaid == False).scalar()
 
-    bookings = db.session.query(Booking).filter(Booking.cl_appsubmission == True).all()
+    bookings = db.session.query(Booking).filter(Booking.cl_interested == True).all()
     content = {"user": User, "countrec": countrec, "countapps": countapps,
                "countbookings": countbookings, "amountpay": amountpay,
                "countpay": countpay, "bookings": bookings}

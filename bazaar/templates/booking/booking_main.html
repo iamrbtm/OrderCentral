@@ -533,7 +533,7 @@ Available Blocks
         </div>
     </section>
 
-    <!-- Modal -->
+    <!-- Add Document Modal -->
     <div class="modal fade" id="add_doc" tabindex="-1" aria-labelledby="add_docLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -545,7 +545,7 @@ Available Blocks
                 <form class="form" method="post" action="{{ url_for('booking.file_add', id=record.id) }}"
                       enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div>
+                        <div class="input-group flex-nowrap">
                             <label for="file" class="form-label">Select File</label>
                             <input class="form-control form-control-lg" name="file" id="file" type="file">
                         </div>

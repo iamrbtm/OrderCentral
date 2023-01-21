@@ -15,6 +15,11 @@ uploads = UploadSet("uploads", ALL)
 mail = Mail()
 
 
+# filters for jinja
+def dateteimeformat(value, format='%m/%d/%Y'):
+    return value.strftime(format)
+
+
 def create_app():
     global booking
     app = Flask(__name__)
@@ -45,6 +50,9 @@ def create_app():
 
     # Mail Setup
     config_mail(app)
+
+    # configure filters for jinja templates
+    app.jinja_env.filters['datetimeformat'] = dateteimeformat
 
     # Blueprints
     from bazaar.auth import auth

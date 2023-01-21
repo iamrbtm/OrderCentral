@@ -158,6 +158,7 @@ class Booking(db.Model):
     kd_appdeadline_new = db.Column(db.Date)
     kd_appdeadline_return = db.Column(db.Date)
     cl_appsubmission = db.Column(db.Boolean, default=False)
+    cl_interested = db.Column(db.Boolean, default=True)
     cl_appapproved = db.Column(db.Boolean, default=False)
     cl_feepaid = db.Column(db.Boolean, default=False)
     cl_electrequest = db.Column(db.Boolean, default=False)
