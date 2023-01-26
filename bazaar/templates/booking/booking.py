@@ -1,7 +1,8 @@
+import datetime
 import os
 import re
 
-from sqlalchemy import inspect, or_
+from sqlalchemy import inspect, or_, desc
 import humanize
 from flask import (
     Blueprint,
@@ -13,6 +14,9 @@ from bazaar import db
 from bazaar.models import *
 
 booking = Blueprint("booking", __name__, url_prefix="/booking")
+
+
+# TODO: When saving checkmarks in the checklist, add a note saying what you have checkedoff
 
 
 def check_make_dir(id):
@@ -44,7 +48,8 @@ def home(id):
 
     persons = db.session.query(People).filter(People.promoterfk == id).all()
     booking = db.session.query(Booking).filter(Booking.eventid == id).first()
-    notes = db.session.query(Notes).filter(or_(Notes.masterlistid == id, Notes.bookingid == booking.id)).all()
+    notes = db.session.query(Notes).filter(or_(Notes.masterlistid == id, Notes.bookingid == booking.id)) \
+        .order_by(desc(Notes.date_created)).all()
 
     content = {"user": User, "record": record, "files": filedic,
                "persons": persons, "booking": booking, "notes": notes}
@@ -88,8 +93,9 @@ def booking_edit(bookingid, eventid):
         attr_names = [c_attr.key for c_attr in inspect(Booking).mapper.column_attrs]
         data = request.form.to_dict()
 
-        date_pattern = "^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$"
-        time_pattern = "^[0-2][0-3]:[0-5][0-9]:[0-5][0-9]$"
+        data_and_time_pattern = r"(?:(\d{4})(-\d{1,2})(-\d{1,2})T(\d{1,2})(:\d{2})((:\d{2})?))"
+        date_pattern = r"(\d{4}-\d{2}-\d{2})$"
+        time_pattern = r"\b(\d{2})(:\d{2})((:\d{2})?)\b"
         for name in attr_names:
             if name[:3] == "cl_":
                 if name in data:
@@ -99,10 +105,17 @@ def booking_edit(bookingid, eventid):
             else:
                 if name in data:
                     if name != "id" and name != "eventid":
-                        if re.match(date_pattern, data[name]) != None:
+                        if re.match(data_and_time_pattern, data[name]) is not None:
+                            dtobj = datetime.datetime.strptime(data[name], "%Y-%m-%dT%H:%M")
+                            setattr(booking, name, dtobj)
+                        elif re.match(date_pattern, data[name]) is not None:
                             setattr(booking, name, datetime.datetime.strptime(data[name], "%Y-%m-%d"))
-                        elif re.match(time_pattern, data[name]) != None:
-                            setattr(booking, name, datetime.datetime.strptime(data[name], "%H:%M:%S"))
+                        elif re.match(time_pattern, data[name]) is not None:
+                            timevar = data[name]
+                            if timevar.count(":") == 1:
+                                timevar += ":00"
+                            timeobj = datetime.datetime.strptime(timevar, "%H:%M:%S").time()
+                            setattr(booking, name, timeobj)
                         elif data[name] == 'on':
                             setattr(booking, name, True)
                         else:
@@ -126,3 +139,16 @@ def booking_add(id):
         db.session.commit()
 
     return redirect(url_for('booking.home', id=id))
+
+
+@booking.route("/noteadd/<recordid>", methods=['GET', 'POST'])
+@login_required
+def note_add(recordid):
+    if request.method == "POST":
+        newnote = Notes(
+            masterlistid=recordid,
+            note=request.form['note']
+        )
+        db.session.add(newnote)
+        db.session.commit()
+    return redirect(url_for('booking.home', id=recordid))

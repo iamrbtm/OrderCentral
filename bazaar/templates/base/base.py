@@ -19,8 +19,10 @@ def utility_processor():
 @base.route("/home")
 @login_required
 def home():
+    import time
     countrec = db.session.query(func.count(MasterList.id)).scalar()
-    countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).scalar()
+    countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).filter(
+        Booking.cl_appapproved == False).scalar()
     countbookings = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).scalar()
     countpay = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).filter(
         Booking.cl_feepaid == False).scalar()

@@ -159,7 +159,7 @@ Available Blocks
                                 <div class="vpe-body row">
                                     <div class="col-6">
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_datestart">Start
+                                            <label class="col-sm-4 col-form-label" for="info_datestart">Start
                                                 Date</label>
                                             <input
                                                     class="form-control"
@@ -168,18 +168,19 @@ Available Blocks
                                                     name="info_datestart"
                                                     value="{{ booking.info_datestart }}">
                                         </div>
-                                        <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_dateend">End Date</label>
-                                            <input
-                                                    class="form-control"
-                                                    type="date"
-                                                    id="info_dateend"
-                                                    name="info_dateend"
-                                                    value="{{ booking.info_dateend }}">
-                                        </div>
 
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_loadindatetime">Load In
+                                            <label class="col-sm-4 col-form-label" for="info_timestart">Start
+                                                Time</label>
+                                            <input
+                                                    class="form-control"
+                                                    type="time"
+                                                    id="info_timestart"
+                                                    name="info_timestart"
+                                                    value="{{ booking.info_timestart }}">
+                                        </div>
+                                        <div class="input-group flex-nowrap">
+                                            <label class="col-sm-4 col-form-label" for="info_loadindatetime">Load In
                                                 Time</label>
                                             <input
                                                     class="form-control"
@@ -192,17 +193,16 @@ Available Blocks
 
                                     <div class="col-6">
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_timestart">Start
-                                                Time</label>
+                                            <label class="col-sm-4 col-form-label" for="info_dateend">End Date</label>
                                             <input
                                                     class="form-control"
-                                                    type="time"
-                                                    id="info_timestart"
-                                                    name="info_timestart"
-                                                    value="{{ booking.info_timestart }}">
+                                                    type="date"
+                                                    id="info_dateend"
+                                                    name="info_dateend"
+                                                    value="{{ booking.info_dateend }}">
                                         </div>
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_timeend">End Time</label>
+                                            <label class="col-sm-4 col-form-label" for="info_timeend">End Time</label>
                                             <input
                                                     class="form-control"
                                                     type="time"
@@ -211,7 +211,7 @@ Available Blocks
                                                     value="{{ booking.info_timeend }}">
                                         </div>
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_loadoutdatetime">Load Out
+                                            <label class="col-sm-4 col-form-label" for="info_loadoutdatetime">Load Out
                                                 Time</label>
                                             <input
                                                     class="form-control"
@@ -223,24 +223,33 @@ Available Blocks
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="vpe-body row">
                                     <h5>Location</h5>
                                     <div class="col-6">
-                                        <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_boothfee">Booth Fee</label>
-                                            <input
-                                                    class="form-control"
-                                                    type="number"
-                                                    min="0.01"
-                                                    max="999.99"
-                                                    step=".01"
-                                                    id="info_boothfee"
-                                                    name="info_boothfee"
-                                                    value="{{ booking.info_boothfee }}"
-                                            >
+                                        <div class="input-group">
+                                            <div class="input-group flex-nowrap">
+                                                <label class="col-sm-4 col-form-label" for="info_boothfee">Booth
+                                                    Fee</label>
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        id="info_boothfee"
+                                                        name="info_boothfee"
+                                                        min="0.01"
+                                                        max="9999.99"
+                                                        value={{ "{:.2f}".format(booking.info_boothfee) }}
+                                                >
+
+
+                                            </div>
                                         </div>
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_whatfeeincludes">What is
+                                            <label class="col-sm-4 col-form-label" for="info_whatfeeincludes">What
+                                                is
                                                 Included</label>
                                             <input
                                                     class="form-control"
@@ -251,8 +260,8 @@ Available Blocks
                                             >
                                         </div>
                                         <div class="input-group flex-nowrap">
-                                            <label class="col-sm-2 col-form-label" for="info_boothlocation">Booth
-                                                Location</label>
+                                            <label class="col-sm-4 col-form-label"" for="info_boothlocation">Booth
+                                            Location</label>
                                             <input
                                                     class="form-control"
                                                     type="text"
@@ -264,7 +273,8 @@ Available Blocks
                                     </div>
                                     <div class="col-6">
                                         <div class="input-group flex-nowrap">
-                                            <label class="form-check-label" for="info_foodpurchase">Food Details</label>
+                                            <label class="col-sm-4 col-form-label" for="info_foodpurchase">Food
+                                                Details</label>
                                             <input type="text"
                                                    class="form-control"
                                                    id="info_foodpurchase"
@@ -273,7 +283,7 @@ Available Blocks
                                             >
                                         </div>
                                         <div class="input-group flex-nowrap">
-                                            <label class="form-label" for="info_wifipassword">Wifi
+                                            <label class="col-sm-4 col-form-label" for="info_wifipassword">Wifi
                                                 Password</label>
                                             <input type="text"
                                                    class="form-control"
@@ -354,6 +364,16 @@ Available Blocks
                                 <div class="card-body row">
                                     <div class="col-6" id="overall">
                                         <h5>General</h5>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   role="switch"
+                                                   id="cl_interested"
+                                                   name="cl_interested"
+                                                   {% if booking.cl_interested %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label" for="cl_interested">Interested</label>
+                                        </div>
                                         <div class="form-check form-switch">
                                             <input type="checkbox"
                                                    class="form-check-input"
@@ -590,7 +610,7 @@ Available Blocks
                 <div class="modal-header">
                     <h5 class="modal-title" id="addnoteLabel">Add a note to {{ record.promoter.name }}</h5>
                 </div>
-                <form action="{{ url_for('masterlist.note_add', recordid=record.id) }}" method="post">
+                <form action="{{ url_for('booking.note_add', recordid=record.id) }}" method="post">
                     <div class="modal-body">
                         <div class="input-group flex-nowrap">
                             <label class="form-label" , for="note">Note</label>
