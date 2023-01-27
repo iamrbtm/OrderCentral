@@ -4,6 +4,7 @@ from flask import (
 )
 from flask_login import login_required
 
+import bazaar
 from bazaar.utilities import *
 
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
@@ -124,7 +125,7 @@ def details(id):
                         if day.lower() == 'and':
                             pass
                         else:
-                            date = nth_day_of_month(month, day, week)
+                            date = bazaar.utilities.nth_day_of_month(month, day, week)
                             date_list.append(date)
     notes = db.session.query(Notes).filter(Notes.masterlistid == id).all()
 
@@ -187,7 +188,7 @@ def edit_single(id):
         record.promoter.city = form_data['p_city']
         record.promoter.state = form_data['p_state']
         record.promoter.zipcode = form_data['p_zipcode']
-        record.promoter.phone = format_phone(form_data['p_phone'])
+        record.promoter.phone = bazaar.utilities.format_phone(form_data['p_phone'])
         record.promoter.website = form_data['p_website']
 
         # Months
@@ -246,8 +247,8 @@ def person_add(id):
         addperson = People(
             name=data['name'],
             title=data['title'],
-            phone=format_phone(data['phone']),
-            fax=format_phone(data['fax']),
+            phone=bazaar.utilities.format_phone(data['phone']),
+            fax=bazaar.utilities.format_phone(data['fax']),
             email=data['email'],
             promoterfk=id
         )

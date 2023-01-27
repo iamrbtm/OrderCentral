@@ -3,6 +3,8 @@ from flask import (
     render_template, request
 )
 from flask_login import login_required, current_user
+from sqlalchemy import and_
+
 from bazaar.models import *
 from bazaar import db
 from bazaar.utilities import get_types
@@ -19,20 +21,38 @@ def utility_processor():
 @base.route("/home")
 @login_required
 def home():
-    import time
     countrec = db.session.query(func.count(MasterList.id)).scalar()
-    countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).filter(
-        Booking.cl_appapproved == False).scalar()
+
+    countinterest = db.session.query(func.count(Booking.id)).filter(Booking.cl_interested == True).filter(
+        and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).scalar()
+    interests = db.session.query(Booking).filter(Booking.cl_interested == True).filter(
+        and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).all()
+
+    countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).filter(and_(
+        Booking.cl_appapproved == False, Booking.cl_interested == True)).scalar()
+    applications = db.session.query(Booking).filter(Booking.cl_appsubmission == True).filter(and_(
+        Booking.cl_appapproved == False, Booking.cl_interested == True)).all()
+
     countbookings = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).scalar()
+    bookings = db.session.query(Booking).filter(Booking.cl_interested == True).filter(
+        and_(Booking.cl_appsubmission == True, Booking.cl_appapproved == True)).all()
+
     countpay = db.session.query(func.count(Booking.id)).filter(Booking.cl_appapproved == True).filter(
         Booking.cl_feepaid == False).scalar()
     amountpay = db.session.query(func.sum(Booking.info_boothfee)).filter(Booking.cl_appapproved == True).filter(
         Booking.cl_feepaid == False).scalar()
 
-    bookings = db.session.query(Booking).filter(Booking.cl_interested == True).all()
-    content = {"user": User, "countrec": countrec, "countapps": countapps,
-               "countbookings": countbookings, "amountpay": amountpay,
-               "countpay": countpay, "bookings": bookings}
+    content = {"user": User,
+               "countrec": countrec,
+               "countinterest": countinterest,
+               "interests": interests,
+               "countapps": countapps,
+               "applications": applications,
+               "countbookings": countbookings,
+               "bookings": bookings,
+               "amountpay": amountpay,
+               "countpay": countpay
+               }
     return render_template("base/dashboard.html", **content)
 
 

@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_uploads import UploadSet, configure_uploads, IMAGES, ALL
 from dotenv import load_dotenv
 from flask_mail import Mail
+from jinja2 import Environment
+from datetime import datetime
 
 load_dotenv()
 
@@ -13,10 +15,11 @@ db = SQLAlchemy()
 booking = UploadSet("booking", ALL)
 uploads = UploadSet("uploads", ALL)
 mail = Mail()
+env = Environment()
 
 
 # filters for jinja
-def dateteimeformat(value, format='%m/%d/%Y'):
+def datetimeformat(value, format='%m/%d/%Y'):
     return value.strftime(format)
 
 
@@ -52,7 +55,10 @@ def create_app():
     config_mail(app)
 
     # configure filters for jinja templates
-    app.jinja_env.filters['datetimeformat'] = dateteimeformat
+    env.filters['datetimeformat'] = datetimeformat
+    env.globals.update(datetimeformat=datetimeformat)
+    print("FILTERS", env.filters)
+    print("GLOBALS", env.globals)
 
     # Blueprints
     from bazaar.auth import auth

@@ -16,7 +16,7 @@ from bazaar.models import *
 booking = Blueprint("booking", __name__, url_prefix="/booking")
 
 
-# TODO: When saving checkmarks in the checklist, add a note saying what you have checkedoff
+# IDEA: When saving checkmarks in the checklist, add a note saying what you have checkedoff
 
 
 def check_make_dir(id):

@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import re
 from calendar import day_name, month_name
 
 import phonenumbers
@@ -122,8 +123,12 @@ def get_types():
 
 
 def format_phone(number):
-    return phonenumbers.format_number(phonenumbers.parse(number, "US"),
-                                      phonenumbers.PhoneNumberFormat.NATIONAL)
+    phonematchstring = r"(?:\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}"
+    if re.match(phonematchstring, number) is not None:
+        return phonenumbers.format_number(phonenumbers.parse(number, "US"),
+                                          phonenumbers.PhoneNumberFormat.NATIONAL)
+    else:
+        return None
 
 
 def tick_all_types():

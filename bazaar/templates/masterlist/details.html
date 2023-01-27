@@ -194,7 +194,7 @@ Available Blocks
                         {{ full_text }}<br>
                         <hr>
                         {% for date in date_list %}
-                            {{ date | datetimeformat(   ) }}
+                            {{ date.strftime("%m/%d/%Y") }}
                         {% endfor %}
                         <hr>
                         {{ record.dates_text }}
@@ -239,7 +239,7 @@ Available Blocks
                                             <tr>
                                                 {#FIXME: Fix time zone error in the time of when the note was created.#}
                                                 <td>{{ note.note | upper() }}<br>
-                                                    <span class="text-muted small">{{ note.date_created |datetimeformat("%x %X") }}</span>
+                                                    <span class="text-muted small">{{ note.date_created.strftime("%x %X") }}</span>
                                                 </td>
                                             </tr>
                                         {% endfor %}

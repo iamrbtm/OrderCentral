@@ -861,10 +861,10 @@ h6 {
 }
 
 .dashboard .card-icon {
-    font-size: 32px;
+    font-size: 16px;
     line-height: 0;
-    width: 64px;
-    height: 64px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     flex-grow: 0;
 }
@@ -879,9 +879,14 @@ h6 {
     background: #e0f8e9;
 }
 
-.dashboard .customers-card .card-icon {
-    color: #6f42c1;
-    background: rgb(231, 217, 255);
+.dashboard .interest-card .card-icon {
+    color: #caa62e;
+    background: #ffeca9;
+}
+
+.dashboard .events-card .card-icon {
+    color: #ae42c1;
+    background: #e7b2f0;
 }
 
 .dashboard .topay-card .card-icon {

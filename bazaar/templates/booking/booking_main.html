@@ -241,7 +241,12 @@ Available Blocks
                                                         name="info_boothfee"
                                                         min="0.01"
                                                         max="9999.99"
-                                                        value={{ "{:.2f}".format(booking.info_boothfee) }}
+                                                        value=
+                                                                {% if booking.info_boothfee == None %}
+                                                                    {{ "{:.2f}".format(0.00) }}
+                                                                {% else %}
+                                                                    {{ "{:.2f}".format(booking.info_boothfee) }}
+                                                                {% endif %}
                                                 >
 
 
@@ -556,7 +561,7 @@ Available Blocks
                                     {% for note in notes %}
                                         <tr>
                                             <td class="text-start text-uppercase">{{ note.note }}</td>
-                                            <td class="text-end">{{ note.date_created |datetimeformat('%x %X') }}</td>
+                                            <td class="text-end">{{ note.date_created.strftime('%x %X') }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
