@@ -21,32 +21,6 @@ def get_types_masterlist(tbl=MasterList):
     return typelist
 
 
-@ml.route("/<type>")
-@login_required
-def masterlist(type):
-    types = get_types_masterlist()
-
-    match type:
-        case "bazaar":
-            records = db.session.query(MasterList).filter(MasterList.type_bazaar == True).all()
-        case "art":
-            records = db.session.query(MasterList).filter(MasterList.type_art == True).all()
-        case "holiday":
-            records = db.session.query(MasterList).filter(MasterList.type_holiday == True).all()
-        case "festival":
-            records = db.session.query(MasterList).filter(MasterList.type_festival == True).all()
-        case "flea":
-            records = db.session.query(MasterList).filter(MasterList.type_flea == True).all()
-        case "health":
-            records = db.session.query(MasterList).filter(MasterList.type_health == True).all()
-        case "market":
-            records = db.session.query(MasterList).filter(MasterList.type_market == True).all()
-        case _:
-            records = db.session.query(MasterList).all()
-    contents = {"user": User, "records": records, "types": types}
-    return render_template("masterlist/masterlist.html", **contents)
-
-
 @ml.route("/details/<id>")
 @login_required
 def details(id):
@@ -144,7 +118,7 @@ def details(id):
 
 @ml.route("/edit/<id>", methods=["GET", "POST"])
 @login_required
-def edit_single(id):
+def masterlist_edit(id):
     record = db.session.query(MasterList).filter(MasterList.id == id).first()
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -229,14 +203,31 @@ def edit_single(id):
                 "v_days": days_values, "v_months": months_values,
                 "v_weeks": weeks_values, "types": types,
                 "v_types": types_values}
-    return render_template("masterlist/edit_single.html", **contents)
+    return render_template("masterlist/masterlist_edit.html", **contents)
+
+
+@ml.route("/newevent", methods=["GET", "POST"])
+@login_required
+def masterlist_add():
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December']
+    weeks = ['First', 'Second', 'Third', 'Fourth', 'Last']
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+    types = get_types_masterlist()
+
+    if request.method == "POST":
+        return redirect(url_for('masterlist.masterlist_home'))
+
+    contents = {"user": User, "months": months, "weeks": weeks, "days": days, "types": types}
+    return render_template("masterlist/masterlist_add.html", **contents)
 
 
 @ml.route("/ticktypes")
 @login_required
 def tick_types():
     tick_all_types()
-    return redirect(url_for('masterlist.masterlist', type="all"))
+    return redirect(url_for('masterlist.masterlist_home', type="all"))
 
 
 @ml.route("/addperson/<id>", methods=['GET', 'POST'])
@@ -292,3 +283,29 @@ def note_add(recordid):
         db.session.add(newnote)
         db.session.commit()
     return redirect(url_for('masterlist.details', id=id))
+
+
+@ml.route("/list/<type>")
+@login_required
+def masterlist_home(type):
+    types = get_types_masterlist()
+
+    match type:
+        case "bazaar":
+            records = db.session.query(MasterList).filter(MasterList.type_bazaar == True).all()
+        case "art":
+            records = db.session.query(MasterList).filter(MasterList.type_art == True).all()
+        case "holiday":
+            records = db.session.query(MasterList).filter(MasterList.type_holiday == True).all()
+        case "festival":
+            records = db.session.query(MasterList).filter(MasterList.type_festival == True).all()
+        case "flea":
+            records = db.session.query(MasterList).filter(MasterList.type_flea == True).all()
+        case "health":
+            records = db.session.query(MasterList).filter(MasterList.type_health == True).all()
+        case "market":
+            records = db.session.query(MasterList).filter(MasterList.type_market == True).all()
+        case _:
+            records = db.session.query(MasterList).all()
+    contents = {"user": User, "records": records, "types": types}
+    return render_template("masterlist/masterlist.html", **contents)

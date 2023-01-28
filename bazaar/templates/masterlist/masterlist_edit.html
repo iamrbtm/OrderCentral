@@ -1,0 +1,208 @@
+<!--
+=========================================================
+* Template for MasterList
+=========================================================
+Date:1-8-2023
+Author:Jeremy Guill
+Purpose:Display a single record from the Master List table in detail.
+
+Available Blocks
+* title
+* page_title
+* stylesheets
+* notifications
+* main_content
+* javascripts
+=========================================================
+-->
+{% extends "base/base.html" %}
+
+{% block title %}
+    Editing {{ record.event_name }}
+{% endblock title %}
+
+{% block page_title %}
+    <b><span class="text-uppercase text-danger">Editing - {{ record.event_name }}</span></b>
+{% endblock page_title %}
+
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block notifications %}
+{% endblock notifications %}
+
+{% block main_content %}
+    <section class="section">
+        <form class="form" method="POST" action="{{ url_for('masterlist.masterlist_edit', id=record.id) }}">
+            <div class="row">
+
+                <div class="col-md-5">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Information</h5>
+                            <label for="event_name" class="form-label">Name:</label>
+                            <input type="text" class="form-control" name="event_name" id="event_name"
+                                   value="{{ record.event_name }}">
+                        </div>
+                    </div> <!-- End Event Information -->
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Venue</h5>
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" class="form-control" name="name" id="name"
+                                   value="{{ record.venue.name }}">
+
+                            <label for="address" class="form-label">Address:</label>
+                            <input type="text" class="form-control" name="address" id="address"
+                                   value="{{ record.venue.address }}">
+
+                            <label for="city" class="form-label">City,ST Zip:</label>
+                            <input type="text" class="form-control" name="city" id="city"
+                                   value="{{ record.venue.city }}">
+
+                            <input type="text" class="form-control" name="state" id="state"
+                                   value="{{ record.venue.state }}">
+
+                            <input type="text" class="form-control" name="zipcode" id="zipcode"
+                                   value="{{ record.venue.zipcode }}">
+                        </div>
+                    </div> <!-- End Venue -->
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Promoter</h5>
+                            <label for="p_name" class="form-label">Name:</label>
+                            <input type="text" class="form-control" name="p_name" id="p_name"
+                                   value="{{ record.promoter.name }}">
+
+                            <label for="p_address" class="form-label">Address:</label>
+                            <input type="text" class="form-control" name="p_address" id="p_address"
+                                   value="{{ record.promoter.address }}">
+
+                            <label for="p_city" class="form-label">City,ST Zip:</label>
+                            <input type="text" class="form-control" name="p_city" id="p_city"
+                                   value="{{ record.promoter.city }}">
+
+                            <input type="text" class="form-control" name="p_state" id="p_state"
+                                   value="{{ record.promoter.state }}">
+
+                            <input type="text" class="form-control" name="p_zipcode" id="p_zipcode"
+                                   value="{{ record.promoter.zipcode }}">
+
+                            <label for="p_phone" class="form-label">Phone:</label>
+                            <input type="tel" class="form-control" name="p_phone" id="p_phone"
+                                   value="{{ record.promoter.phone }}">
+
+                            <label for="p_website" class="form-label">Website:</label>
+                            <input type="text" class="form-control" name="p_website" id="p_website"
+                                   value="{{ record.promoter.website }}">
+                        </div>
+                    </div> <!-- End Promoter -->
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dates</h5>
+                            <div class="row">
+                                <div id="months" class="col-4">
+                                    {% for month in months %}
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="{{ month }}"
+                                               name="months"
+                                               value="{{ month | lower }}"
+                                               {% if v_months[month] == True %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ month }}">{{ month }}</label><br>
+                                    {% endfor %}
+                                </div>
+                                <div id="weeks" class="col-4">
+                                    {% for week in weeks %}
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="{{ week }}"
+                                               name="weeks"
+                                               value="{{ week | lower }}"
+                                               {% if v_weeks[week] == True %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="{{ week }}">{{ week }}</label><br>
+                                    {% endfor %}
+                                </div>
+                                <div id="dayofweek" class="col-4">
+                                    {% for day in days %}
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="{{ day }}"
+                                               name="days"
+                                               value="{{ day | lower }}"
+                                               {% if v_days[day] == True %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="{{ day }}">{{ day }}</label><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Dates -->
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Type of Event</h5>
+                            <div class="row-cols-2">
+                                <div class="col-6">
+                                    {% for type in types %}
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="{{ type }}"
+                                               name="type"
+                                               value="{{ type | lower }}"
+                                               {% if v_types[type] == True %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="{{ type }}">{{ type.title() }}</label><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Categorizes -->
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Notes</h5>
+                            <div class="col">
+                                <div class="row">
+                                    Add New Row
+                                </div>
+                                <div class="row">
+                                    <table id="notes" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Note</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-striped">
+                                        {% for note in notes %}
+                                            <tr>
+                                                <th>{{ note.note }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Notes -->
+                    <div>
+                        <input type="submit" class="btn btn-primary btn-lg" value="Save">
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </section>
+{% endblock main_content %}
+
+{% block javascripts %}
+{% endblock javascripts %}

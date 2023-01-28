@@ -3,11 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_uploads import UploadSet, configure_uploads, IMAGES, ALL
+from flask_uploads import UploadSet, configure_uploads, ALL
 from dotenv import load_dotenv
 from flask_mail import Mail
-from jinja2 import Environment
-from datetime import datetime
 
 load_dotenv()
 
@@ -15,12 +13,6 @@ db = SQLAlchemy()
 booking = UploadSet("booking", ALL)
 uploads = UploadSet("uploads", ALL)
 mail = Mail()
-env = Environment()
-
-
-# filters for jinja
-def datetimeformat(value, format='%m/%d/%Y'):
-    return value.strftime(format)
 
 
 def create_app():
@@ -41,11 +33,10 @@ def create_app():
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
     # Database Setup
-    # app.config[
-    #     "SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://onlymyli_rbtm2006:Braces4me##@192.96.200.111/onlymyli_bazaar?charset=utf8mb4"
     db_path = os.path.join(os.path.dirname(__file__), 'database', 'testing.db')
     db_uri = 'sqlite:///{}'.format(db_path)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_TIMEZONE'] = 'local'
     db.init_app(app)
 
     # Migration for Database
@@ -53,12 +44,6 @@ def create_app():
 
     # Mail Setup
     config_mail(app)
-
-    # configure filters for jinja templates
-    env.filters['datetimeformat'] = datetimeformat
-    env.globals.update(datetimeformat=datetimeformat)
-    print("FILTERS", env.filters)
-    print("GLOBALS", env.globals)
 
     # Blueprints
     from bazaar.auth import auth

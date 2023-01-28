@@ -52,26 +52,27 @@ def nth_day_of_month(month, day_of_week, week_num='last', year=datetime.datetime
 def convertDateTextToBooleanFields():
     for record in db.session.query(MasterList).all():
 
-        dates_text = record.dates_text.title()
-        event_name = record.event_name.title()
+        if record.dates_text is not None:
+            dates_text = record.dates_text.title()
+            event_name = record.event_name.title()
 
-        for day in calendar.day_name:
-            if day in dates_text:
-                setattr(record, day.lower(), True)
-                db.session.commit()
-                print(getattr(record, day.lower()))
-            elif day in event_name:
-                setattr(record, day.lower(), True)
-                db.session.commit()
-                print(getattr(record, day.lower()))
+            for day in calendar.day_name:
+                if day in dates_text:
+                    setattr(record, day.lower(), True)
+                    db.session.commit()
+                    print(getattr(record, day.lower()))
+                elif day in event_name:
+                    setattr(record, day.lower(), True)
+                    db.session.commit()
+                    print(getattr(record, day.lower()))
 
-        for month in calendar.month_name:
-            if month in dates_text:
-                setattr(record, month.lower(), True)
-                db.session.commit()
-            elif month in event_name:
-                setattr(record, month.lower(), True)
-                db.session.commit()
+            for month in calendar.month_name:
+                if month in dates_text:
+                    setattr(record, month.lower(), True)
+                    db.session.commit()
+                elif month in event_name:
+                    setattr(record, month.lower(), True)
+                    db.session.commit()
 
 
 def parse_addy(full_address):

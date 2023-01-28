@@ -137,7 +137,6 @@ def booking_add(id):
         )
         db.session.add(newbooking)
         db.session.commit()
-
     return redirect(url_for('booking.home', id=id))
 
 

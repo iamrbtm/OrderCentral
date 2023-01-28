@@ -104,7 +104,7 @@ class Venue(db.Model):
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    venue_event = db.relationship("MasterList", backref=backref("masterlist", uselist=False))
+    venue_event = db.relationship("MasterList", backref=backref("masterlist_home", uselist=False))
 
 
 class Promoter(db.Model):
