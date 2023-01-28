@@ -36,7 +36,6 @@ def details(id):
         if getattr(record, month) is True:
             true_months.append(month)
 
-    months_text = ""
     if len(true_months) == 12:
         months_text = ['All Year']
     elif len(true_months) >= 2:
@@ -53,7 +52,6 @@ def details(id):
         if getattr(record, week) is True:
             true_weeks.append(week)
 
-    weeks_text = ""
     if len(true_weeks) == 5:
         weeks_text = "Every"
     elif len(true_weeks) == 2:
@@ -72,7 +70,6 @@ def details(id):
         if getattr(record, day) is True:
             true_days.append(day)
 
-    days_text = ""
     if len(true_days) == 5:
         days_text = "Every day"
     elif len(true_days) >= 2:
@@ -217,7 +214,86 @@ def masterlist_add():
     types = get_types_masterlist()
 
     if request.method == "POST":
-        return redirect(url_for('masterlist.masterlist_home'))
+        data = request.form.to_dict()
+        form_months = request.form.getlist('months')
+        form_weeks = request.form.getlist('weeks')
+        form_days = request.form.getlist('days')
+        form_types = request.form.getlist("type")
+
+        # Venue
+        newVenue = Venue(
+            name=data['v_name'],
+            address=data['v_address'],
+            city=data['v_city'],
+            state=data['v_state'],
+            zipcode=data['v_zipcode'],
+            phone=bazaar.utilities.format_phone(data['v_phone']),
+            website=data['v_website'],
+        )
+        db.session.add(newVenue)
+        db.session.commit()
+        db.session.refresh(newVenue)
+        # Promoter
+        newPromoter = Promoter(
+            name=data['p_name'],
+            address=data['p_address'],
+            city=data['p_city'],
+            state=data['p_state'],
+            zipcode=data['p_zipcode'],
+            phone=bazaar.utilities.format_phone(data['p_phone']),
+            website=data['p_website'],
+        )
+        db.session.add(newPromoter)
+        db.session.commit()
+        db.session.refresh(newPromoter)
+
+        # Event
+        newEvent = MasterList(
+            event_name=data['event_name'],
+            website=data['event_website'],
+            venuefk=newVenue.id,
+            promoterfk=newPromoter.id
+        )
+        db.session.add(newEvent)
+        db.session.commit()
+        db.session.refresh(newEvent)
+
+        # get event record
+        record = db.session.query(MasterList).filter(MasterList.id == newEvent.id).first()
+
+        # months
+        for month in [x.lower() for x in months]:
+            if month in [x.lower() for x in form_months]:
+                setattr(record, month, True)
+            else:
+                setattr(record, month, False)
+            db.session.commit()
+
+        # days
+        for day in [x.lower() for x in days]:
+            if day in [x.lower() for x in form_days]:
+                setattr(record, day, True)
+            else:
+                setattr(record, day, False)
+            db.session.commit()
+
+        # weeks
+        for week in [x.lower() for x in weeks]:
+            if week in [x.lower() for x in form_weeks]:
+                setattr(record, week, True)
+            else:
+                setattr(record, week, False)
+            db.session.commit()
+
+        # types
+        for type in [x.lower() for x in types]:
+            if type in [x.lower() for x in form_types]:
+                setattr(record, "type_" + type, True)
+            else:
+                setattr(record, "type_" + type, False)
+            db.session.commit()
+
+        return redirect(url_for('masterlist.masterlist_home', type="all"))
 
     contents = {"user": User, "months": months, "weeks": weeks, "days": days, "types": types}
     return render_template("masterlist/masterlist_add.html", **contents)

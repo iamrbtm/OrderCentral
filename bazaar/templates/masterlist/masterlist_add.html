@@ -43,6 +43,8 @@ Available Blocks
                             <h5 class="card-title">Event Information</h5>
                             <label for="event_name" class="form-label">Name:</label>
                             <input type="text" class="form-control" name="event_name" id="event_name"
+                            <label for="event_website" class="form-label">Website:</label>
+                            <input type="url" class="form-control" name="event_website" id="event_website"
                             >
                         </div>
                     </div> <!-- End Event Information -->
@@ -51,22 +53,21 @@ Available Blocks
                         <div class="card-body">
                             <h5 class="card-title">Venue</h5>
                             <label for="name" class="form-label">Name:</label>
-                            <input type="text" class="form-control" name="v_name" id="v_name"
-                            >
+                            <input type="text" class="form-control" name="v_name" id="v_name">
 
                             <label for="address" class="form-label">Address:</label>
-                            <input type="text" class="form-control" name="v_address" id="v_address"
-                            >
+                            <input type="text" class="form-control" name="v_address" id="v_address">
 
                             <label for="city" class="form-label">City,ST Zip:</label>
-                            <input type="text" class="form-control" name="v_city" id="v_city"
-                            >
+                            <input type="text" class="form-control" name="v_city" id="v_city">
+                            <input type="text" class="form-control" name="v_state" id="v_state">
+                            <input type="text" class="form-control" name="v_zipcode" id="v_zipcode">
 
-                            <input type="text" class="form-control" name="v_state" id="v_state"
-                            >
+                            <label for="p_phone" class="form-label">Phone:</label>
+                            <input type="tel" class="form-control" name="v_phone" id="v_phone">
 
-                            <input type="text" class="form-control" name="v_zipcode" id="v_zipcode"
-                            >
+                            <label for="p_website" class="form-label">Website:</label>
+                            <input type="text" class="form-control" name="v_website" id="v_website">
                         </div>
                     </div> <!-- End Venue -->
 
@@ -74,30 +75,21 @@ Available Blocks
                         <div class="card-body">
                             <h5 class="card-title">Promoter</h5>
                             <label for="p_name" class="form-label">Name:</label>
-                            <input type="text" class="form-control" name="p_name" id="p_name"
-                            >
+                            <input type="text" class="form-control" name="p_name" id="p_name">
 
                             <label for="p_address" class="form-label">Address:</label>
-                            <input type="text" class="form-control" name="p_address" id="p_address"
-                            >
+                            <input type="text" class="form-control" name="p_address" id="p_address">
 
                             <label for="p_city" class="form-label">City,ST Zip:</label>
-                            <input type="text" class="form-control" name="p_city" id="p_city"
-                            >
-
-                            <input type="text" class="form-control" name="p_state" id="p_state"
-                            >
-
-                            <input type="text" class="form-control" name="p_zipcode" id="p_zipcode"
-                            >
+                            <input type="text" class="form-control" name="p_city" id="p_city">
+                            <input type="text" class="form-control" name="p_state" id="p_state">
+                            <input type="text" class="form-control" name="p_zipcode" id="p_zipcode">
 
                             <label for="p_phone" class="form-label">Phone:</label>
-                            <input type="tel" class="form-control" name="p_phone" id="p_phone"
-                            >
+                            <input type="tel" class="form-control" name="p_phone" id="p_phone">
 
                             <label for="p_website" class="form-label">Website:</label>
-                            <input type="text" class="form-control" name="p_website" id="p_website"
-                            >
+                            <input type="text" class="form-control" name="p_website" id="p_website">
                         </div>
                     </div> <!-- End Promoter -->
 
@@ -113,8 +105,9 @@ Available Blocks
                                     {% for month in months %}
                                         <input class="form-check-input"
                                                type="checkbox"
-                                               id="{{ month.lower() }}"
+                                               id="{{ month }}"
                                                name="months"
+                                               value="{{ month }}"
                                         >
                                         <label class="form-check-label" for="{{ month }}">{{ month }}</label><br>
                                     {% endfor %}
@@ -125,6 +118,7 @@ Available Blocks
                                                type="checkbox"
                                                id="{{ week }}"
                                                name="weeks"
+                                               value="{{ week }}"
                                         >
                                         <label class="form-check-label" for="{{ week }}">{{ week }}</label><br>
                                     {% endfor %}
@@ -135,6 +129,7 @@ Available Blocks
                                                type="checkbox"
                                                id="{{ day }}"
                                                name="days"
+                                               value="{{ day }}"
                                         >
                                         <label class="form-check-label" for="{{ day }}">{{ day }}</label><br>
                                     {% endfor %}
@@ -153,6 +148,7 @@ Available Blocks
                                                type="checkbox"
                                                id="{{ type }}"
                                                name="type"
+                                               value="{{ type }}"
                                         >
                                         <label class="form-check-label" for="{{ type }}">{{ type.title() }}</label><br>
                                     {% endfor %}

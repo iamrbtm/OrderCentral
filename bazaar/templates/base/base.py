@@ -26,7 +26,7 @@ def home():
     countinterest = db.session.query(func.count(Booking.id)).filter(Booking.cl_interested == True).filter(
         and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).scalar()
     interests = db.session.query(Booking).filter(Booking.cl_interested == True).filter(
-        and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).all()
+        and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).order_by(Booking.info_datestart).all()
 
     countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).filter(and_(
         Booking.cl_appapproved == False, Booking.cl_interested == True)).scalar()
