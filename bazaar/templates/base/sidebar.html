@@ -11,10 +11,10 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link collapsed" data-bs-target="#lists-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-list-columns-reverse"></i><span>Lists</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="reports-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="lists-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ url_for('masterlist.masterlist_home', type='all') }}">
                         <i class="bi bi-circle"></i><span>All</span>
@@ -28,7 +28,7 @@
                     </li>
                 {% endfor %}
             </ul>
-        </li><!-- End reports Nav -->
+        </li><!-- End lists Nav -->
 
 
         <!--Reports-->

@@ -1,10 +1,16 @@
+import asyncio
+
+import aiosqlite
 from flask import (
     Blueprint,
-    render_template, request
+    render_template,
+    request,
+    redirect, url_for
 )
 from flask_login import login_required, current_user
 from sqlalchemy import and_
 
+import bazaar.utilities
 from bazaar.models import *
 from bazaar import db
 from bazaar.utilities import get_types
@@ -61,6 +67,34 @@ def importfile():
     from bazaar.importfile import main
     main()
     return render_template("base/base.html", user=User)
+
+
+@base.route('/importzipcodes')
+def importzipcodes():
+    async def import_data(asyncsql):
+        # Connect to the database asynchronously
+        async with aiosqlite.connect('bazaar/database/testing.db') as conn:
+            c = await conn.cursor()
+
+            # Split the insert statements into a list
+            statements = asyncsql.split(';')
+
+            # Execute the insert statements asynchronously
+            for statement in statements:
+                await c.execute(statement)
+
+            # Commit the changes
+            await conn.commit()
+
+    # Read the insert statements from the file
+    with open('bazaar/templates/base/USZip.sql', 'r') as file:
+        sql = file.read()
+
+    # Start the event loop and run the import process asynchronously
+    asyncio.run(import_data(sql))
+
+    bazaar.utilities.vacDB()
+    return redirect(url_for('base.home'))
 
 
 @base.route("/profile", methods=["GET", "POST"])

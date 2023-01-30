@@ -36,6 +36,9 @@ class User(db.Model, UserMixin):
     def fulladdress(self):
         return self.address + " " + self.city + ", " + self.state + " " + self.postalcode
 
+    def firstinit_lastname(self):
+        return self.firstname[:1] + " " + self.lastname
+
 
 # noinspection SpellCheckingInspection
 class MasterList(db.Model):
@@ -187,3 +190,16 @@ class Booking(db.Model):
     # Relationships
     notes = db.relationship("Notes", backref=backref("booking_notes", uselist=False))
     event = db.relationship("MasterList", backref=backref("booking_event", uselist=False))
+
+
+class USZip(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    zip = db.Column(db.String(12))
+    type = db.Column(db.String(100))
+    primary_city = db.Column(db.String(100))
+    acceptable_cities = db.Column(db.String(100))
+    state = db.Column(db.String(25))
+    county = db.Column(db.String(100))
+    timezone = db.Column(db.String(100))
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
