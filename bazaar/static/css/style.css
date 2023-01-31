@@ -153,6 +153,21 @@ h6 {
     background-color: #f6f9ff;
 }
 
+.dropdown-menu li {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    right: 100%;
+    top: -7px;
+}
+
+.dropdown-menu > li:hover > .dropdown-submenu {
+    display: block;
+}
+
 @media (min-width: 768px) {
     .dropdown-menu-arrow::before {
         content: "";
@@ -237,7 +252,7 @@ h6 {
     margin-bottom: 30px;
     border: none;
     border-radius: 5px;
-    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    box-shadow: 0 0 30px rgba(1, 41, 112, 0.1);
 }
 
 .card-header,
@@ -428,7 +443,7 @@ h6 {
     transition: all 0.5s;
     z-index: 997;
     height: 60px;
-    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+    box-shadow: 0 2px 20px rgba(1, 41, 112, 0.1);
     background-color: #fff;
     padding-left: 20px;
     /* Toggle Sidebar Button */
@@ -454,7 +469,7 @@ h6 {
         left: 0;
         right: 0;
         padding: 20px;
-        box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+        box-shadow: 0 0 15px 0 rgba(1, 41, 112, 0.1);
         background: white;
         z-index: 9999;
         transition: 0.3s;
@@ -473,6 +488,7 @@ h6 {
     width: 100%;
 }
 
+/*noinspection ALL*/
 .header .search-form input {
     border: 0;
     font-size: 14px;
@@ -657,7 +673,7 @@ h6 {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #aab7cf transparent;
-    box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+    box-shadow: 0 0 20px rgba(1, 41, 112, 0.1);
     background-color: #fff;
 }
 
@@ -733,7 +749,7 @@ h6 {
     font-size: 15px;
     font-weight: 600;
     color: #4154f1;
-    transition: 0.3;
+    transition: 0.3s;
     background: #f6f9ff;
     padding: 10px 15px;
     border-radius: 4px;
@@ -784,9 +800,8 @@ h6 {
     font-size: 14px;
     font-weight: 600;
     color: #012970;
-    transition: 0.3;
-    padding: 10px 0 10px 40px;
     transition: 0.3s;
+    padding: 10px 0 10px 40px;
 }
 
 .sidebar-nav .nav-content a i {
@@ -808,7 +823,7 @@ h6 {
 /* Filter dropdown */
 .filter {
     position: absolute;
-    right: 0px;
+    right: 0;
     top: 15px;
 }
 
@@ -1054,7 +1069,7 @@ h6 {
 }
 
 /*--------------------------------------------------------------
-# Profie Page
+# Profile Page
 --------------------------------------------------------------*/
 .profile .profile-card img {
     max-width: 120px;
@@ -1193,7 +1208,6 @@ h6 {
     border-radius: 0;
     box-shadow: none;
     font-size: 14px;
-    border-radius: 0;
 }
 
 .contact .php-email-form input:focus,

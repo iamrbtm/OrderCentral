@@ -74,7 +74,11 @@
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" type="text/javascript" charset="utf8"></script>
 <!-- Template Main JS File -->
 <script src="{{ url_for('static',filename='js/main.js') }}"></script>
-
+<script>
+    $('.dropdown-submenu').hover(function () {
+        $(this).find('.dropdown-menu').toggleClass('show');
+    });
+</script>
 <!-- Page specific Javascript Scripts -->
 {% block javascripts %}{% endblock javascripts %}
 

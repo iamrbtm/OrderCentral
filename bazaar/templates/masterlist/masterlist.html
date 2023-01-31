@@ -69,7 +69,7 @@ Available Blocks
             <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'">
                 <td>{{ rec.event_name }}</td>
                 <td>{{ rec.venue.city }}</td>
-                <td>{{ rec.updated }}</td>
+                <td>{{ rec.updated|format_date("%Y %b %d") }}</td>
             </tr>
         {% endfor %}
         </tbody>

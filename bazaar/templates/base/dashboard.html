@@ -83,10 +83,10 @@ Available Blocks
                                         {{ booking.event.event_name }}</td>
                                     <td>
                                         {% if booking.info_dateend != booking.info_datestart %}
-                                            {{ booking.info_datestart.strftime("%m/%d") }} -
-                                            {{ booking.info_dateend.strftime("%m/%d") }}
+                                            {{ booking.info_datestart|format_date("%m/%d") }} -
+                                            {{ booking.info_dateend|format_date("%m/%d") }}
                                         {% else %}
-                                            {{ booking.info_datestart.strftime("%m/%d/%y") }}
+                                            {{ booking.info_datestart|format_date("%m/%d/%y") }}
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -123,10 +123,10 @@ Available Blocks
                                     <td>
                                         {% if app.info_datestart != None %}
                                             {% if app.info_dateend != app.info_datestart %}
-                                                {{ app.info_datestart.strftime("%m/%d") }} -
-                                                {{ app.info_dateend.strftime("%m/%d") }}
+                                                {{ app.info_datestart|format_date("%m/%d") }} -
+                                                {{ app.info_dateend|format_date("%m/%d") }}
                                             {% else %}
-                                                {{ app.info_datestart.strftime("%m/%d/%y") }}
+                                                {{ app.info_datestart|format_date("%m/%d/%y") }}
                                             {% endif %}
                                         {% endif %}
                                     </td>
@@ -163,10 +163,10 @@ Available Blocks
                                     <td>
                                         {% if interest.info_datestart != None %}
                                             {% if interest.info_dateend != interest.info_datestart %}
-                                                {{ interest.info_datestart.strftime("%m/%d") }} -
-                                                {{ interest.info_dateend.strftime("%m/%d") }}
+                                                {{ interest.info_datestart|format_date("%m/%d") }} -
+                                                {{ interest.info_dateend|format_date("%m/%d") }}
                                             {% else %}
-                                                {{ interest.info_datestart.strftime("%m/%d/%y") }}
+                                                {{ interest.info_datestart|format_date("%m/%d/%y") }}
                                             {% endif %}
                                         {% endif %}
                                     </td>

@@ -151,8 +151,3 @@ def tick_all_types():
                 if extra in record.event_name.lower():
                     setattr(record, "type_" + type, True)
                     db.session.commit()
-
-
-def vacDB():
-    with db.engine.begin() as conn:
-        conn.execute("VACUUM")

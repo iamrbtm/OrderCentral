@@ -252,7 +252,8 @@ def masterlist_add():
             event_name=data['event_name'],
             website=data['event_website'],
             venuefk=newVenue.id,
-            promoterfk=newPromoter.id
+            promoterfk=newPromoter.id,
+            updated=datetime.date.today()
         )
         db.session.add(newEvent)
         db.session.commit()

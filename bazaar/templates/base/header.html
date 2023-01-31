@@ -23,14 +23,15 @@
 
         <ul class="d-flex align-items-center">
 
-            <li class="nav-item dropdown pe-3"> {# START Profile Dropdown and Pic #}
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
+                   id="navbarProfile">
                     <img src="{{ url_for('static', filename='img/avatar/'+current_user.avatar_filename) }}"
                          alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{ current_user.firstinit_lastname() }}</span>
                 </a><!-- End Profile Image Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" aria-labelledby="navbarProfile">
                     <li class="dropdown-header">
                         <h6>{{ current_user.fullname() }}</h6>
                         <span>{{ current_user.title }}</span>
@@ -48,19 +49,24 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li class="dropdown-item d-flex align-items-center" href="#">
-                        {# Fixme: need utility dropdown sub menu #}This is the menu
-                        <ul class="submenu dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                                <ul class="submenu dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Multi level 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Multi level 2</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Submenu item 4</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 5</a></li>
+                    {# Fixme: need utility dropdown sub menu #}
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-wrench"></i>
+                            Utilities &raquo; </a>
+                        <ul class="dropdown-menu dropdown-submenu">
+                            {% if zipcode_count_check %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('base.importzipcodes') }}">Import
+                                        ZipCodes</a>
+                                </li>
+                            {% endif %}
+                            {% if file_present %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('base.importfile') }}">Import
+                                        festivalnet.com Data</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </li>
                     <li>

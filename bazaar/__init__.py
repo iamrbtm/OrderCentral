@@ -56,11 +56,10 @@ def create_app():
     app.register_blueprint(ml)
     app.register_blueprint(booking)
 
-    from bazaar.models import User
-
     with app.app_context():
         db.create_all()
 
+    from bazaar.models import User
     # User Manager
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"

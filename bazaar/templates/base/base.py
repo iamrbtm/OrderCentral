@@ -1,5 +1,5 @@
 import asyncio
-
+import os
 import aiosqlite
 from flask import (
     Blueprint,
@@ -18,9 +18,26 @@ from bazaar.utilities import get_types
 base = Blueprint("base", __name__)
 
 
+@base.app_context_processor
+def zipcode_qty_check():
+    zipcode_count = db.session.query(func.count(USZip.id)).scalar()
+    checking = zipcode_count == 0
+    return dict(zipcode_count_check=checking)
+
+
+@base.app_template_filter()
+def format_date(item, fmt="%m/%d/%Y"):
+    return item.strftime(fmt)
+
+
+def file_exists(file_path):
+    return os.path.isfile(file_path)
+
+
 @base.context_processor
-def utility_processor():
-    return dict(types=get_types())
+def file_checker():
+    file_path = 'festivalnet_dot_com.csv'
+    return dict(file_present=file_exists(file_path))
 
 
 @base.route("/")
@@ -66,7 +83,7 @@ def home():
 def importfile():
     from bazaar.importfile import main
     main()
-    return render_template("base/base.html", user=User)
+    return redirect(url_for('base.home'))
 
 
 @base.route('/importzipcodes')
@@ -93,7 +110,6 @@ def importzipcodes():
     # Start the event loop and run the import process asynchronously
     asyncio.run(import_data(sql))
 
-    bazaar.utilities.vacDB()
     return redirect(url_for('base.home'))
 
 
