@@ -166,8 +166,9 @@ def import_file(df):
     convertDateTextToBooleanFields()
     tick_all_types()
 
+
 def main():
-    file = 'festivalnet_dot_com.csv'
+    file = 'bazaar/static/import_files/festivalnet_dot_com.csv'
     df = pd.read_csv(file, encoding='utf8')
 
     fix_import(df)

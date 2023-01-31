@@ -36,7 +36,7 @@ def file_exists(file_path):
 
 @base.context_processor
 def file_checker():
-    file_path = 'festivalnet_dot_com.csv'
+    file_path = 'bazaar/static/import_files/festivalnet_dot_com.csv'
     return dict(file_present=file_exists(file_path))
 
 
