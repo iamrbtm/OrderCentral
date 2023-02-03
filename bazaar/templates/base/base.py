@@ -9,7 +9,7 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from sqlalchemy import and_
-
+from datetime import datetime, timedelta
 import bazaar.utilities
 from bazaar.models import *
 from bazaar import db
@@ -28,6 +28,27 @@ def zipcode_qty_check():
 @base.app_template_filter()
 def format_date(item, fmt="%m/%d/%Y"):
     return item.strftime(fmt)
+
+
+@base.app_context_processor
+def notification_count():
+    now = datetime.now()
+    days_from_now = datetime.now() + timedelta(days=5)
+    notcount = db.session.query(func.count(Booking.id)).filter(now <= Booking.next_touch,
+                                                               Booking.next_touch <= days_from_now).scalar()
+    if notcount == 0:
+        return dict(notification_count=None)
+    else:
+        return dict(notification_count=notcount)
+
+
+@base.app_context_processor
+def notifications():
+    now = datetime.now()
+    days_from_now = datetime.now() + timedelta(days=5)
+    nots = db.session.query(Booking).filter(now <= Booking.next_touch,
+                                            Booking.next_touch <= days_from_now).all()
+    return dict(notifications=nots)
 
 
 def file_exists(file_path):

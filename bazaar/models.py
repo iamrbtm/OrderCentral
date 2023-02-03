@@ -181,6 +181,9 @@ class Booking(db.Model):
     cl_wifiavailable = db.Column(db.Boolean, default=False)
     cl_foodavailable = db.Column(db.Boolean, default=False)
     info_foodpurchase = db.Column(db.String(100))
+    days_remaining = db.Column(db.Integer)
+    next_touch = db.Column(db.Date)
+    active = db.Column(db.Boolean, default=True)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 

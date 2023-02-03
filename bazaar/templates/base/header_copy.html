@@ -20,49 +20,10 @@
     -->
 
     <nav class="header-nav ms-auto">
+
         <ul class="d-flex align-items-center">
 
-            <!-- Start Notification Dropdown -->
-            <li class="nav-item dropdown" id="notifications">
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                    <i class="bi bi-arrow-repeat"></i>
-                    <span class="badge bg-primary badge-number">{{ notification_count }}</span>
-                </a><!-- End Notification Icon -->
-
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-
-                    <li class="dropdown-header">
-                        You have {{ notification_count }} new notifications
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    {% for notification in notifications %}
-                        <a href="{{ url_for('booking.home', id=notification.eventid) }}">
-                            <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>{{ notification.event.event_name }}</h4>
-                                    <p>{{ notification.info_datestart|format_date('%m/%d') }}
-                                        {% if notification.info_dateend %}
-                                            - {{ notification.info_dateend |format_date('%m/%d') }}
-                                        {% endif %}
-                                        | {{ notification.event.venue.city }},{{ notification.event.venue.state }}</p>
-                                </div>
-                            </li>
-                        </a>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                    {% endfor %}
-                    <li class="dropdown-footer">
-                        <a href="#">Show all notifications</a>
-                    </li>
-                </ul><!-- End Notification Dropdown Items -->
-
-            </li><!-- End Notification Nav -->
-            <li class="nav-item dropdown pe-3" id="profile">
+            <li class="nav-item dropdown pe-3">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
                    id="navbarProfile">
                     <img src="{{ url_for('static', filename='img/avatar/'+current_user.avatar_filename) }}"
@@ -88,7 +49,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    {# Done: need utility dropdown sub menu #}
+                    {# Fixme: need utility dropdown sub menu #}
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <i class="bi bi-wrench"></i>

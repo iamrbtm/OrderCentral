@@ -10,6 +10,7 @@ from flask import (
 )
 from flask_login import login_required
 
+from bazaar.utilities import *
 from bazaar import db
 from bazaar.models import *
 
@@ -150,4 +151,7 @@ def note_add(recordid):
         )
         db.session.add(newnote)
         db.session.commit()
+
+    next_touch_update(recordid)
+
     return redirect(url_for('booking.home', id=recordid))
