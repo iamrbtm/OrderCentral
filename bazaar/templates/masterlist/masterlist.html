@@ -23,6 +23,7 @@ Available Blocks
 
 {% block page_title %}
     Master List
+    <span><a href="{{ url_for('masterlist.masterlist_add') }}"><i class="bi bi-plus-square-fill"></i> </a> </span>
 {% endblock page_title %}
 
 {% block stylesheets %}
@@ -66,15 +67,20 @@ Available Blocks
         </thead>
         <tbody>
         {% for rec in records %}
-            <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'">
-                {% if rec.id in actives %}
-                    <td>{{ rec.event_name }} - <i class="bi bi-bookmark-fill"></i></td>
-                {% else %}
-                    <td>{{ rec.event_name }}</td>
-                {% endif %}
-                <td>{{ rec.venue.city }}</td>
-                <td>{{ rec.updated|format_date("%Y %b %d") }}</td>
-            </tr>
+            {% if rec.active %}
+                <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'">
+                    {% else %}
+                <tr onclick="location.href='{{ url_for('masterlist.details', id=rec.id) }}'"
+                    style="text-decoration: line-through; color:red">
+            {% endif %}
+        {% if rec.id in actives %}
+            <td>{{ rec.event_name }} - <i class="bi bi-bookmark-fill"></i></td>
+        {% else %}
+            <td>{{ rec.event_name }}</td>
+        {% endif %}
+        <td>{{ rec.venue.city }}</td>
+        <td>{{ rec.updated|format_date("%Y %b %d") }}</td>
+        </tr>
         {% endfor %}
         </tbody>
     </table>

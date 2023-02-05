@@ -81,6 +81,7 @@ class MasterList(db.Model):
     type_flea = db.Column(db.Boolean, default=False)
     type_health = db.Column(db.Boolean, default=False)
     type_market = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 

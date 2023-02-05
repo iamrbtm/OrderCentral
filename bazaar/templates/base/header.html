@@ -41,14 +41,25 @@
                     {% for notification in notifications %}
                         <a href="{{ url_for('booking.home', id=notification.eventid) }}">
                             <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>{{ notification.event.event_name }}</h4>
+
+                                <div class="text-center text-dark align-content-center">
+                                    <span class="mx-3">{{ notification.next_touch.strftime('%b') }}</span><br>
+                                    {{ notification.next_touch.strftime('%d') }}
+                                </div>
+
+                                <div class="align-items-center">
+                                    <h4 class="text-dark">{{ notification.event.event_name }} -
+                                        {% if not notification.cl_feepaid %}
+                                            <span class="text-danger">{{ "${:,.2f}".format(notification.info_boothfee) }}</span>
+                                        {% else %}
+                                            <span class="text-danger">PAID</span>
+                                        {% endif %}</h4>
                                     <p>{{ notification.info_datestart|format_date('%m/%d') }}
                                         {% if notification.info_dateend %}
                                             - {{ notification.info_dateend |format_date('%m/%d') }}
                                         {% endif %}
-                                        | {{ notification.event.venue.city }},{{ notification.event.venue.state }}</p>
+                                        | {{ notification.event.venue.city }},{{ notification.event.venue.state }}
+                                    </p>
                                 </div>
                             </li>
                         </a>

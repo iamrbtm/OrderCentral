@@ -154,22 +154,25 @@ def tick_all_types():
 
 def next_touch_update(recordid):
     nexttouchdays = 0
+    weekday = datetime.datetime.now().weekday()
+
     record = Booking.query.filter(Booking.eventid == recordid).first()
 
     match record.days_remaining:
         case num if num > 181:
-            nexttouchdays = 21
+            nexttouchdays = 15
         case num if num in range(91, 180):
-            nexttouchdays = 14
+            nexttouchdays = 10
         case num if num in range(15, 90):
             nexttouchdays = 7
         case num if num in range(8, 14):
-            nexttouchdays = 2
+            nexttouchdays = 3
         case num if num in range(1, 7):
-            nexttouchdays = 1
+            nexttouchdays = 2
         case _:
             nexttouchdays = 0
 
+    # Calculate the number of workdays (no weekends) for next touch
     record.next_touch = datetime.datetime.now() + datetime.timedelta(days=nexttouchdays)
     db.session.commit()
 
@@ -183,3 +186,10 @@ def get_types_masterlist(tbl=MasterList):
         if "type" in name:
             typelist.append(name.replace("type_", ""))
     return typelist
+
+
+def tempfunc():
+    for record in db.session.query(Booking).filter(Booking.active == True).all():
+        record.days_remaining = (record.info_datestart - datetime.date.today()).days
+        db.session.commit()
+        next_touch_update(record.eventid)

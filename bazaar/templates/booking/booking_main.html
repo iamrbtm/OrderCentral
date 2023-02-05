@@ -563,6 +563,9 @@ Available Blocks
                                         <tr>
                                             <td class="text-start text-uppercase">{{ note.note }}</td>
                                             <td class="text-end">{{ note.date_created.strftime('%x %X') }}</td>
+                                            <td class="text-end"><a
+                                                    href="{{ url_for('booking.note_delete', noteid = note.id, recordid = record.id) }}">
+                                                <i class="bi bi-trash-fill text-danger"></i></a></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

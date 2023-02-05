@@ -136,6 +136,11 @@ def masterlist_edit(id):
 
         # Event Information
         record.event_name = form_data['event_name']
+        if "active" in form_data:
+            record.active = True
+        else:
+            record.active = False
+            
         # Venue
         record.venue.name = form_data['name']
         record.venue.address = form_data['address']

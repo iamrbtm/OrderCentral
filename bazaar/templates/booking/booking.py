@@ -146,6 +146,15 @@ def booking_add(id):
     return redirect(url_for('booking.home', id=id))
 
 
+@booking.route("/bookingdelete/<noteid>/<recordid>")
+@login_required
+def note_delete(noteid, recordid):
+    db.session.query(Notes).filter(Notes.id == noteid).delete()
+    db.session.commit()
+    next_touch_update(recordid)
+    return redirect(url_for('booking.home', id=recordid))
+
+
 @booking.route("/noteadd/<recordid>", methods=['GET', 'POST'])
 @login_required
 def note_add(recordid):

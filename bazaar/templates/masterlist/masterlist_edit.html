@@ -44,6 +44,17 @@ Available Blocks
                             <label for="event_name" class="form-label">Name:</label>
                             <input type="text" class="form-control" name="event_name" id="event_name"
                                    value="{{ record.event_name }}">
+                            <div class="form-check form-switch">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       role="switch"
+                                       id="active"
+                                       name="active"
+                                       value="True"
+                                       {% if record.active %}checked{% endif %}
+                                >
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>
                         </div>
                     </div> <!-- End Event Information -->
 

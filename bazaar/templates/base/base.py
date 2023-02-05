@@ -10,6 +10,8 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import and_
 from datetime import datetime, timedelta
+
+import bazaar.utilities
 from bazaar.models import *
 from bazaar import db
 
@@ -31,9 +33,12 @@ def format_date(item, fmt="%m/%d/%Y"):
 @base.app_context_processor
 def notification_count():
     now = datetime.now()
-    days_from_now = datetime.now() + timedelta(days=5)
-    notcount = db.session.query(func.count(Booking.id)).filter(now <= Booking.next_touch,
-                                                               Booking.next_touch <= days_from_now).scalar()
+
+    days_from_now = datetime.now() + timedelta(days=1)
+    notcount = db.session.query(func.count(Booking.id)).filter(
+        Booking.active == True,
+        Booking.next_touch <= days_from_now
+    ).scalar()
     if notcount == 0:
         return dict(notification_count=None)
     else:
@@ -42,10 +47,11 @@ def notification_count():
 
 @base.app_context_processor
 def notifications():
-    now = datetime.now()
-    days_from_now = datetime.now() + timedelta(days=5)
-    nots = db.session.query(Booking).filter(now <= Booking.next_touch,
-                                            Booking.next_touch <= days_from_now).all()
+    days_from_now = datetime.now() + timedelta(days=1)
+    nots = db.session.query(Booking).filter(
+        Booking.active == True,
+        Booking.next_touch <= days_from_now
+    ).order_by(Booking.next_touch).all()
     return dict(notifications=nots)
 
 
@@ -152,3 +158,9 @@ def profile():
 def transfer_data():
     from bazaar.move_bookings_to_dfp import transfer_data
     transfer_data()
+
+
+@base.route("/tempfunc")
+@login_required
+def tempfunc():
+    bazaar.utilities.tempfunc()
