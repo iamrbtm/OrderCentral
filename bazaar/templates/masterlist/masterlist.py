@@ -10,17 +10,6 @@ from bazaar.utilities import *
 ml = Blueprint("masterlist", __name__, url_prefix="/masterlist")
 
 
-def get_types_masterlist(tbl=MasterList):
-    from sqlalchemy import inspect
-    inst = inspect(tbl)
-    attr_names = [c_attr.key for c_attr in inst.mapper.column_attrs]
-    typelist = []
-    for name in attr_names:
-        if "type" in name:
-            typelist.append(name.replace("type_", ""))
-    return typelist
-
-
 @ml.route("/details/<id>")
 @login_required
 def details(id):
@@ -384,5 +373,7 @@ def masterlist_home(type):
             records = db.session.query(MasterList).filter(MasterList.type_market == True).all()
         case _:
             records = db.session.query(MasterList).all()
-    contents = {"user": User, "records": records, "types": types}
+
+    activities = [rec.eventid for rec in db.session.query(Booking).filter(Booking.active == True).all()]
+    contents = {"user": User, "records": records, "types": types, "actives": activities}
     return render_template("masterlist/masterlist.html", **contents)

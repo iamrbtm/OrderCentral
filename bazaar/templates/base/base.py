@@ -10,10 +10,8 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import and_
 from datetime import datetime, timedelta
-import bazaar.utilities
 from bazaar.models import *
 from bazaar import db
-from bazaar.utilities import get_types
 
 base = Blueprint("base", __name__)
 
@@ -67,9 +65,9 @@ def file_checker():
 def home():
     countrec = db.session.query(func.count(MasterList.id)).scalar()
 
-    countinterest = db.session.query(func.count(Booking.id)).filter(Booking.cl_interested == True).filter(
+    countinterest = db.session.query(func.count(Booking.id)).filter(Booking.active == True).filter(
         and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).scalar()
-    interests = db.session.query(Booking).filter(Booking.cl_interested == True).filter(
+    interests = db.session.query(Booking).filter(Booking.active == True).filter(
         and_(Booking.cl_appsubmission == False, Booking.cl_appapproved == False)).order_by(Booking.info_datestart).all()
 
     countapps = db.session.query(func.count(Booking.id)).filter(Booking.cl_appsubmission == True).filter(and_(
@@ -148,37 +146,9 @@ def profile():
 
     return render_template("base/users-profile.html", user=User)
 
-# @base.route("/profile", methods=["GET", "POST"])
-# @login_required
-# def profile():
-#     usr = db.session.query(User).filter(User.id == flask_login.current_user.id).first()
-#
-#     if request.method == "POST":
-#         if request.form.get("where") == "picture":
-#             filename = avatar.save(request.files['picture'])
-#             path = '/app/img/avatars'
-#
-#             # Save to db
-#             current_user.avatar_filename = filename
-#             current_user.avatar_url = os.path.join(path,filename)
-#
-#         elif request.form.get("where") == "contact":
-#             current_user.firstname = request.form.get("firstname")
-#             current_user.lastname = request.form.get("lastname")
-#             current_user.address = request.form.get("address")
-#             current_user.city = request.form.get("city")
-#             current_user.state = request.form.get("state")
-#             current_user.postalcode = request.form.get("postalcode")
-#             current_user.phone = format_tel(request.form.get("phone"))
-#             current_user.dob = request.form.get("dob")
-#
-#         elif request.form.get("where") == "user":
-#             current_user.username = request.form.get('username')
-#             current_user.email = request.form.get('email')
-#
-#         db.session.commit()
-#         flash("Information Saved")
-#         return redirect(url_for("base.profile"))
-#
-#     states = db.session.query(States).all()
-#     return render_template("app/base/profile.html", user=User, states=states)
+
+@base.route("/transfer_data", methods=["GET", "POST"])
+@login_required
+def transfer_data():
+    from bazaar.move_bookings_to_dfp import transfer_data
+    transfer_data()

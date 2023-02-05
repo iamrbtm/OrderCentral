@@ -89,6 +89,8 @@ def file_view(id, filename):
 @booking.route("/<bookingid>/<eventid>/bookingedit", methods=['POST'])
 @login_required
 def booking_edit(bookingid, eventid):
+    from bazaar.move_bookings_to_dfp import transfer_data
+
     booking = db.session.query(Booking).filter(Booking.id == bookingid).first()
     if request.method == "POST":
         attr_names = [c_attr.key for c_attr in inspect(Booking).mapper.column_attrs]
@@ -125,6 +127,7 @@ def booking_edit(bookingid, eventid):
                             else:
                                 setattr(booking, name, data[name])
             db.session.commit()
+    transfer_data()
     return redirect(url_for('booking.home', id=eventid))
 
 
@@ -134,10 +137,12 @@ def booking_add(id):
     booking = db.session.query(Booking).filter(Booking.eventid == id).all()
     if len(booking) == 0:
         newbooking = Booking(
-            eventid=id
+            eventid=id,
+            cl_interested=True
         )
         db.session.add(newbooking)
         db.session.commit()
+    transfer_data()
     return redirect(url_for('booking.home', id=id))
 
 

@@ -7,7 +7,6 @@ import phonenumbers
 import usaddress
 
 from bazaar.models import *
-from bazaar.templates.masterlist.masterlist import get_types_masterlist
 
 
 def last_specified_day_of_month(month, year, day_of_week):
@@ -173,3 +172,14 @@ def next_touch_update(recordid):
 
     record.next_touch = datetime.datetime.now() + datetime.timedelta(days=nexttouchdays)
     db.session.commit()
+
+
+def get_types_masterlist(tbl=MasterList):
+    from sqlalchemy import inspect
+    inst = inspect(tbl)
+    attr_names = [c_attr.key for c_attr in inst.mapper.column_attrs]
+    typelist = []
+    for name in attr_names:
+        if "type" in name:
+            typelist.append(name.replace("type_", ""))
+    return typelist

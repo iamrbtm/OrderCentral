@@ -145,7 +145,7 @@ def import_file(df):
             print(eventid)
         else:
             # check each element to see what has changed
-            # TODO: check each element to see what has changed... if something changes write the changes to the database
+            # Done: check each element to see what has changed... if something changes write the changes to the database
             if event_in_db[0].event_name != row['name']:
                 event_in_db[0].event_name = row['name']
             if event_in_db[0].updated != row['updated']:
