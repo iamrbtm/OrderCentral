@@ -176,7 +176,7 @@ class Booking(db.Model):
     info_timeend = db.Column(db.Time)
     info_loadindatetime = db.Column(db.DateTime)
     info_loadoutdatetime = db.Column(db.DateTime)
-    info_boothfee = db.Column(db.Float)
+    info_boothfee = db.Column(db.Float, default=0.0)
     info_whatfeeincludes = db.Column(db.Text)
     info_boothlocation = db.Column(db.String(100))
     cl_wifiavailable = db.Column(db.Boolean, default=False)

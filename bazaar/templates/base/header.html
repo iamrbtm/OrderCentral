@@ -54,6 +54,7 @@
                                         {% else %}
                                             <span class="text-danger">PAID</span>
                                         {% endif %}</h4>
+                                    <p class="small text-muted">{{ notification.event.promoter.name }}</p>
                                     <p>{{ notification.info_datestart|format_date('%m/%d') }}
                                         {% if notification.info_dateend %}
                                             - {{ notification.info_dateend |format_date('%m/%d') }}

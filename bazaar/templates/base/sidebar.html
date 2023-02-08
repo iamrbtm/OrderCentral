@@ -27,6 +27,11 @@
                         </a>
                     </li>
                 {% endfor %}
+                <li>
+                    <a href="{{ url_for('masterlist.masterlist_home', type="disabled") }}">
+                        <i class="bi bi-circle"></i><span>Disabled</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End lists Nav -->
 

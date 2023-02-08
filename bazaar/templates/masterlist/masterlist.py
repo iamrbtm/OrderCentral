@@ -94,7 +94,7 @@ def details(id):
         if getattr(record, "type_" + type):
             types.append(type.title())
 
-    persons = db.session.query(People).filter(People.promoterfk == id).all()
+    persons = db.session.query(People).filter(People.promoterfk == record.promoter.id).all()
 
     contents = {"user": User, "record": record, "full_text": full_text,
                 "date_list": date_list, "notes": notes, "types": types,
@@ -140,7 +140,7 @@ def masterlist_edit(id):
             record.active = True
         else:
             record.active = False
-            
+
         # Venue
         record.venue.name = form_data['name']
         record.venue.address = form_data['address']
@@ -305,6 +305,7 @@ def tick_types():
 @login_required
 def person_add(id):
     if request.method == "POST":
+        promoterfk = MasterList.query.filter_by(id=id).first().promoterfk
         data = request.form.to_dict()
         addperson = People(
             name=data['name'],
@@ -312,7 +313,7 @@ def person_add(id):
             phone=bazaar.utilities.format_phone(data['phone']),
             fax=bazaar.utilities.format_phone(data['fax']),
             email=data['email'],
-            promoterfk=id
+            promoterfk=promoterfk
         )
         db.session.add(addperson)
         db.session.commit()
@@ -353,7 +354,7 @@ def note_add(recordid):
         )
         db.session.add(newnote)
         db.session.commit()
-    return redirect(url_for('masterlist.details', id=id))
+    return redirect(url_for('masterlist.details', id=recordid))
 
 
 @ml.route("/list/<type>")
@@ -363,21 +364,28 @@ def masterlist_home(type):
 
     match type:
         case "bazaar":
-            records = db.session.query(MasterList).filter(MasterList.type_bazaar == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_bazaar == True,
+                                                          MasterList.active == True).all()
         case "art":
-            records = db.session.query(MasterList).filter(MasterList.type_art == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_art == True, MasterList.active == True).all()
         case "holiday":
-            records = db.session.query(MasterList).filter(MasterList.type_holiday == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_holiday == True,
+                                                          MasterList.active == True).all()
         case "festival":
-            records = db.session.query(MasterList).filter(MasterList.type_festival == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_festival == True,
+                                                          MasterList.active == True).all()
         case "flea":
-            records = db.session.query(MasterList).filter(MasterList.type_flea == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_flea == True, MasterList.active == True).all()
         case "health":
-            records = db.session.query(MasterList).filter(MasterList.type_health == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_health == True,
+                                                          MasterList.active == True).all()
         case "market":
-            records = db.session.query(MasterList).filter(MasterList.type_market == True).all()
+            records = db.session.query(MasterList).filter(MasterList.type_market == True,
+                                                          MasterList.active == True).all()
+        case "disabled":
+            records = db.session.query(MasterList).filter(MasterList.active == False).all()
         case _:
-            records = db.session.query(MasterList).all()
+            records = db.session.query(MasterList).filter(MasterList.active == True).all()
 
     activities = [rec.eventid for rec in db.session.query(Booking).filter(Booking.active == True).all()]
     contents = {"user": User, "records": records, "types": types, "actives": activities}

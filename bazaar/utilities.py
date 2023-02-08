@@ -2,6 +2,7 @@ import calendar
 import datetime
 import re
 from calendar import day_name, month_name
+from dateutil.rrule import MONTHLY, MO, TU, WE, TH, FR, SA, SU, rrule
 
 import phonenumbers
 import usaddress
@@ -190,6 +191,62 @@ def get_types_masterlist(tbl=MasterList):
 
 def tempfunc():
     for record in db.session.query(Booking).filter(Booking.active == True).all():
-        record.days_remaining = (record.info_datestart - datetime.date.today()).days
+        record.days_remaining = calc_days_remaining(record.info_datestart)
         db.session.commit()
         next_touch_update(record.eventid)
+
+
+def calc_days_remaining(event_start_date):
+    days_remaining = (event_start_date - datetime.date.today()).days
+    return days_remaining
+
+
+def next_business_day(start_day=datetime.date.today()):
+    import holidays
+    HOLIDAYS = holidays.US()
+    ONE_DAY = datetime.timedelta(days=1)
+    temp_day = start_day
+    next_day = temp_day + ONE_DAY
+    while next_day.weekday() in [5, 6] or next_day in HOLIDAYS:
+        next_day += ONE_DAY
+    temp_day = next_day
+    return temp_day
+
+
+def get_nth_week(recordid, year=datetime.date.today().year):
+    record = db.session.query(MasterList).filter(MasterList.id == recordid).first()
+
+    months = dict(zip(month_name, range(13)))
+    days = dict(zip(day_name, ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]))
+    weeks = dict(zip(['First', 'Second', 'Third', 'Fourth', 'Last'], range(1, 5, 1)))
+
+    monthlist = []
+    for key, value in zip(months.keys(), months.values()):
+        if value != 0:
+            if getattr(record, key.lower()):
+                monthlist.append(value)
+
+    daylist = []
+    for key, value in zip(days.keys(), days.values()):
+        if value != 0:
+            if getattr(record, key.lower()):
+                daylist.append(value)
+
+    weeklist = []
+    for key, value in zip(weeks.keys(), weeks.values()):
+        if value != 0:
+            if getattr(record, key.lower()):
+                weeklist.append(value)
+
+    datelist = []
+    for month in monthlist:
+        for day in daylist:
+            for week in weeklist:
+                date = list(rrule(MONTHLY,
+                                  byweekday=eval(day + '({})'.format(int(week))),
+                                  dtstart=datetime.datetime(year, month, 1),
+                                  until=datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+                                  ))[0]
+                datelist.append(date)
+
+    return {"min": min(datelist), "max": max(datelist), "all": datelist}

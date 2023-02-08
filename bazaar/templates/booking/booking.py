@@ -47,7 +47,7 @@ def home(id):
         filedic[i]['deletelink'] = url_for('booking.file_delete', id=id, filename=file)
         i += 1
 
-    persons = db.session.query(People).filter(People.promoterfk == id).all()
+    persons = db.session.query(People).filter(People.promoterfk == record.promoter.id).all()
     booking = db.session.query(Booking).filter(Booking.eventid == id).first()
     notes = db.session.query(Notes).filter(or_(Notes.masterlistid == id, Notes.bookingid == booking.id)) \
         .order_by(desc(Notes.date_created)).all()
@@ -89,8 +89,6 @@ def file_view(id, filename):
 @booking.route("/<bookingid>/<eventid>/bookingedit", methods=['POST'])
 @login_required
 def booking_edit(bookingid, eventid):
-    from bazaar.move_bookings_to_dfp import transfer_data
-
     booking = db.session.query(Booking).filter(Booking.id == bookingid).first()
     if request.method == "POST":
         attr_names = [c_attr.key for c_attr in inspect(Booking).mapper.column_attrs]
@@ -127,7 +125,6 @@ def booking_edit(bookingid, eventid):
                             else:
                                 setattr(booking, name, data[name])
             db.session.commit()
-    transfer_data()
     return redirect(url_for('booking.home', id=eventid))
 
 
@@ -136,13 +133,20 @@ def booking_edit(bookingid, eventid):
 def booking_add(id):
     booking = db.session.query(Booking).filter(Booking.eventid == id).all()
     if len(booking) == 0:
+        parsed_dates = get_nth_week(id)
         newbooking = Booking(
             eventid=id,
-            cl_interested=True
+            cl_interested=True,
+            next_touch=next_business_day(),
+            info_datestart=parsed_dates['min'],
+            info_dateend=parsed_dates['max']
         )
         db.session.add(newbooking)
         db.session.commit()
-    transfer_data()
+        db.session.refresh(newbooking)
+        newbooking.days_remaining = calc_days_remaining(newbooking.info_datestart)
+        db.session.commit()
+        
     return redirect(url_for('booking.home', id=id))
 
 
