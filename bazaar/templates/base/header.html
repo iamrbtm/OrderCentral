@@ -106,6 +106,14 @@
                             <i class="bi bi-wrench"></i>
                             Utilities &raquo; </a>
                         <ul class="dropdown-menu dropdown-submenu">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('base.export_csv') }}">Export
+                                    People - CSV</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('base.export_vcard') }}">Export
+                                    People - VCard</a>
+                            </li>
                             {% if zipcode_count_check %}
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('base.importzipcodes') }}">Import

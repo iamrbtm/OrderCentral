@@ -5,21 +5,25 @@ from flask import (
     Blueprint,
     render_template,
     request,
-    redirect, url_for
+    redirect, url_for, send_file
 )
 from flask_login import login_required, current_user
 from sqlalchemy import and_
 from datetime import datetime, timedelta
 
-import bazaar.utilities
 from bazaar.models import *
 from bazaar import db
+from bazaar.export import *
 
 base = Blueprint("base", __name__)
 
 
 @base.app_context_processor
 def zipcode_qty_check():
+    """
+    Checks to see if there are any records in the USZip table.
+    It returns a dict with the number of records present in the table.
+    """
     zipcode_count = db.session.query(func.count(USZip.id)).scalar()
     checking = zipcode_count == 0
     return dict(zipcode_count_check=checking)
@@ -32,8 +36,6 @@ def format_date(item, fmt="%m/%d/%Y"):
 
 @base.app_context_processor
 def notification_count():
-    now = datetime.now()
-
     days_from_now = datetime.now() + timedelta(days=1)
     notcount = db.session.query(func.count(Booking.id)).filter(
         Booking.active == True,
@@ -155,14 +157,17 @@ def profile():
     return render_template("base/users-profile.html", user=User)
 
 
-@base.route("/transfer_data", methods=["GET", "POST"])
+@base.route("/export_csv")
 @login_required
-def transfer_data():
-    from bazaar.move_bookings_to_dfp import transfer_data
-    transfer_data()
+def export_csv():
+    people = db.session.query(People).all()
+    filename = create_csv(people)
+    return send_file(filename, as_attachment=True)
 
 
-@base.route("/tempfunc")
+@base.route("/export_vcard")
 @login_required
-def tempfunc():
-    bazaar.utilities.tempfunc()
+def export_vcard():
+    people = db.session.query(People).all()
+    filename = create_vcard(people)
+    return send_file(filename, as_attachment=True)
