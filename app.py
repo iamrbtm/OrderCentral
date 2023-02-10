@@ -1,4 +1,4 @@
-from bazaar import create_app
+from ordercentral import create_app
 
 if __name__ == "__main__":
     app = create_app()

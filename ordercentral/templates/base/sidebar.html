@@ -16,19 +16,12 @@
             </a>
             <ul id="lists-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{ url_for('masterlist.masterlist_home', type='all') }}">
+                    <a href="#">
                         <i class="bi bi-circle"></i><span>All</span>
                     </a>
                 </li>
-                {% for type in types %}
-                    <li>
-                        <a href="{{ url_for('masterlist.masterlist_home', type=type) }}">
-                            <i class="bi bi-circle"></i><span>{{ type.title() }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
                 <li>
-                    <a href="{{ url_for('masterlist.masterlist_home', type="disabled") }}">
+                    <a href="#">
                         <i class="bi bi-circle"></i><span>Disabled</span>
                     </a>
                 </li>

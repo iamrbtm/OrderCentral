@@ -1,0 +1,118 @@
+<!--
+=========================================================
+* Template for MasterList
+=========================================================
+Date:
+Author:
+Purpose:
+
+Available Blocks
+* title
+* page_title
+* stylesheets
+* notifications
+* main_content
+* javascripts
+=========================================================
+-->
+{% extends "base/base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block page_title %}
+    Dashboard
+{% endblock page_title %}
+
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block notifications %}
+{% endblock notifications %}
+
+{% block javascripts %}
+{% endblock javascripts %}
+
+{% block main_content %}
+    <div class="container-fluid">
+        <button class="btn btn-lg btn-outline-primary">New Order</button>
+        <div class="row">
+            {# Orders #}
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">
+                        Orders
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            ...
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {# Prepping #}
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">
+                        Prepping Order
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            ...
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Printing #}
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">
+                        Printing
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            ...
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Poat Processing #}
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">
+                        Post Processing
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            ...
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Ready to Ship #}
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">
+                        Shipping
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            ...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main_content %}

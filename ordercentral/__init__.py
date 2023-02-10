@@ -1,35 +1,21 @@
-import datetime
-
-from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_uploads import UploadSet, configure_uploads, ALL
 from dotenv import load_dotenv
 from flask_mail import Mail
-from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
 
 db = SQLAlchemy()
-booking = UploadSet("booking", ALL)
-uploads = UploadSet("uploads", ALL)
 mail = Mail()
 
 
 def create_app():
-    global booking
     app = Flask(__name__)
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    # Flask-Uploads & Static
-    app.config["UPLOADED_UPLOADS_DEST"] = "bazaar/static/uploads"
-    app.config["UPLOADED_BOOKING_DEST"] = "bazaar/templates/booking/uploads"
-    configure_uploads(app, uploads)
-    configure_uploads(app, booking)
 
     app._static_folder = "static"
 
@@ -50,39 +36,16 @@ def create_app():
     config_mail(app)
 
     # Blueprints
-    from bazaar.auth import auth
-    from bazaar.templates.base.base import base
-    from bazaar.templates.masterlist.masterlist import ml
-    from bazaar.templates.booking.booking import booking
+    from ordercentral.auth import auth
+    from ordercentral.templates.base.base import base
 
     app.register_blueprint(base)
     app.register_blueprint(auth)
-    app.register_blueprint(ml)
-    app.register_blueprint(booking)
 
     with app.app_context():
         db.create_all()
 
-    # Background Scheduler
-    def update_booking_days_remaining():
-        with app.app_context():
-            from bazaar.models import Booking
-            for record in db.session.query(Booking).all():
-                # if event is past, days left to none and active to false
-                if record.info_datestart < datetime.date.today():
-                    record.active = False
-                    record.days_remaining = None
-                    db.session.commit()
-                # if event is current, days left calculated
-                elif record.active:
-                    record.days_remaining = (record.info_datestart - datetime.date.today()).days
-                    db.session.commit()
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(update_booking_days_remaining, IntervalTrigger(days=1), next_run_time=datetime.datetime.now())
-    scheduler.start()
-
-    from bazaar.models import User
+    from ordercentral.models import User
     # User Manager
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
