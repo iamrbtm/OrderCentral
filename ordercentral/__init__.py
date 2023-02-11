@@ -38,9 +38,11 @@ def create_app():
     # Blueprints
     from ordercentral.auth import auth
     from ordercentral.templates.base.base import base
+    from ordercentral.templates.orders.orders import order
 
     app.register_blueprint(base)
     app.register_blueprint(auth)
+    app.register_blueprint(order)
 
     with app.app_context():
         db.create_all()

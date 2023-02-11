@@ -40,6 +40,62 @@ class User(db.Model, UserMixin):
         return self.firstname[:1] + " " + self.lastname
 
 
+class Orders(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ordernum = db.Column(db.Integer)
+    total = db.Column(db.Float)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    personfk = db.Column(db.Integer, db.ForeignKey('people.id'))
+
+    # Relationships
+    person = db.relationship("People", backref=backref("people", uselist=False))
+
+
+class OrderLineItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    saleprice = db.Column(db.Float)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    orderfk = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    productfk = db.Column(db.Integer, db.ForeignKey('product.id'))
+
+    # Relationships
+    orders = db.relationship("Orders", backref=backref("orders", uselist=False))
+    products = db.relationship("Product", backref=backref("product", uselist=False))
+
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cost = db.Column(db.Float)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+
+class People(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fname = db.Column(db.String(100))
+    lname = db.Column(db.String(100))
+    mailing_address = db.Column(db.String(100))
+    mailing_city = db.Column(db.String(100))
+    mailing_state = db.Column(db.String(2))
+    mailing_zipcode = db.Column(db.String(15))
+    phone = db.Column(db.String(20))
+    email = db.Column(db.String(150))
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def full_name(self):
+        return self.fname + " " + self.lname
+
+    def one_line_address(self):
+        return self.mailing_address + " " + self.mailing_city + ", " + self.mailing_state + " " + self.mailing_zipcode
+
+
 class USZip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     zip = db.Column(db.String(12))
