@@ -4,10 +4,11 @@ sqlalchemy
 Werkzeug
 alembic
 WTForms
-phonenumbers
+phonenumbers==8.13.6
 aiosqlite
 APScheduler
 flask_sqlalchemy
 flask_login
 flask_migrate
 flask_mail
+pyclean

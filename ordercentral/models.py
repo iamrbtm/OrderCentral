@@ -71,7 +71,10 @@ class OrderLineItem(db.Model):
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
     cost = db.Column(db.Float)
+    qty = db.Column(db.Integer)
+    event = db.Column(db.String(200))
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
