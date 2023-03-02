@@ -23,7 +23,7 @@ def create_app():
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
     # Database Setup
-    db_path = os.path.join(os.path.dirname(__file__), 'database', 'testing.db')
+    db_path = os.path.join(os.path.dirname(__file__), 'database', 'ordercentral.db')
     db_uri = 'sqlite:///{}'.format(db_path)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TIMEZONE'] = 'local'
@@ -39,10 +39,14 @@ def create_app():
     from ordercentral.auth import auth
     from ordercentral.templates.base.base import base
     from ordercentral.templates.orders.orders import order
+    from ordercentral.templates.ornament1.ornament1 import orn1
+    from ordercentral.templates.seed_starter.seedstart import seed
 
     app.register_blueprint(base)
     app.register_blueprint(auth)
     app.register_blueprint(order)
+    app.register_blueprint(orn1)
+    app.register_blueprint(seed)
 
     with app.app_context():
         db.create_all()

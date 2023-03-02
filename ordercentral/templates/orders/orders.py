@@ -15,30 +15,43 @@ from ordercentral import db
 order = Blueprint("order", __name__, url_prefix='/order')
 
 
+def calculate_total(id):
+    record = db.session.query(Orders).filter(Orders.id == id).first()
+    order_total = db.session.query(func.sum(OrderLineItem.saleprice)).filter(OrderLineItem.orderfk == id).scalar()
+    if order_total is None:
+        record.total = 0
+    else:
+        record.total = order_total
+    db.session.commit()
+
+
 @order.route("/init")
 @login_required
 def order_init():
+    ordernum = 0
+    newrecid = 0
     exists = True
-    ordernum = int(str(datetime.now().year) + "" + (str(random.randint(1, 9999))))
-    while not exists:
+    while exists:
+        ordernum = int(str(datetime.now().year) + "" + (str(random.randint(1, 9999))))
         exists = bool(db.session.query(Orders.id).filter(Orders.ordernum == ordernum).first())
 
-    if not exists:
-        newrec = Orders(
-            ordernum=ordernum
-        )
-        db.session.add(newrec)
-        db.session.commit()
-        db.session.refresh(newrec)
-
-    return redirect(url_for('order.order_new', id=newrec.id))
+    newrec = Orders(
+        ordernum=ordernum
+    )
+    db.session.add(newrec)
+    db.session.commit()
+    db.session.refresh(newrec)
+    newrecid = newrec.id
+    return redirect(url_for('order.order_new', id=newrecid))
 
 
 @order.route("/new/<id>", methods=['GET', 'POST'])
 @login_required
 def order_new(id):
+    calculate_total(id)
     states = [r.state for r in db.session.query(USZip.state).order_by(USZip.state).distinct()]
     record = db.session.query(Orders).filter(Orders.id == id).first()
+    items = db.session.query(OrderLineItem).filter(OrderLineItem.orderfk == id).all()
     if request.method == "POST":
         data = request.form.to_dict()
 
@@ -84,5 +97,5 @@ def order_new(id):
         return redirect(url_for('order.order_new', id=id))
 
     content = {"user": User, "states": states, "record": record,
-               }
+               "items": items, }
     return render_template("orders/orders_new.html", **content)

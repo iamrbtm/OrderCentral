@@ -3,6 +3,7 @@ from sqlalchemy.orm import backref
 from sqlalchemy.sql import func
 
 from ordercentral import db
+import json
 
 
 # Users
@@ -57,6 +58,7 @@ class Orders(db.Model):
 class OrderLineItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     saleprice = db.Column(db.Float)
+    data = db.Column(db.JSON)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -68,13 +70,19 @@ class OrderLineItem(db.Model):
     orders = db.relationship("Orders", backref=backref("orders", uselist=False))
     products = db.relationship("Product", backref=backref("product", uselist=False))
 
+    @property
+    def json_data(self):
+        return json.loads(self.data)
+
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
+    display_name = db.Column(db.String(150))
     cost = db.Column(db.Float)
     qty = db.Column(db.Integer)
     event = db.Column(db.String(200))
+    bookingid = db.Column(db.Integer)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
