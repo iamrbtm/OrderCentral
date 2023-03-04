@@ -26,129 +26,183 @@ Available Blocks
 {% endblock page_title %}
 
 {% block stylesheets %}
+    <link href="{{ url_for('static',filename='css/progress_bar.css') }}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block notifications %}
 {% endblock notifications %}
 
-{% block javascripts %}
-{% endblock javascripts %}
-
 {% block main_content %}
     <div class="container">
-        <div class="row row-cols-1">
-            <div class="col order-xl-0 order-md-2">
-                <div id="customer" class="card order-3">
-                    <div class="card-header">
-                        <h5>Customer Information</h5>
-                    </div>
+        <div class="row">
+            <div class="col-7">
+                <div id="statuscard" class="card">
                     <div class="card-body">
-                        <form class="form" method="post">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-floating mb-1">
-                                        <input class="form-control" id="fname" name="fname" type="text"
-                                               placeholder="First Name" value="{{ record.person.fname }}"
-                                        />
-                                        <label for="firstName">First Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="lname" name="lname" type="text"
-                                               placeholder="Last Name" value="{{ record.person.lname }}"
-                                        />
-                                        <label for="lastName">Last Name</label>
-                                    </div>
+                        <div class="row row-cols-1">
+                            <div class="col pt-4">
+                                <div class="pbcontainer">
+                                    <ul class="progressbar">
+                                        <li {% if record.status[0].confirmed %}class="active"{% endif %}>Confirmed
+                                        </li>
+                                        <li {% if record.status[0].prep %}class="active"{% endif %}>Pre</li>
+                                        <li {% if record.status[0].print %}class="active"{% endif %}>Print</li>
+                                        <li {% if record.status[0].post %}class="active"{% endif %}>Post</li>
+                                        <li {% if record.status[0].ready2ship %}class="active"{% endif %}>
+                                            Ready2Ship
+                                        </li>
+                                        <li {% if record.status[0].shipped %}class="active"{% endif %}>Shipped</li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="mailing_address" name="mailing_address"
-                                               type="text"
-                                               placeholder="Address" value="{{ record.person.mailing_address }}"
-                                        />
-                                        <label for="address">Address</label>
-                                    </div>
+                            <form id="status_form" method="post" class="form"
+                                  action="{{ url_for('order.change_status', recordid=record.id) }}">
+                                <div class="form-floating">
+                                    <select class="form-select" id="status" name="status"
+                                            aria-label="Status">
+                                        <option>Select the next step</option>
+                                        <option value="Confirmed">Order Confirmed and Paid For</option>
+                                        <option value="Pre">Order enters Pre Production</option>
+                                        <option value="Print">Order is being Printed</option>
+                                        <option value="Post">Order enters Post production</option>
+                                        <option value="ReadyShip">Order is Ready to ship</option>
+                                        <option value="Shipped">Order has been shipped</option>
+                                    </select>
+                                    <label for="status">Status</label>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="mailing_city" name="mailing_city" type="text"
-                                               placeholder="City" value="{{ record.person.mailing_city }}"
-                                        />
-                                        <label for="city">City</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="mailing_state" name="mailing_state" type="text"
-                                               placeholder="State" value="{{ record.person.mailing_state }}"
-                                        />
-                                        <label for="state">State</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="mailing_zipcode" name="mailing_zipcode"
-                                               type="text"
-                                               placeholder="Zipcode" value="{{ record.person.mailing_zipcode }}"
-                                        />
-                                        <label for="zipcode">Zipcode</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="phone" name="phone" type="text"
-                                               placeholder="Phone" value="{{ record.person.phone }}"
-                                        />
-                                        <label for="phone">Phone</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-floating mb-2">
-                                        <input class="form-control" id="email" name="email" type="email"
-                                               placeholder="Email Address" data-sb-validations="email"
-                                               value="{{ record.person.email }}"/>
-                                        <label for="emailAddress">Email Address</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <input type="submit" class="btn btn-primary">
-                            </div>
-                        </form>
+                            </form>
+                            <span class="small">
+                                {% if record.status[0].confirmed %}Confirmed:
+                                    {{ record.status[0].confirmed_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                                {% if record.status[0].prep %}<br>Pre Processing:
+                                    {{ record.status[0].prep_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                                {% if record.status[0].print %}<br>Printed:
+                                    {{ record.status[0].print_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                                {% if record.status[0].post %}<br>Post Processing:
+                                    {{ record.status[0].post_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                                {% if record.status[0].ready2ship %}<br>Ready To Ship:
+                                    {{ record.status[0].ready2ship_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                                {% if record.status[0].Shipped %}<br>Shipped:
+                                    {{ record.status[0].Shipped_when.strftime("%a %B %-d %Y @ %-I:%M %p") }}
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col order-xl-1 order-md-0">
-                <div id="additem" class="card order-1">
-                    <div class="card-header">
-                        <h5>Add Item</h5>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="row row-cols-auto">
-                            <div class="col">
+                {% if not record.status[0].confirmed %}
+                    <div class="card p-3">
+                        <div class="row">
+                            <div class="col p-4">
                                 <a href="{{ url_for('ornament1.ornament1_order_new', id=record.id) }}">
-                                    <button class="btn btn-outline-dark">Ornament 1</button>
+                                    <button class="btn btn-outline-primary">Ornament 1</button>
                                 </a>
                             </div>
-                            <div class="col">
+                            <div class="col py-1">
                                 <a href="{{ url_for('seedstart.seedstart_order_new', id=record.id) }}">
-                                    <button class="btn btn-outline-dark">Seed Starters</button>
+                                    <button class="btn btn-outline-primary">Seed Starters</button>
                                 </a>
                             </div>
-                            <div class="col">
-                                <button class="btn btn-outline-dark">Plant Tags</button>
+                            <div class="col py-1">
+                                <button class="btn btn-outline-primary">Plant Tags</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col">
+                        <div id="customer" class="card">
+                            <div class="card-header">
+                                <h5>Customer Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <form class="form" method="post">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-floating mb-1">
+                                                <input class="form-control" id="fname" name="fname" type="text"
+                                                       placeholder="First Name" value="{{ record.person.fname }}"
+                                                />
+                                                <label for="firstName">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="lname" name="lname" type="text"
+                                                       placeholder="Last Name" value="{{ record.person.lname }}"
+                                                />
+                                                <label for="lastName">Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="mailing_address" name="mailing_address"
+                                                       type="text"
+                                                       placeholder="Address" value="{{ record.person.mailing_address }}"
+                                                />
+                                                <label for="address">Address</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="mailing_city" name="mailing_city"
+                                                       type="text"
+                                                       placeholder="City" value="{{ record.person.mailing_city }}"
+                                                />
+                                                <label for="city">City</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="mailing_state" name="mailing_state"
+                                                       type="text"
+                                                       placeholder="State" value="{{ record.person.mailing_state }}"
+                                                />
+                                                <label for="state">State</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="mailing_zipcode" name="mailing_zipcode"
+                                                       type="text"
+                                                       placeholder="Zipcode" value="{{ record.person.mailing_zipcode }}"
+                                                />
+                                                <label for="zipcode">Zipcode</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="phone" name="phone" type="text"
+                                                       placeholder="Phone" value="{{ record.person.phone }}"
+                                                />
+                                                <label for="phone">Phone</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-floating mb-2">
+                                                <input class="form-control" id="email" name="email" type="email"
+                                                       placeholder="Email Address" data-sb-validations="email"
+                                                       value="{{ record.person.email }}"/>
+                                                <label for="emailAddress">Email Address</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div id="items" class="card order-2">
                     <div class="card-header">
@@ -196,5 +250,65 @@ Available Blocks
             </div>
         </div>
     </div>
-    </div>
 {% endblock main_content %}
+
+{% block javascripts %}
+    <script>
+        // Get the select element
+        const statusSelect = document.getElementById("status");
+
+        // Get the current status from the database
+        const confirmed = {{record.status[0].confirmed|lower}};
+        const pre = {{record.status[0].prep|lower}};
+        const print = {{record.status[0].print|lower}};
+        const post = {{record.status[0].post|lower}};
+        const ready2ship = {{record.status[0].ready2ship|lower}};
+        const shipped = {{record.status[0].shipped|lower}};
+
+        // Disable all options by default
+        for (let i = 1; i < statusSelect.options.length; i++) {
+            statusSelect.options[i].disabled = true;
+        }
+
+        // Set up the event listener
+        window.addEventListener("load", function () {
+            // Enable the appropriate options based on the current status
+            if (!confirmed) {
+                // If confirmed is false, enable the confirmed option
+                statusSelect.options[1].disabled = false;
+            }
+            if (confirmed && !pre) {
+                // If confirmed is true and pre is false, enable the pre option
+                statusSelect.options[2].disabled = false;
+            }
+            if (confirmed && pre && !print) {
+                // If confirmed and pre are true and print is false, enable the print option
+                statusSelect.options[3].disabled = false;
+            }
+            if (confirmed && pre && print && !post) {
+                // If confirmed, pre, and print are true and post is false, enable the post option
+                statusSelect.options[4].disabled = false;
+            }
+            if (confirmed && pre && print && post && !ready2ship) {
+                // If confirmed, pre, print, and post are true and ready2ship is false, enable the ready2ship option
+                statusSelect.options[5].disabled = false;
+            }
+            if (confirmed && pre && print && post && ready2ship && !shipped) {
+                // If all previous options are true and shipped is false, enable the shipped option
+                statusSelect.options[6].disabled = false;
+            }
+        });
+    </script>
+    <script>
+        // Set up the event listener to run when the select element changes
+        statusSelect.addEventListener("change", function () {
+            console.log("im in here");
+
+            // Get the form element
+            const form = document.getElementById("status_form");
+
+            // Submit the form
+            form.submit();
+        });
+    </script>
+{% endblock javascripts %}

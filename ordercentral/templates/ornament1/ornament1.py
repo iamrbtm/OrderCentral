@@ -14,9 +14,10 @@ def ornament1_order_new(id):
     order = db.session.query(Orders).filter(Orders.id == id).first()
     if request.method == "POST":
         data = request.form.to_dict()
+        product = db.session.query(Product).filter(Product.id == 1).first()
         new_order_item = OrderLineItem(
             data=json.dumps(data),
-            saleprice=1,
+            saleprice=product.cost,
             orderfk=id,
             productfk=1,
         )

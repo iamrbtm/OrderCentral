@@ -42,7 +42,66 @@ def order_init():
     db.session.commit()
     db.session.refresh(newrec)
     newrecid = newrec.id
+    db.session.add(Status(orderfk=newrecid))
+    db.session.commit()
     return redirect(url_for('order.order_new', id=newrecid))
+
+
+@order.route("/change_status/<recordid>", methods=["POST"])
+def change_status(recordid):
+    record = db.session.query(Orders).filter(Orders.id == recordid).first()
+    data = request.form.to_dict()
+    match data['status']:
+        case 'Confirmed':
+            record.status[0].confirmed = True
+            record.status[0].prep = False
+            record.status[0].print = False
+            record.status[0].post = False
+            record.status[0].ready2ship = False
+            record.status[0].shipped = False
+            record.status[0].confirmed_when = datetime.now()
+        case 'Pre':
+            record.status[0].confirmed = True
+            record.status[0].prep = True
+            record.status[0].print = False
+            record.status[0].post = False
+            record.status[0].ready2ship = False
+            record.status[0].shipped = False
+            record.status[0].prep_when = datetime.now()
+        case "Print":
+            record.status[0].confirmed = True
+            record.status[0].prep = True
+            record.status[0].print = True
+            record.status[0].post = False
+            record.status[0].ready2ship = False
+            record.status[0].shipped = False
+            record.status[0].print_when = datetime.now()
+        case "Post":
+            record.status[0].confirmed = True
+            record.status[0].prep = True
+            record.status[0].print = True
+            record.status[0].post = True
+            record.status[0].ready2ship = False
+            record.status[0].shipped = False
+            record.status[0].post_when = datetime.now()
+        case "ReadyShip":
+            record.status[0].confirmed = True
+            record.status[0].prep = True
+            record.status[0].print = True
+            record.status[0].post = True
+            record.status[0].ready2ship = True
+            record.status[0].shipped = False
+            record.status[0].ready2ship_when = datetime.now()
+        case "Shipped":
+            record.status[0].confirmed = True
+            record.status[0].prep = True
+            record.status[0].print = True
+            record.status[0].post = True
+            record.status[0].ready2ship = True
+            record.status[0].shipped = True
+            record.status[0].shipped_when = datetime.now()
+    db.session.commit()
+    return redirect(url_for('order.order_new', id=recordid))
 
 
 @order.route("/new/<id>", methods=['GET', 'POST'])

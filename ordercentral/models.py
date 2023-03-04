@@ -53,6 +53,29 @@ class Orders(db.Model):
 
     # Relationships
     person = db.relationship("People", backref=backref("people", uselist=False))
+    status = db.relationship("Status", backref=backref("order_status", uselist=False))
+
+
+class Status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    confirmed = db.Column(db.Boolean, default=False)
+    confirmed_when = db.Column(db.DateTime)
+    prep = db.Column(db.Boolean, default=False)
+    prep_when = db.Column(db.DateTime)
+    print = db.Column(db.Boolean, default=False)
+    print_when = db.Column(db.DateTime)
+    post = db.Column(db.Boolean, default=False)
+    post_when = db.Column(db.DateTime)
+    ready2ship = db.Column(db.Boolean, default=False)
+    ready2ship_when = db.Column(db.DateTime)
+    shipped = db.Column(db.Boolean, default=False)
+    shipped_when = db.Column(db.DateTime)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    # Foreign Keys
+    orderfk = db.Column(db.Integer, db.ForeignKey('orders.id'))
+
+    # Relationships
+    order = db.relationship("Orders", backref=backref("status_order", uselist=False))
 
 
 class OrderLineItem(db.Model):

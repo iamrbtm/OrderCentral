@@ -26,6 +26,7 @@ Available Blocks
 {% endblock page_title %}
 
 {% block stylesheets %}
+    <link href="{{ url_for('static',filename='css/progress_bar_sm.css') }}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block notifications %}
@@ -44,65 +45,44 @@ Available Blocks
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2">
-                <div class="card">
-                    <h5 class="card-header">
-                        Prep
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            ...
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <h5 class="card-header">
-                        Print
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            ...
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <h5 class="card-header">
-                        Post Process
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            ...
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <h5 class="card-header">
-                        Shipping
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            ...
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md">
                 <div class="card">
                     <h5 class="card-header">
                         New Order
                     </h5>
                     <div class="card-body">
-                        <p class="card-text">
-                            ...
+                        <table class="table table-hover table-sm tablebordered">
+                            <thead>
+                            <th>Order Number</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            </thead>
+                            <tbody>
+                            {% for item in confirms %}
+                                <tr onclick="location.href='{{ url_for('order.order_new', id=item.id) }}'">
+                                    <td>{{ item.ordernum }}</td>
+                                    <td>{{ item.person.full_name() }}</td>
+                                    <td>{{ item.date_created.strftime("%m/%d/%y") }}</td>
+                                    <td>{{ "$%.2f"|format(item.total) }}</td>
+                                    <td>
+                                        <div class="pbcontainer">
+                                            <ul class="progressbar">
+                                                <li {% if item.status[0].confirmed %}class="active"{% endif %}>Conf</li>
+                                                <li {% if item.status[0].prep %}class="active"{% endif %}>Pre</li>
+                                                <li {% if item.status[0].print %}class="active"{% endif %}>Print</li>
+                                                <li {% if item.status[0].post %}class="active"{% endif %}>Post</li>
+                                                <li {% if item.status[0].ready2ship %}class="active"{% endif %}>R2S</li>
+                                                <li {% if item.status[0].shipped %}class="active"{% endif %}>Shipped
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                         </p>
                     </div>
 

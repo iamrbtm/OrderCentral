@@ -26,7 +26,11 @@ def format_date(item, fmt="%m/%d/%Y"):
 @base.route("/home")
 @login_required
 def home():
-    content = {"user": User,
+    confirms = db.session.query(Orders) \
+        .join(Status, Orders.id == Status.orderfk) \
+        .filter(Status.confirmed) \
+        .all()
+    content = {"user": User, "confirms": confirms,
                }
     return render_template("base/dashboard.html", **content)
 
