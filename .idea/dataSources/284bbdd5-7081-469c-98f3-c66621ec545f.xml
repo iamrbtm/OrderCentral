@@ -1458,25 +1458,25 @@
       <DasType>FLOAT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="518" parent="505" name="date_created">
-      <DasType>DATETIME|0s</DasType>
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    <column id="518" parent="505" name="data">
+      <DasType>JSON|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="519" parent="505" name="date_updated">
+    <column id="519" parent="505" name="date_created">
       <DasType>DATETIME|0s</DasType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>4</Position>
     </column>
-    <column id="520" parent="505" name="orderfk">
-      <DasType>INTEGER|0s</DasType>
+    <column id="520" parent="505" name="date_updated">
+      <DasType>DATETIME|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="521" parent="505" name="productfk">
+    <column id="521" parent="505" name="orderfk">
       <DasType>INTEGER|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="522" parent="505" name="data">
-      <DasType>JSON|0s</DasType>
+    <column id="522" parent="505" name="productfk">
+      <DasType>INTEGER|0s</DasType>
       <Position>7</Position>
     </column>
     <foreign-key id="523" parent="505">
@@ -1647,64 +1647,59 @@
     </column>
     <column id="562" parent="510" name="confirmed">
       <DasType>BOOLEAN|0s</DasType>
-      <DefaultExpression>0</DefaultExpression>
       <Position>2</Position>
     </column>
-    <column id="563" parent="510" name="prep">
-      <DasType>BOOLEAN|0s</DasType>
-      <DefaultExpression>0</DefaultExpression>
+    <column id="563" parent="510" name="confirmed_when">
+      <DasType>DATETIME|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="564" parent="510" name="print">
+    <column id="564" parent="510" name="prep">
       <DasType>BOOLEAN|0s</DasType>
-      <DefaultExpression>0</DefaultExpression>
       <Position>4</Position>
     </column>
-    <column id="565" parent="510" name="post">
-      <DasType>BOOLEAN|0s</DasType>
-      <DefaultExpression>0</DefaultExpression>
+    <column id="565" parent="510" name="prep_when">
+      <DasType>DATETIME|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="566" parent="510" name="shipped">
+    <column id="566" parent="510" name="print">
       <DasType>BOOLEAN|0s</DasType>
-      <DefaultExpression>0</DefaultExpression>
       <Position>6</Position>
     </column>
-    <column id="567" parent="510" name="date_created">
+    <column id="567" parent="510" name="print_when">
       <DasType>DATETIME|0s</DasType>
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>7</Position>
     </column>
-    <column id="568" parent="510" name="orderfk">
-      <DasType>INTEGER|0s</DasType>
+    <column id="568" parent="510" name="post">
+      <DasType>BOOLEAN|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="569" parent="510" name="confirmed_when">
+    <column id="569" parent="510" name="post_when">
       <DasType>DATETIME|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="570" parent="510" name="prep_when">
-      <DasType>DATETIME|0s</DasType>
+    <column id="570" parent="510" name="ready2ship">
+      <DasType>BOOLEAN|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="571" parent="510" name="print_when">
+    <column id="571" parent="510" name="ready2ship_when">
       <DasType>DATETIME|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="572" parent="510" name="post_when">
-      <DasType>DATETIME|0s</DasType>
+    <column id="572" parent="510" name="shipped">
+      <DasType>BOOLEAN|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="573" parent="510" name="ready2ship">
-      <DasType>BOOLEAN|0s</DasType>
+    <column id="573" parent="510" name="shipped_when">
+      <DasType>DATETIME|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="574" parent="510" name="ready2ship_when">
+    <column id="574" parent="510" name="date_created">
       <DasType>DATETIME|0s</DasType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>14</Position>
     </column>
-    <column id="575" parent="510" name="shipped_when">
-      <DasType>DATETIME|0s</DasType>
+    <column id="575" parent="510" name="orderfk">
+      <DasType>INTEGER|0s</DasType>
       <Position>15</Position>
     </column>
     <foreign-key id="576" parent="510">

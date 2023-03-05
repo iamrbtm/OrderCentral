@@ -35,7 +35,7 @@ Available Blocks
 {% block main_content %}
     <div class="container">
         <div class="row">
-            <div class="col-7">
+            <div class="col-md-7 col-sm-12">
                 <div id="statuscard" class="card">
                     <div class="card-body">
                         <div class="row row-cols-1">
@@ -232,6 +232,9 @@ Available Blocks
                                                 Pod: {{ item.json_data['pod'] }}<br>
                                                 Cover: {{ item.json_data['cover'] }}
                                             </span>
+                                        {% endif %}
+                                        {% if item.json_data['notes']|length >=1 %}
+                                            <span style="font-size: smaller"><br>Note: {{ item.json_data['notes'] |capitalize }}</span>
                                         {% endif %}
                                     </td>
                                     <td class="text-end">{{ "$%.2f"|format(item.saleprice) }}</td>

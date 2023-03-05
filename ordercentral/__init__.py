@@ -34,6 +34,13 @@ def create_app():
 
     # Mail Setup
     config_mail(app)
+    app.config["MAIL_SERVER"] = os.environ.get(MAIL_SERVER)
+    app.config["MAIL_PORT"] = os.environ.get(MAIL_PORT)
+    app.config["MAIL_USERNAME"] = os.environ.get(MAIL_USERNAME)
+    app.config["MAIL_PASSWORD"] = os.environ.get(MAIL_PASSWORD)
+    app.config["MAIL_USE_TLS"] = os.environ.get(MAIL_USE_TLS)
+    app.config["MAIL_USE_SSL"] = os.environ.get(MAIL_USE_SSL)
+    app.config["MAIL_DEFAULT_SENDER"] = os.environ.get(MAIL_DEFAULT_SENDER)
 
     # Blueprints
     from ordercentral.auth import auth
@@ -62,36 +69,3 @@ def create_app():
         return User.query.get(int(id))
 
     return app
-
-
-def config_mail(app):
-    stopper = True
-    errorlist = []
-    if os.environ.get("MAIL_USE") == "True":
-        fields = [
-            "MAIL_SERVER",
-            "MAIL_PORT",
-            "MAIL_USERNAME",
-            "MAIL_PASSWORD",
-            "MAIL_USE_TLS",
-            "MAIL_USE_SSL",
-            "MAIL_DEFAULT_SENDER",
-        ]
-
-        for field in fields:
-            if field not in os.environ:
-                msg = f"{field} not configured"
-                errorlist.append(msg)
-                stopper = False
-            if os.environ.get(field) == "":
-                msg = f"value for {field} not set"
-                errorlist.append(msg)
-                stopper = False
-            if stopper:
-                app.config[field] = os.environ.get(field)
-
-        if stopper:
-            mail.init_app(app)
-        else:
-            print("DID NOT INIT MAIL... ")
-            print(errorlist)

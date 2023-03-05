@@ -51,9 +51,9 @@ Available Blocks
                         New Order
                     </h5>
                     <div class="card-body">
-                        <table class="table table-hover table-sm tablebordered">
+                        <table class="table table-hover table-sm">
                             <thead>
-                            <th>Order Number</th>
+                            <th class="d-none d-sm-table-cell">Order Number</th>
                             <th>Name</th>
                             <th>Date</th>
                             <th>Total</th>
@@ -61,29 +61,26 @@ Available Blocks
                             </thead>
                             <tbody>
                             {% for item in confirms %}
-                                <tr onclick="location.href='{{ url_for('order.order_new', id=item.id) }}'">
-                                    <td>{{ item.ordernum }}</td>
-                                    <td>{{ item.person.full_name() }}</td>
-                                    <td>{{ item.date_created.strftime("%m/%d/%y") }}</td>
-                                    <td>{{ "$%.2f"|format(item.total) }}</td>
-                                    <td>
-                                        <div class="pbcontainer">
-                                            <ul class="progressbar">
-                                                <li {% if item.status[0].confirmed %}class="active"{% endif %}>Conf</li>
-                                                <li {% if item.status[0].prep %}class="active"{% endif %}>Pre</li>
-                                                <li {% if item.status[0].print %}class="active"{% endif %}>Print</li>
-                                                <li {% if item.status[0].post %}class="active"{% endif %}>Post</li>
-                                                <li {% if item.status[0].ready2ship %}class="active"{% endif %}>R2S</li>
-                                                <li {% if item.status[0].shipped %}class="active"{% endif %}>Shipped
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% if not item.status[0].shipped %}
+                                    <tr onclick="location.href='{{ url_for('order.order_new', id=item.id) }}'">
+                                        <td class="d-none d-sm-table-cell">{{ item.ordernum }}</td>
+                                        <td>{{ item.date_created.strftime("%m/%d/%y") }}</td>
+                                        <td>{{ item.person.full_name() }}</td>
+                                        <td>{{ "$%.2f"|format(item.total) }}</td>
+                                        <td>
+                                            {% if item.status[0].shipped %}Shipped
+                                            {% elif item.status[0].ready2ship %}Ready 2 Ship
+                                            {% elif item.status[0].post %}Post Process
+                                            {% elif item.status[0].print %}Print
+                                            {% elif item.status[0].prep %}Pre Process
+                                            {% elif item.status[0].confirmed %}Confirmed
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
-                        </p>
                     </div>
 
                 </div>
@@ -95,8 +92,36 @@ Available Blocks
                             </h5>
                             <div class="card-body">
                                 <p class="card-text">
-                                    ...
-                                </p>
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                    <th class="d-none d-sm-table-cell">Order Number</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in confirms %}
+                                        {% if item.status[0].shipped %}
+                                            <tr onclick="location.href='{{ url_for('order.order_new', id=item.id) }}'">
+                                                <td class="d-none d-sm-table-cell">{{ item.ordernum }}</td>
+                                                <td>{{ item.date_created.strftime("%m/%d/%y") }}</td>
+                                                <td>{{ item.person.full_name() }}</td>
+                                                <td>{{ "$%.2f"|format(item.total) }}</td>
+                                                <td>
+                                                    {% if item.status[0].shipped %}Shipped
+                                                    {% elif item.status[0].ready2ship %}Ready 2 Ship
+                                                    {% elif item.status[0].post %}Post Process
+                                                    {% elif item.status[0].print %}Print
+                                                    {% elif item.status[0].prep %}Pre Process
+                                                    {% elif item.status[0].confirmed %}Confirmed
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

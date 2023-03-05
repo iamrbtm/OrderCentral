@@ -37,7 +37,8 @@ Available Blocks
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">Picture</div>
-                    <img id="selected-image" src="" alt="Seed Start" width="100%">
+                    <img id="selected-image" src="{{ url_for('static', filename='img/seedstarters/placeholder.png') }}"
+                         alt="Seed Start" width="100%">
                 </div>
             </div>
             <div class="col">
@@ -49,7 +50,7 @@ Available Blocks
                             <div class="form-floating">
                                 <select class="form-select" id="product" name="product"
                                         aria-label="Choose a Product">
-                                    <option selected>Select A Product</option>
+                                    <option selected value="placeholder">Select A Product</option>
                                     {% for product in products %}
                                         <option value="{{ product.name }}">{{ product.display_name }}</option>
                                     {% endfor %}
@@ -109,6 +110,11 @@ Available Blocks
                                     <option value="Lime Green">Lime Green</option>
                                 </select>
                                 <label for="cover">Choose a Cover Color</label>
+                            </div>
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Notes for this item" id="notes" name="notes"
+                                          style="height: 100px"></textarea>
+                                <label for="notes">Notes</label>
                             </div>
                         </div>
                         <div class="card-footer">

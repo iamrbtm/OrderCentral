@@ -1,0 +1,27 @@
+Hello there!
+
+We are excited to confirm your recent purchase of our custom 3D printed product! We hope you are just as thrilled as we are to have this unique item in your hands.
+
+Here are the juicy details of your order:
+
+Order Number: [Insert Order Number Here]
+Customer Name: [Insert Customer Name Here]
+Shipping Address: [Insert Shipping Address Here]
+
+Item Details:
+
+Name: [Insert Item Name Here]
+Quantity: [Insert Item Quantity Here]
+Price: [Insert Item Price Here]
+Total Price of Item(s): [Insert Total Price Here]
+Shipping Cost: [Insert Shipping Cost Here]
+Grand Total Paid: [Insert Grand Total Here]
+
+You have made an excellent choice, and we are delighted to have you as our customer. Please know that we are working diligently to ensure your order is prepared and delivered to you as soon as possible.
+
+Should you have any concerns or questions regarding your purchase, please do not hesitate to reach out to us at [Insert Company Email Here] or give us a call at [Insert Company Phone Number Here]. Our friendly customer service team is always happy to assist you.
+
+Thank you again for choosing us for your 3D printing needs. We cannot wait to see the creativity you bring to your new product!
+
+Best regards,
+[Insert Company Name Here]
