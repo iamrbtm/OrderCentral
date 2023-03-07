@@ -33,14 +33,12 @@ def create_app():
     Migrate(app, db)
 
     # Mail Setup
-    config_mail(app)
-    app.config["MAIL_SERVER"] = os.environ.get(MAIL_SERVER)
-    app.config["MAIL_PORT"] = os.environ.get(MAIL_PORT)
-    app.config["MAIL_USERNAME"] = os.environ.get(MAIL_USERNAME)
-    app.config["MAIL_PASSWORD"] = os.environ.get(MAIL_PASSWORD)
-    app.config["MAIL_USE_TLS"] = os.environ.get(MAIL_USE_TLS)
-    app.config["MAIL_USE_SSL"] = os.environ.get(MAIL_USE_SSL)
-    app.config["MAIL_DEFAULT_SENDER"] = os.environ.get(MAIL_DEFAULT_SENDER)
+    app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+    app.config["MAIL_PORT"] = os.environ.get('MAIL_PORT')
+    app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
+    app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
+    app.config["MAIL_DEFAULT_SENDER"] = os.environ.get('MAIL_DEFAULT_SENDER')
+    mail.init_app(app)
 
     # Blueprints
     from ordercentral.auth import auth
@@ -48,12 +46,14 @@ def create_app():
     from ordercentral.templates.orders.orders import order
     from ordercentral.templates.ornament1.ornament1 import orn1
     from ordercentral.templates.seed_starter.seedstart import seed
+    from ordercentral.templates.emails.email import email
 
     app.register_blueprint(base)
     app.register_blueprint(auth)
     app.register_blueprint(order)
     app.register_blueprint(orn1)
     app.register_blueprint(seed)
+    app.register_blueprint(email)
 
     with app.app_context():
         db.create_all()

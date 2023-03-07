@@ -54,6 +54,7 @@ class Orders(db.Model):
     # Relationships
     person = db.relationship("People", backref=backref("people", uselist=False))
     status = db.relationship("Status", backref=backref("order_status", uselist=False))
+    items = db.relationship("OrderLineItem", backref=backref("oli", uselist=False))
 
 
 class Status(db.Model):

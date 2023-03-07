@@ -12,13 +12,11 @@ from ordercentral.utilities import *
 from ordercentral.models import *
 from ordercentral import db
 
-def send_mail(subject, status, recipients):
-    if status == 'Confirmed':
-        #PUT BODY OF EMAIL FOR CONFIRMATION HERE
+email = Blueprint("email", __name__, url_prefix='/email')
 
-    msg = Message(
-        subject=subject,
-        body=body,
-        sender= ('Dudefish Printing', 'customer_service@dudefishprinting.com'),
-        recipients= recipients
-    )
+
+@email.route("/confirmation")
+@login_required
+def confirmation():
+    record = db.session.query(Orders).filter(Orders.id == 1).first()
+    return render_template('emails/confirmation.html', record=record)

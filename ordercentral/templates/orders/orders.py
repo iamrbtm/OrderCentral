@@ -101,6 +101,8 @@ def change_status(recordid):
             record.status[0].shipped = True
             record.status[0].shipped_when = datetime.now()
     db.session.commit()
+
+    send_mail(recordid)
     return redirect(url_for('order.order_new', id=recordid))
 
 
