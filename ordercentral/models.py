@@ -45,6 +45,7 @@ class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ordernum = db.Column(db.Integer)
     total = db.Column(db.Float)
+    eventid = db.Column(db.Integer)
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
