@@ -50,10 +50,10 @@ class Orders(db.Model):
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     # Foreign Keys
-    personfk = db.Column(db.Integer, db.ForeignKey('people.id'))
+    personfk = db.Column(db.Integer, db.ForeignKey('peoples.id'))
 
     # Relationships
-    person = db.relationship("People", backref=backref("people", uselist=False))
+    person = db.relationship("Peoples", backref=backref("peoples", uselist=False))
     status = db.relationship("Status", backref=backref("order_status", uselist=False))
     items = db.relationship("OrderLineItem", backref=backref("oli", uselist=False))
 
@@ -104,6 +104,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     display_name = db.Column(db.String(150))
+    saleprice = db.Column(db.Float)
     cost = db.Column(db.Float)
     qty = db.Column(db.Integer)
     event = db.Column(db.String(200))
@@ -112,7 +113,7 @@ class Product(db.Model):
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
 
-class People(db.Model):
+class Peoples(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(100))
     lname = db.Column(db.String(100))
@@ -143,3 +144,171 @@ class USZip(db.Model):
     timezone = db.Column(db.String(100))
     date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+
+# BAZAAR TABLES
+class Booking(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    kd_appopen_new = db.Column(db.Date)
+    kd_appopen_return = db.Column(db.Date)
+    kd_appdeadline_new = db.Column(db.Date)
+    kd_appdeadline_return = db.Column(db.Date)
+    cl_appsubmission = db.Column(db.Boolean, default=False)
+    cl_interested = db.Column(db.Boolean, default=True)
+    cl_appapproved = db.Column(db.Boolean, default=False)
+    cl_feepaid = db.Column(db.Boolean, default=False)
+    cl_electrequest = db.Column(db.Boolean, default=False)
+    cl_sendproductpic = db.Column(db.Boolean, default=False)
+    cl_sendlogo = db.Column(db.Boolean, default=False)
+    cl_sendbio = db.Column(db.Boolean, default=False)
+    info_wifipassword = db.Column(db.String(100))
+    info_datestart = db.Column(db.Date)
+    info_dateend = db.Column(db.Date)
+    info_timestart = db.Column(db.Time)
+    info_timeend = db.Column(db.Time)
+    info_loadindatetime = db.Column(db.DateTime)
+    info_loadoutdatetime = db.Column(db.DateTime)
+    info_boothfee = db.Column(db.Float, default=0.0)
+    info_whatfeeincludes = db.Column(db.Text)
+    info_boothlocation = db.Column(db.String(100))
+    cl_wifiavailable = db.Column(db.Boolean, default=False)
+    cl_foodavailable = db.Column(db.Boolean, default=False)
+    info_foodpurchase = db.Column(db.String(100))
+    days_remaining = db.Column(db.Integer)
+    next_touch = db.Column(db.Date)
+    active = db.Column(db.Boolean, default=True)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    eventid = db.Column(db.Integer, db.ForeignKey('master_list.id'))
+
+    # Relationships
+    notes = db.relationship("Notes", backref=backref("booking_notes", uselist=False))
+    event = db.relationship("MasterList", backref=backref("booking_event", uselist=False))
+
+
+class Notes(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    note = db.Column(db.Text)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    masterlistid = db.Column(db.Integer, db.ForeignKey('master_list.id'))
+    bookingid = db.Column(db.Integer, db.ForeignKey('booking.id'))
+
+
+class MasterList(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    event_name = db.Column(db.String(150))
+    january = db.Column(db.Boolean, default=False)
+    february = db.Column(db.Boolean, default=False)
+    march = db.Column(db.Boolean, default=False)
+    april = db.Column(db.Boolean, default=False)
+    may = db.Column(db.Boolean, default=False)
+    june = db.Column(db.Boolean, default=False)
+    july = db.Column(db.Boolean, default=False)
+    august = db.Column(db.Boolean, default=False)
+    september = db.Column(db.Boolean, default=False)
+    october = db.Column(db.Boolean, default=False)
+    november = db.Column(db.Boolean, default=False)
+    december = db.Column(db.Boolean, default=False)
+    first = db.Column(db.Boolean, default=True)
+    second = db.Column(db.Boolean, default=True)
+    third = db.Column(db.Boolean, default=True)
+    fourth = db.Column(db.Boolean, default=True)
+    last = db.Column(db.Boolean, default=True)
+    friday = db.Column(db.Boolean, default=False)
+    saturday = db.Column(db.Boolean, default=False)
+    sunday = db.Column(db.Boolean, default=False)
+    monday = db.Column(db.Boolean, default=False)
+    tuesday = db.Column(db.Boolean, default=False)
+    wednesday = db.Column(db.Boolean, default=False)
+    thursday = db.Column(db.Boolean, default=False)
+    updated = db.Column(db.Date)
+    imagesrc = db.Column(db.Text)
+    attendance = db.Column(db.Integer)
+    exibitors = db.Column(db.Integer)
+    website = db.Column(db.Text)
+    dates_text = db.Column(db.Text)
+    type_bazaar = db.Column(db.Boolean, default=False)
+    type_holiday = db.Column(db.Boolean, default=False)
+    type_art = db.Column(db.Boolean, default=False)
+    type_festival = db.Column(db.Boolean, default=False)
+    type_flea = db.Column(db.Boolean, default=False)
+    type_health = db.Column(db.Boolean, default=False)
+    type_market = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Foreign Keys
+    venuefk = db.Column(db.Integer, db.ForeignKey('venue.id'))
+    promoterfk = db.Column(db.Integer, db.ForeignKey('promoter.id'))
+
+    # Relationships
+    venue = db.relationship("Venue", backref=backref("venue", uselist=False))
+    promoter = db.relationship("Promoter", backref=backref("promoter", uselist=False))
+    notes = db.relationship("Notes", backref=backref("notes", uselist=False))
+
+
+class Venue(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(50))
+    zipcode = db.Column(db.String(20))
+    phone = db.Column(db.String(20))
+    website = db.Column(db.String(255))
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Relationships
+    venue_event = db.relationship("MasterList", backref=backref("masterlist_home", uselist=False))
+
+
+class Promoter(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(50))
+    zipcode = db.Column(db.String(20))
+    phone = db.Column(db.String(20))
+    website = db.Column(db.String(255))
+    date_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    date_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    # Relationships
+    people = db.relationship("People", backref=backref("promoter_people", uselist=False))
+
+
+class People(db.Model):
+    __bind_key__ = 'bazaar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    title = db.Column(db.String(50))
+    phone = db.Column(db.String(20))
+    fax = db.Column(db.String(20))
+    email = db.Column(db.String(255))
+
+    # Foreign Key
+    promoterfk = db.Column(db.Integer, db.ForeignKey('promoter.id'))
+    venuefk = db.Column(db.Integer, db.ForeignKey('venue.id'))
+
+    # Relationships
+    venue = db.relationship("Venue", backref=backref("people_venue", uselist=False))
+    promoter = db.relationship("Promoter", backref=backref("people_promoter", uselist=False))

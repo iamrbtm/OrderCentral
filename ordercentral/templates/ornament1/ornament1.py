@@ -17,7 +17,7 @@ def ornament1_order_new(id):
         product = db.session.query(Product).filter(Product.id == 1).first()
         new_order_item = OrderLineItem(
             data=json.dumps(data),
-            saleprice=product.cost,
+            saleprice=product.saleprice,
             orderfk=id,
             productfk=1,
         )

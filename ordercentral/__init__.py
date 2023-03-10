@@ -26,6 +26,8 @@ def create_app():
     db_path = os.path.join(os.path.dirname(__file__), 'database', 'ordercentral.db')
     db_uri = 'sqlite:///{}'.format(db_path)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_BINDS'] = {'bazaar': 'sqlite:////Users/rbtm2006/Dudefish '
+                                                'Printing/Bazaars/Program/bazaar/database/bazaar.db'}
     app.config['SQLALCHEMY_TIMEZONE'] = 'local'
     db.init_app(app)
 

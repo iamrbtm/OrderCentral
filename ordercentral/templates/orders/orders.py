@@ -11,6 +11,7 @@ from flask_login import login_required
 from ordercentral.utilities import *
 from ordercentral.models import *
 from ordercentral import db
+from sqlalchemy import and_
 
 order = Blueprint("order", __name__, url_prefix='/order')
 
@@ -113,15 +114,18 @@ def order_new(id):
     states = [r.state for r in db.session.query(USZip.state).order_by(USZip.state).distinct()]
     record = db.session.query(Orders).filter(Orders.id == id).first()
     items = db.session.query(OrderLineItem).filter(OrderLineItem.orderfk == id).all()
+    active_events = db.session.query(Booking).filter(
+        and_(Booking.cl_appsubmission, Booking.cl_appapproved)).all()
+
     if request.method == "POST":
         data = request.form.to_dict()
 
         # Persons
         # Check to see if the email address exists in the db
-        exists = bool(db.session.query(People).filter(People.email == data['email']).first())
+        exists = bool(db.session.query(Peoples).filter(Peoples.email == data['email']).first())
         if not exists:
             # if not in db, add the person to the db
-            newperson = People(
+            newperson = Peoples(
                 fname=data['fname'],
                 lname=data['lname'],
                 mailing_address=data['mailing_address'],
@@ -137,7 +141,7 @@ def order_new(id):
             personid = newperson.id
         else:
             # if the record does exist in the db, edit the values form the form
-            record = db.session.query(People).filter(People.email == data['email']).first()
+            record = db.session.query(Peoples).filter(Peoples.email == data['email']).first()
             record.fname = data['fname']
             record.lname = data['lname']
             record.mailing_address = data['mailing_address']
@@ -158,5 +162,14 @@ def order_new(id):
         return redirect(url_for('order.order_new', id=id))
 
     content = {"user": User, "states": states, "record": record,
-               "items": items, }
+               "items": items, "active_events": active_events, }
     return render_template("orders/orders_new.html", **content)
+
+
+@order.route("/change_event/<recordid>", methods=["POST"])
+def change_event(recordid):
+    record = db.session.query(Orders).filter(Orders.id == recordid).first()
+    data = request.form.to_dict()
+    record.eventid = data['event']
+    db.session.commit()
+    return redirect(url_for('order.order_new', id=recordid))

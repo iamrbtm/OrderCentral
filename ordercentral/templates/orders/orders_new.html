@@ -206,6 +206,20 @@ Available Blocks
             <div class="col">
                 <div id="items" class="card order-2">
                     <div class="card-header">
+                        <form id="event_form" method="post" class="form"
+                              action="{{ url_for('order.change_event', recordid=record.id) }}">
+                            <div class="form-floating">
+                                <select class="form-select" id="event" name="event"
+                                        aria-label="Event">
+                                    <option>Select the Event</option>
+                                    {% for ae in active_events %}
+                                        <option value="{{ ae.id }}"
+                                                {% if record.eventid == ae.id %}selected{% endif %}>{{ ae.event.event_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="event" class="form-label">Event</label>
+                            </div>
+                        </form>
                         <h5>Items</h5>
                     </div>
                     <div class="card-body">
@@ -305,10 +319,22 @@ Available Blocks
     <script>
         // Set up the event listener to run when the select element changes
         statusSelect.addEventListener("change", function () {
-            console.log("im in here");
 
             // Get the form element
             const form = document.getElementById("status_form");
+
+            // Submit the form
+            form.submit();
+        });
+    </script>
+    <script>
+        const eventSelect = document.getElementById("event");
+
+        // Set up the event listener to run when the select element changes
+        eventSelect.addEventListener("change", function () {
+
+            // Get the form element
+            const form = document.getElementById("event_form");
 
             // Submit the form
             form.submit();

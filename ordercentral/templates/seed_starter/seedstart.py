@@ -19,7 +19,7 @@ def seedstart_order_new(id):
 
         new_order_item = OrderLineItem(
             data=json.dumps(data),
-            saleprice=product.cost,
+            saleprice=product.saleprice,
             orderfk=id,
             productfk=product.id,
         )
