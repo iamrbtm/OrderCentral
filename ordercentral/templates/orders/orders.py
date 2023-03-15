@@ -173,3 +173,13 @@ def change_event(recordid):
     record.eventid = data['event']
     db.session.commit()
     return redirect(url_for('order.order_new', id=recordid))
+
+
+@order.route("/order_delete/<id>", methods=['GET'])
+@login_required
+def order_delete(id):
+    db.session.query(OrderLineItem).filter(OrderLineItem.orderfk == id).delete()
+    db.session.query(Orders).filter(Orders.id == id).delete()
+    db.session.query(Status).filter(Status.orderfk == id).delete()
+    db.session.commit()
+    return redirect(url_for('base.home'))

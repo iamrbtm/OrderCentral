@@ -1591,8 +1591,9 @@
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="549" parent="508" name="cost">
+    <column id="549" parent="508" name="saleprice">
       <DasType>FLOAT|0s</DasType>
+      <DefaultExpression>0.00</DefaultExpression>
       <Position>3</Position>
     </column>
     <column id="550" parent="508" name="qty">
@@ -1620,256 +1621,261 @@
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>9</Position>
     </column>
-    <key id="556" parent="508">
+    <column id="556" parent="508" name="cost">
+      <DasType>float|0s</DasType>
+      <DefaultExpression>0.00</DefaultExpression>
+      <Position>10</Position>
+    </column>
+    <key id="557" parent="508">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="557" parent="509" name="type">
+    <column id="558" parent="509" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="558" parent="509" name="name">
+    <column id="559" parent="509" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="559" parent="509" name="tbl_name">
+    <column id="560" parent="509" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="560" parent="509" name="rootpage">
+    <column id="561" parent="509" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="561" parent="509" name="sql">
+    <column id="562" parent="509" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="562" parent="510" name="id">
+    <column id="563" parent="510" name="id">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="563" parent="510" name="confirmed">
+    <column id="564" parent="510" name="confirmed">
       <DasType>BOOLEAN|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="564" parent="510" name="confirmed_when">
+    <column id="565" parent="510" name="confirmed_when">
       <DasType>DATETIME|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="565" parent="510" name="prep">
+    <column id="566" parent="510" name="prep">
       <DasType>BOOLEAN|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="566" parent="510" name="prep_when">
+    <column id="567" parent="510" name="prep_when">
       <DasType>DATETIME|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="567" parent="510" name="print">
+    <column id="568" parent="510" name="print">
       <DasType>BOOLEAN|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="568" parent="510" name="print_when">
+    <column id="569" parent="510" name="print_when">
       <DasType>DATETIME|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="569" parent="510" name="post">
+    <column id="570" parent="510" name="post">
       <DasType>BOOLEAN|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="570" parent="510" name="post_when">
+    <column id="571" parent="510" name="post_when">
       <DasType>DATETIME|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="571" parent="510" name="ready2ship">
+    <column id="572" parent="510" name="ready2ship">
       <DasType>BOOLEAN|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="572" parent="510" name="ready2ship_when">
+    <column id="573" parent="510" name="ready2ship_when">
       <DasType>DATETIME|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="573" parent="510" name="shipped">
+    <column id="574" parent="510" name="shipped">
       <DasType>BOOLEAN|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="574" parent="510" name="shipped_when">
+    <column id="575" parent="510" name="shipped_when">
       <DasType>DATETIME|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="575" parent="510" name="date_created">
+    <column id="576" parent="510" name="date_created">
       <DasType>DATETIME|0s</DasType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>14</Position>
     </column>
-    <column id="576" parent="510" name="orderfk">
+    <column id="577" parent="510" name="orderfk">
       <DasType>INTEGER|0s</DasType>
       <Position>15</Position>
     </column>
-    <foreign-key id="577" parent="510">
+    <foreign-key id="578" parent="510">
       <ColNames>orderfk</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>orders</RefTableName>
     </foreign-key>
-    <key id="578" parent="510">
+    <key id="579" parent="510">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="579" parent="511" name="id">
+    <column id="580" parent="511" name="id">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="580" parent="511" name="zip">
+    <column id="581" parent="511" name="zip">
       <DasType>VARCHAR(12)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="581" parent="511" name="type">
+    <column id="582" parent="511" name="type">
       <DasType>VARCHAR(100)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="582" parent="511" name="primary_city">
+    <column id="583" parent="511" name="primary_city">
       <DasType>VARCHAR(100)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="583" parent="511" name="acceptable_cities">
+    <column id="584" parent="511" name="acceptable_cities">
       <DasType>VARCHAR(100)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="584" parent="511" name="state">
+    <column id="585" parent="511" name="state">
       <DasType>VARCHAR(25)|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="585" parent="511" name="county">
+    <column id="586" parent="511" name="county">
       <DasType>VARCHAR(100)|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="586" parent="511" name="timezone">
+    <column id="587" parent="511" name="timezone">
       <DasType>VARCHAR(100)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="587" parent="511" name="date_created">
+    <column id="588" parent="511" name="date_created">
       <DasType>DATETIME|0s</DasType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>9</Position>
     </column>
-    <column id="588" parent="511" name="date_updated">
+    <column id="589" parent="511" name="date_updated">
       <DasType>DATETIME|0s</DasType>
       <Position>10</Position>
     </column>
-    <key id="589" parent="511">
+    <key id="590" parent="511">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="590" parent="512" name="id">
+    <column id="591" parent="512" name="id">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="591" parent="512" name="firstname">
+    <column id="592" parent="512" name="firstname">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="592" parent="512" name="lastname">
+    <column id="593" parent="512" name="lastname">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="593" parent="512" name="company">
+    <column id="594" parent="512" name="company">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="594" parent="512" name="title">
+    <column id="595" parent="512" name="title">
       <DasType>VARCHAR(50)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="595" parent="512" name="aboutme">
+    <column id="596" parent="512" name="aboutme">
       <DasType>TEXT|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="596" parent="512" name="address">
+    <column id="597" parent="512" name="address">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="597" parent="512" name="city">
+    <column id="598" parent="512" name="city">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="598" parent="512" name="state">
+    <column id="599" parent="512" name="state">
       <DasType>VARCHAR(2)|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="599" parent="512" name="postalcode">
+    <column id="600" parent="512" name="postalcode">
       <DasType>VARCHAR(20)|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="600" parent="512" name="phone">
+    <column id="601" parent="512" name="phone">
       <DasType>VARCHAR(20)|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="601" parent="512" name="email">
+    <column id="602" parent="512" name="email">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="602" parent="512" name="dob">
+    <column id="603" parent="512" name="dob">
       <DasType>DATE|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="603" parent="512" name="avatar_filename">
+    <column id="604" parent="512" name="avatar_filename">
       <DasType>TEXT|0s</DasType>
       <Position>14</Position>
     </column>
-    <column id="604" parent="512" name="avatar_url">
+    <column id="605" parent="512" name="avatar_url">
       <DasType>VARCHAR(250)|0s</DasType>
       <Position>15</Position>
     </column>
-    <column id="605" parent="512" name="twitter">
+    <column id="606" parent="512" name="twitter">
       <DasType>VARCHAR(255)|0s</DasType>
       <Position>16</Position>
     </column>
-    <column id="606" parent="512" name="instagram">
+    <column id="607" parent="512" name="instagram">
       <DasType>VARCHAR(255)|0s</DasType>
       <Position>17</Position>
     </column>
-    <column id="607" parent="512" name="facebook">
+    <column id="608" parent="512" name="facebook">
       <DasType>VARCHAR(255)|0s</DasType>
       <Position>18</Position>
     </column>
-    <column id="608" parent="512" name="linkedin">
+    <column id="609" parent="512" name="linkedin">
       <DasType>VARCHAR(255)|0s</DasType>
       <Position>19</Position>
     </column>
-    <column id="609" parent="512" name="username">
+    <column id="610" parent="512" name="username">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>20</Position>
     </column>
-    <column id="610" parent="512" name="password">
+    <column id="611" parent="512" name="password">
       <DasType>VARCHAR(150)|0s</DasType>
       <Position>21</Position>
     </column>
-    <column id="611" parent="512" name="date_created">
+    <column id="612" parent="512" name="date_created">
       <DasType>DATETIME|0s</DasType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>22</Position>
     </column>
-    <index id="612" parent="512" name="sqlite_autoindex_user_1">
+    <index id="613" parent="512" name="sqlite_autoindex_user_1">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="613" parent="512" name="sqlite_autoindex_user_2">
+    <index id="614" parent="512" name="sqlite_autoindex_user_2">
       <ColNames>username</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="614" parent="512">
+    <key id="615" parent="512">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="615" parent="512">
+    <key id="616" parent="512">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_user_1</UnderlyingIndexName>
     </key>
-    <key id="616" parent="512">
+    <key id="617" parent="512">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_user_2</UnderlyingIndexName>
     </key>

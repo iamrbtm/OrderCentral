@@ -263,10 +263,67 @@ Available Blocks
                             </tfoot>
                         </table>
                     </div>
+                </div> <!-- END ITEMS -->
+
+                {% if record.status[0].confirmed %}
+                    <div class="card p-3">
+                        <div class="row">
+                            <div class="col p-4">
+                                <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    <i class="bi bi-x-lg"></i>
+                                    <i class="bi bi-x-lg"></i>
+                                    <i class="bi bi-x-lg"></i>
+                                    DELETE RECORD
+                                    <i class="bi bi-x-lg"></i>
+                                    <i class="bi bi-x-lg"></i>
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal HTML -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="display: flex; justify-content: center; align-items: center;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <img src="https://www.pngitem.com/pimgs/m/156-1560992_icon-red-circle-cross-png-transparent-png.png"
+                             alt="" width="80px" height="80px">
+                    </div>
+
+                </div>
+                <div class="modal-title w-100">
+                    <h4>Are you sure?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;orphans: 3;widows: 3;">Do you
+                        really want to delete these records? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer justify-content-center"
+                     style="box-sizing: border-box;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex-align: center;align-items: center;-ms-flex-pack: center!important;justify-content: center!important;padding: 10px 15px 25px;border-top: 1px solid #dee2e6;border-bottom-right-radius: calc(.3rem - 1px);border-bottom-left-radius: calc(.3rem - 1px);border: none;text-align: center;border-radius: 5px;font-size: 13px;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
+                    <a href="{{ url_for('order.order_delete', id=record.id) }}">
+                        <button type="button" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock main_content %}
 
 {% block javascripts %}
